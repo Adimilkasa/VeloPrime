@@ -1,0 +1,38 @@
+{
+  "name": "moja-strona",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "clean": "node -e \"const fs=require('fs'); const rm=(p)=>fs.rmSync(p,{recursive:true,force:true}); rm('.next'); rm('.next-dev'); rm('node_modules/.cache');\"",
+    "sync:inventory": "node scripts/sync-inventory-from-sheets.cjs",
+    "verify:images": "node scripts/verify-car-images.cjs",
+    "list:slugs": "node scripts/generate-model-content.cjs --list-slugs",
+    "generate:model": "node scripts/generate-model-content.cjs",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.0.0",
+    "googleapis": "^171.4.0",
+    "lucide-react": "^0.539.0",
+    "next": "15.2.9",
+    "openai": "^6.25.0",
+    "pdf-parse": "^2.4.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sharp": "^0.34.5",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  }
+}

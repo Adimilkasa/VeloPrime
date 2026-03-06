@@ -1,0 +1,242 @@
+{
+  "slug": "byd-atto-2",
+  "brand": "BYD",
+  "model": "Atto 2",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/byd-atto-2/premium%201.jpg",
+        "alt": "premium 1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/premium1.jpg",
+        "alt": "premium1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/premium2.jpg",
+        "alt": "premium2"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz%203.jpg",
+        "alt": "zewnatrz 3"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz1.jpg",
+        "alt": "zewnatrz1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz10.jpg",
+        "alt": "zewnatrz10"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz3.jpg",
+        "alt": "zewnatrz3"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz6.jpg",
+        "alt": "zewnatrz6"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/byd-atto-2/wewnatrz2.jpg",
+        "alt": "wewnatrz2"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz2.jpg",
+          "alt": "wewnatrz2"
+        },
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz3.jpg",
+          "alt": "wewnatrz3"
+        },
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz8.jpg",
+          "alt": "wewnatrz8"
+        },
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz9.jpg",
+          "alt": "wewnatrz9"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/byd-atto-2/detal1.jpg",
+        "alt": "detal1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/detal2.jpg",
+        "alt": "detal2"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/detal4.jpg",
+        "alt": "detal4"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/detal5.jpg",
+        "alt": "detal5"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/detal7.jpg",
+        "alt": "detal7"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Atto 2 stawia na proste, codzienne użycie: nowy napęd i pakiet funkcji, które realnie ułatwiają jazdę. W standardzie dostajesz m.in. nowy typ baterii oraz zestaw systemów wsparcia kierowcy, więc mniej rzeczy musisz…",
+      "bullets": [
+        "Bateria BYD Blade (LFP) – trwała chemia i spokój na lata.",
+        "V2L (Vehicle​-to-Load​) – zasilisz sprzęt z auta, gdy nie ma gniazdka.",
+        "AEB + TSR – auto hamuje awaryjnie i czyta znaki, mniej stresu w mieście."
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Atto 2 stawia na wygodę na co dzień: proste ładowanie, mocne wsparcie kierowcy i bogate multimedia.",
+      "items": [
+        {
+          "title": "Proste ładowanie AC",
+          "desc": "W zależności od wersji auto obsługuje ładowanie AC do 3,3 kW lub do 6,6 kW. Łatwiej dopasujesz ładowanie w domu i w mieście do swoich warunków."
+        },
+        {
+          "title": "Dużo systemów wsparcia",
+          "desc": "Na liście są m.in. ACC/ICC, asystenci pasa oraz monitoring kierowcy i martwego pola. To mniej stresu w trasie i w korkach."
+        },
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        }
+      ],
+      "board": {
+        "intro": "BYD Atto 2: bezpieczeństwo, wygoda i praktyczne funkcje na co dzień.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/byd-atto-2/zewnatrz3.jpg",
+            "alt": "zewnatrz3"
+          },
+          "interior": {
+            "src": "/grafiki/byd-atto-2/wewnatrz8.jpg",
+            "alt": "wewnatrz8"
+          },
+          "tech": {
+            "src": "/grafiki/byd-atto-2/detal2.jpg",
+            "alt": "detal2"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "AEB + ACC + ELKA",
+              "subtitle": "Mniej stresu w trasie i w korkach",
+              "icon": "shield"
+            },
+            {
+              "value": "Kamera 360°",
+              "subtitle": "Łatwiejsze parkowanie w ciasnych miejscach",
+              "icon": "camera"
+            },
+            {
+              "value": "Technologia",
+              "subtitle": "Zasilisz sprzęt z auta w plenerze",
+              "icon": "zap"
+            },
+            {
+              "value": "Komfort",
+              "subtitle": "Wygodna obsługa map i ustawień",
+              "icon": "sparkles"
+            }
+          ],
+          "row2": [
+            {
+              "value": "Google Maps + Asystent",
+              "subtitle": "Szybkie cele i komendy głosowe",
+              "icon": "sun"
+            },
+            {
+              "value": "Zasięg",
+              "subtitle": "Usługi online i funkcje w telefonie",
+              "icon": "gauge"
+            },
+            {
+              "value": "Bezprzew. ładowanie 50 W",
+              "subtitle": "Telefon ładuje się bez kabli w aucie",
+              "icon": "battery"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit do 250 000 km / 150 000 km — wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "DM-i Boost",
+        "items": [
+          {
+            "trim": "Comfort",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
+            "trim": "DM-i Boost",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-atto-2.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/byd-atto-2/premium%201.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/byd-atto-2/premium1.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

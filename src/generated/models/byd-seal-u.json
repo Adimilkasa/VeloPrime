@@ -1,0 +1,246 @@
+{
+  "slug": "byd-seal-u",
+  "brand": "BYD",
+  "model": "Seal U",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%204.jpg",
+        "alt": "zewnatrz 4"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%205.jpg",
+        "alt": "zewnatrz 5"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%206.jpg",
+        "alt": "zewnatrz 6"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%207.jpg",
+        "alt": "zewnatrz 7"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%204.jpg",
+        "alt": "zewnatrz 4"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%205.jpg",
+        "alt": "zewnatrz 5"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%206.jpg",
+        "alt": "zewnatrz 6"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%207.jpg",
+        "alt": "zewnatrz 7"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz%207.webp",
+        "alt": "zewnatrz 7"
+      },
+      {
+        "src": "/grafiki/Seal-U/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/Seal-U/wewnatrz%201.jpg",
+        "alt": "wewnatrz 1"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/Seal-U/wewnatrz%201.jpg",
+          "alt": "wewnatrz 1"
+        },
+        {
+          "src": "/grafiki/Seal-U/wewnatrz%202.jpg",
+          "alt": "wewnatrz 2"
+        },
+        {
+          "src": "/grafiki/Seal-U/wewnatrz%203.jpg",
+          "alt": "wewnatrz 3"
+        },
+        {
+          "src": "/grafiki/Seal-U/wewnatrz.jpg",
+          "alt": "wewnatrz"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/Seal-U/detal%203.jpg",
+        "alt": "detal 3"
+      },
+      {
+        "src": "/grafiki/Seal-U/detal%205.webp",
+        "alt": "detal 5"
+      },
+      {
+        "src": "/grafiki/Seal-U/detal.jpg",
+        "alt": "detal"
+      },
+      {
+        "src": "/grafiki/Seal-U/detal2.jpg",
+        "alt": "detal2"
+      },
+      {
+        "src": "/grafiki/Seal-U/deta.jpg",
+        "alt": "deta"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Seal U DM-i łączy napęd hybrydowy plug-in z bogatym pakietem systemów wsparcia. W praktyce dostajesz auto wygodne na co dzień i łatwe w obsłudze w trasie oraz w mieście.",
+      "bullets": [
+        "Kamera 360° + czujniki parkowania: łatwiejsze manewry w ciasnych miejscach",
+        "ACC/ICC i asystent pasa (LKA): mniej zmęczenia w dłuższej jeździe",
+        "Ekran dotykowy obracany + ster. głosem „Hej, BYD”: szybki dostęp do funkcji bez…"
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Seal U stawia na wygodę na co dzień: szybkie ładowanie, dużo wsparcia kierowcy i bogate multimedia.",
+      "items": [
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        },
+        {
+          "title": "Pakiet asystentów jazdy",
+          "desc": "Na pokładzie są m.in. ACC/ICC, LKA, BSD oraz AEB. To mniej stresu w korku i więcej wsparcia w długiej jeździe."
+        },
+        {
+          "title": "Bezpieczeństwo",
+          "desc": "Systemy wsparcia kierowcy pomagają w codziennej jeździe i zmniejszają stres w mieście."
+        }
+      ],
+      "board": {
+        "intro": "BYD Seal U: 8 mocnych stron z naciskiem na wygodę, tech i bezpieczeństwo.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/Seal-U/zewnatrz%204.jpg",
+            "alt": "zewnatrz 4"
+          },
+          "interior": {
+            "src": "/grafiki/Seal-U/wewnatrz.jpg",
+            "alt": "wewnatrz"
+          },
+          "tech": {
+            "src": "/grafiki/Seal-U/detal%205.webp",
+            "alt": "detal 5"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "BYD Blade Battery (LFP)",
+              "subtitle": "Trwała chemia LFP: spokój na lata i stabilna praca",
+              "icon": "shield"
+            },
+            {
+              "value": "Technologia",
+              "subtitle": "Szybkie uzupełnianie energii w trasie",
+              "icon": "zap"
+            },
+            {
+              "value": "Dynamika",
+              "subtitle": "Krótki postój na ładowarce i jedziesz dalej",
+              "icon": "timer"
+            },
+            {
+              "value": "Ładowanie",
+              "subtitle": "Wygodne ładowanie z wallboxa w domu lub w pracy",
+              "icon": "battery"
+            }
+          ],
+          "row2": [
+            {
+              "value": "Parkowanie",
+              "subtitle": "Łatwiejsze parkowanie i mniej stresu w ciasnych miejscach",
+              "icon": "camera"
+            },
+            {
+              "value": "ACC + ICC",
+              "subtitle": "Mniej zmęczenia w korkach i na długich odcinkach",
+              "icon": "gauge"
+            },
+            {
+              "value": "Efektywność",
+              "subtitle": "Zasilisz sprzęt z auta na wyjeździe lub w awarii",
+              "icon": "fuel"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit do 150 000 km / 250 000 km — wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "DM-i Comfort",
+        "items": [
+          {
+            "trim": "DM-i Boost",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
+            "trim": "DM-i Comfort",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-seal-u.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/Seal-U/zewnatrz%204.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/Seal-U/zewnatrz%205.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

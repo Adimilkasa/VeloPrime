@@ -1,0 +1,220 @@
+{
+  "slug": "byd-seal",
+  "brand": "BYD",
+  "model": "Seal",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/Seal/premium%201.jpg",
+        "alt": "premium 1"
+      },
+      {
+        "src": "/grafiki/Seal/premium%202.jpg",
+        "alt": "premium 2"
+      },
+      {
+        "src": "/grafiki/Seal/premium%203.jpg",
+        "alt": "premium 3"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/Seal/zewnatrz%202.jpg",
+        "alt": "zewnatrz 2"
+      },
+      {
+        "src": "/grafiki/Seal/zewnatrz%203.jpg",
+        "alt": "zewnatrz 3"
+      },
+      {
+        "src": "/grafiki/Seal/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/Seal/wnetrze%201.jpg",
+        "alt": "wnetrze 1"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/Seal/wnetrze%201.jpg",
+          "alt": "wnetrze 1"
+        },
+        {
+          "src": "/grafiki/Seal/wnetrze%202.jpg",
+          "alt": "wnetrze 2"
+        },
+        {
+          "src": "/grafiki/Seal/wnetrze%203.jpg",
+          "alt": "wnetrze 3"
+        },
+        {
+          "src": "/grafiki/Seal/wnetrze.jpg",
+          "alt": "wnetrze"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/Seal/detal%202.jpg",
+        "alt": "detal 2"
+      },
+      {
+        "src": "/grafiki/Seal/detal%203.jpg",
+        "alt": "detal 3"
+      },
+      {
+        "src": "/grafiki/Seal/detal%204.jpg",
+        "alt": "detal 4"
+      },
+      {
+        "src": "/grafiki/Seal/detal%205.jpg",
+        "alt": "detal 5"
+      },
+      {
+        "src": "/grafiki/Seal/detal.jpg",
+        "alt": "detal"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Seal stawia na nowoczesną, czystą linię i dopracowane detale. W praktyce dostajesz auto, które wygląda premium i ułatwia codzienne użytkowanie dzięki przemyślanym rozwiązaniom.",
+      "bullets": [
+        "„OCEAN X” Design – wyrazisty styl nadwozia",
+        "Panoramiczny szklany dach – jaśniejsze wnętrze",
+        "Oświetlenie ambientowe – klimat w kabinie po zmroku"
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Seal stawia na praktyczne EV: szybkie ładowanie, dopracowane wnętrze i mocne wsparcie kierowcy.",
+      "items": [
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        },
+        {
+          "title": "Bezpieczeństwo",
+          "desc": "Systemy wsparcia kierowcy pomagają w codziennej jeździe i zmniejszają stres w mieście."
+        },
+        {
+          "title": "Komfort w kabinie",
+          "desc": "Przemyślane wnętrze i prosta obsługa ułatwiają dojazdy i dłuższe przejazdy."
+        }
+      ],
+      "board": {
+        "intro": "BYD Seal: kluczowe atuty z danych PDF – krótko i praktycznie.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/Seal/zewnatrz%202.jpg",
+            "alt": "zewnatrz 2"
+          },
+          "interior": {
+            "src": "/grafiki/Seal/wnetrze%203.jpg",
+            "alt": "wnetrze 3"
+          },
+          "tech": {
+            "src": "/grafiki/Seal/detal%205.jpg",
+            "alt": "detal 5"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "Akumulator Blade (LFP)",
+              "subtitle": "Stabilna chemia i trwałość na lata",
+              "icon": "shield"
+            },
+            {
+              "value": "Technologia",
+              "subtitle": "Szybki powrót w trasę na dłuższych wyjazdach",
+              "icon": "zap"
+            },
+            {
+              "value": "Ładowarka 11 kW (OBC)",
+              "subtitle": "Wygodne ładowanie AC w domu i w pracy",
+              "icon": "battery"
+            },
+            {
+              "value": "Efektywność",
+              "subtitle": "Zasilisz sprzęt z auta, gdy nie ma gniazdka",
+              "icon": "fuel"
+            }
+          ],
+          "row2": [
+            {
+              "value": "Parkowanie",
+              "subtitle": "Łatwiejsze parkowanie w ciasnych miejscach",
+              "icon": "camera"
+            },
+            {
+              "value": "ACC + AEB + ELKA",
+              "subtitle": "Mniej stresu w trasie i w korkach",
+              "icon": "gauge"
+            },
+            {
+              "value": "Dach panoramiczny",
+              "subtitle": "Jaśniejsze wnętrze i lepszy klimat podróży",
+              "icon": "sun"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit km wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "Excellence",
+        "items": [
+          {
+            "trim": "Excellence",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-seal.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/Seal/premium%201.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/Seal/premium%202.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

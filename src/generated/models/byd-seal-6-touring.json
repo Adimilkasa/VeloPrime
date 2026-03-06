@@ -1,0 +1,238 @@
+{
+  "slug": "byd-seal-6-touring",
+  "brand": "BYD",
+  "model": "Seal 6 Touring",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/Seal%206%20touring/premium%202.jpg",
+        "alt": "premium 2"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/premium.jpg",
+        "alt": "premium"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/Seal%206%20touring/zewnatrz%20(2).jpg",
+        "alt": "zewnatrz (2)"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/zewnatrz%202.jpg",
+        "alt": "zewnatrz 2"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/zewnatrz%203.jpg",
+        "alt": "zewnatrz 3"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/zewnatrz%204.jpg",
+        "alt": "zewnatrz 4"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/zewnatrz%205.jpg",
+        "alt": "zewnatrz 5"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/Seal%206%20touring/wnetrze%201.jpg",
+        "alt": "wnetrze 1"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/Seal%206%20touring/wnetrze%201.jpg",
+          "alt": "wnetrze 1"
+        },
+        {
+          "src": "/grafiki/Seal%206%20touring/wnetrze%202.jpg",
+          "alt": "wnetrze 2"
+        },
+        {
+          "src": "/grafiki/Seal%206%20touring/wnetrze.jpg",
+          "alt": "wnetrze"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/Seal%206%20touring/detal%201.jpg",
+        "alt": "detal 1"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/detal%202.jpg",
+        "alt": "detal 2"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/detal%203.jpg",
+        "alt": "detal 3"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/detal%204.jpg",
+        "alt": "detal 4"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/detal%205.jpg",
+        "alt": "detal 5"
+      },
+      {
+        "src": "/grafiki/Seal%206%20touring/detal.jpg",
+        "alt": "detal"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Seal 6 Touring to praktyczne kombi z napędem DM-i: możesz jeździć na prądzie na co dzień, a w trasie korzystać z dużego zasięgu łącznego. Do tego dostajesz realną przestrzeń na bagaż i wsparcie systemów jazdy.",
+      "bullets": [
+        "Do 100 km zasięgu EV (WLTP) – mniej wizyt na stacji",
+        "Bagażnik do 1535 l po złożeniu siedzeń – łatwiej spakować wyjazd",
+        "Kamery 360° + ACC – prościej parkować i jechać w korku"
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Seal 6 Touring stawia na praktykę w trasie i na co dzień: pakowność, wsparcie kierowcy i wygodne funkcje pod ręką.",
+      "items": [
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        },
+        {
+          "title": "Szerokie wsparcie ADAS",
+          "desc": "Na pokładzie są m.in. ACC/ICC, monitor martwego pola, AEB oraz asystenci pasa. To mniej stresu w korkach i więcej pewności w trasie."
+        },
+        {
+          "title": "V2L i szybkie DC",
+          "desc": "Funkcja V2L pozwala zasilać urządzenia zewn. do 3,3 kW z auta. Ładowanie DC 30–80% trwa 23 min, więc szybciej wracasz w drogę."
+        }
+      ],
+      "board": {
+        "intro": "BYD Seal 6 DM-i Touring: praktyczne kombi z mocnym pakietem bezpieczeństwa i realnym zasięgiem na co dzień.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/Seal%206%20touring/zewnatrz%20(2).jpg",
+            "alt": "zewnatrz (2)"
+          },
+          "interior": {
+            "src": "/grafiki/Seal%206%20touring/wnetrze%202.jpg",
+            "alt": "wnetrze 2"
+          },
+          "tech": {
+            "src": "/grafiki/Seal%206%20touring/detal%201.jpg",
+            "alt": "detal 1"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "Zasięg",
+              "subtitle": "Rzadziej tankujesz na długich trasach",
+              "icon": "gauge"
+            },
+            {
+              "value": "100 km EV (WLTP)",
+              "subtitle": "Zasięg dopasowany do codziennych tras.",
+              "icon": "battery"
+            },
+            {
+              "value": "Efektywność",
+              "subtitle": "Dużo miejsca na rodzinę i wyjazdy",
+              "icon": "fuel"
+            },
+            {
+              "value": "DC 30–80%: 23 min",
+              "subtitle": "Zasięg dopasowany do codziennych tras.",
+              "icon": "timer"
+            }
+          ],
+          "row2": [
+            {
+              "value": "V2L 3,3 kW",
+              "subtitle": "Zasilisz sprzęt poza autem",
+              "icon": "zap"
+            },
+            {
+              "value": "Kamery 360°",
+              "subtitle": "Łatwiejsze parkowanie w mieście",
+              "icon": "camera"
+            },
+            {
+              "value": "ACC + AEB + ELKA",
+              "subtitle": "Mniej stresu i wsparcie w korkach",
+              "icon": "shield"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit do 150 000 km — wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "DM-i Comfort",
+        "items": [
+          {
+            "trim": "DM-i Boost",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
+            "trim": "DM-i Comfort",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-seal-6-touring.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/Seal%206%20touring/premium%202.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/Seal%206%20touring/premium.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

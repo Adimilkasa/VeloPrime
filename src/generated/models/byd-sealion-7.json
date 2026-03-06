@@ -1,0 +1,244 @@
+{
+  "slug": "byd-sealion-7",
+  "brand": "BYD",
+  "model": "Sealion 7",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/Seal%207/premium%201.jpg",
+        "alt": "premium 1"
+      },
+      {
+        "src": "/grafiki/Seal%207/premium%202.jpg",
+        "alt": "premium 2"
+      },
+      {
+        "src": "/grafiki/Seal%207/premium%203.jpg",
+        "alt": "premium 3"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/Seal%207/zewnatrz%202.jpg",
+        "alt": "zewnatrz 2"
+      },
+      {
+        "src": "/grafiki/Seal%207/zewnatrz%203.jpg",
+        "alt": "zewnatrz 3"
+      },
+      {
+        "src": "/grafiki/Seal%207/zewnatrz%204.jpg",
+        "alt": "zewnatrz 4"
+      },
+      {
+        "src": "/grafiki/Seal%207/zewnatrz%205.jpg",
+        "alt": "zewnatrz 5"
+      },
+      {
+        "src": "/grafiki/Seal%207/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      },
+      {
+        "src": "/grafiki/Seal%207/zewnatrz5.jpg",
+        "alt": "zewnatrz5"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/Seal%207/Wnetrze%202.jpg",
+        "alt": "Wnetrze 2"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/Seal%207/Wnetrze%202.jpg",
+          "alt": "Wnetrze 2"
+        },
+        {
+          "src": "/grafiki/Seal%207/wnetrze%203.jpg",
+          "alt": "wnetrze 3"
+        },
+        {
+          "src": "/grafiki/Seal%207/Wnetrze%204.jpg",
+          "alt": "Wnetrze 4"
+        },
+        {
+          "src": "/grafiki/Seal%207/wnetrze%205.jpg",
+          "alt": "wnetrze 5"
+        },
+        {
+          "src": "/grafiki/Seal%207/wnetrze%206.jpg",
+          "alt": "wnetrze 6"
+        },
+        {
+          "src": "/grafiki/Seal%207/wnetrze.jpg",
+          "alt": "wnetrze"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/Seal%207/Detal%201.jpg",
+        "alt": "Detal 1"
+      },
+      {
+        "src": "/grafiki/Seal%207/detal%202.jpg",
+        "alt": "detal 2"
+      },
+      {
+        "src": "/grafiki/Seal%207/detal%203.jpg",
+        "alt": "detal 3"
+      },
+      {
+        "src": "/grafiki/Seal%207/detal%204.jpg",
+        "alt": "detal 4"
+      },
+      {
+        "src": "/grafiki/Seal%207/detal%205.jpg",
+        "alt": "detal 5"
+      },
+      {
+        "src": "/grafiki/Seal%207/detal.jpg",
+        "alt": "detal"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Sealion 7 stawia na nowy styl i wygodę na co dzień. W standardzie dostajesz praktyczne rozwiązania, które ułatwiają jazdę i parkowanie.",
+      "bullets": [
+        "Panoramiczny dach + elektryczna roleta: więcej światła, mniej nagrzania",
+        "Kamera 360° i czujniki park.: łatwiejsze manewry w mieście",
+        "ACC i asyst. pasa: spokojniejsza jazda w trasie"
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Sealion 7 stawia na szybkie ładowanie, mocne wsparcie kierowcy i sprawdzoną tech baterii — realnie ułatwia to codzienną jazdę i trasy.",
+      "items": [
+        {
+          "title": "Szybkie ładowanie DC",
+          "desc": "Auto obsługuje szybkie ładowanie prądem stałym (DC). Krótsze postoje w trasie i łatwiejsze planowanie dłuższych wyjazdów."
+        },
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        },
+        {
+          "title": "Blade Battery (LFP)",
+          "desc": "Zastosowano BYD Blade Battery (LFP), opisaną jako bateria, która przeszła test przebicia gwoździem. To praktyczna korzyść dla spokoju o trwałość i bezpieczeń"
+        }
+      ],
+      "board": {
+        "intro": "BYD Sealion 7: technologia, komfort i bezpieczeństwo w standardzie.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/Seal%207/zewnatrz%202.jpg",
+            "alt": "zewnatrz 2"
+          },
+          "interior": {
+            "src": "/grafiki/Seal%207/wnetrze%206.jpg",
+            "alt": "wnetrze 6"
+          },
+          "tech": {
+            "src": "/grafiki/Seal%207/detal%205.jpg",
+            "alt": "detal 5"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "Blade Battery (LFP)",
+              "subtitle": "Trwały akumulator i wysoki poziom bezp.",
+              "icon": "shield"
+            },
+            {
+              "value": "CTB",
+              "subtitle": "Sztywniejsze nadwozie i pewniejsze prowadzenie.",
+              "icon": "gauge"
+            },
+            {
+              "value": "iTAC",
+              "subtitle": "Lepsza trakcja i stabilność na śliskim.",
+              "icon": "zap"
+            },
+            {
+              "value": "Pompa ciepła",
+              "subtitle": "Mniej strat energii zimą, lepszy komfort.",
+              "icon": "sun"
+            }
+          ],
+          "row2": [
+            {
+              "value": "Ładowanie",
+              "subtitle": "Zasilisz sprzęt z auta w trasie i na postoju.",
+              "icon": "battery"
+            },
+            {
+              "value": "Parkowanie",
+              "subtitle": "Łatwiejsze parkowanie w ciasnych miejscach.",
+              "icon": "camera"
+            },
+            {
+              "value": "ACC + AEB + ELKA",
+              "subtitle": "Mniej stresu w korku i dodatkowe wsparcie na trasie.",
+              "icon": "shield"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit do 150 000 km / 250 000 km — wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "Excellence AWD",
+        "items": [
+          {
+            "trim": "Excellence AWD",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-sealion-7.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/Seal%207/premium%201.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/Seal%207/premium%202.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

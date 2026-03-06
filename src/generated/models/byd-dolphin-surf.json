@@ -1,0 +1,226 @@
+{
+  "slug": "byd-dolphin-surf",
+  "brand": "BYD",
+  "model": "Dolphin Surf",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/byd-dolphin-surf/premium%201.jpg",
+        "alt": "premium 1"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/premium%202.jpg",
+        "alt": "premium 2"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/premium%203.jpg",
+        "alt": "premium 3"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/premium%204.jpg",
+        "alt": "premium 4"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/byd-dolphin-surf/zewnatrz%201.jpg",
+        "alt": "zewnatrz 1"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/zewnatrz%202.jpg",
+        "alt": "zewnatrz 2"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/zewnatrz%204.jpg",
+        "alt": "zewnatrz 4"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/byd-dolphin-surf/wnetrze%201.jpg",
+        "alt": "wnetrze 1"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/byd-dolphin-surf/wnetrze%201.jpg",
+          "alt": "wnetrze 1"
+        },
+        {
+          "src": "/grafiki/byd-dolphin-surf/wnetrze%202.jpg",
+          "alt": "wnetrze 2"
+        },
+        {
+          "src": "/grafiki/byd-dolphin-surf/wnetrze%203.jpg",
+          "alt": "wnetrze 3"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/byd-dolphin-surf/detal%201.jpg",
+        "alt": "detal 1"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/detal%202.jpg",
+        "alt": "detal 2"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/detal%203.jpg",
+        "alt": "detal 3"
+      },
+      {
+        "src": "/grafiki/byd-dolphin-surf/detal%204.jpg",
+        "alt": "detal 4"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Dolphin Surf stawia na sportowy, zadziorny wygląd i proste, czytelne detale. W środku dostajesz nowy styl kokpitu z ekranami i wygodnymi materiałami, co ułatwia codzienną jazdę.",
+      "bullets": [
+        "Sportowy tylny spoiler: mocny look z tyłu",
+        "Reflektory z LED do jazdy dziennej: lepsza widoczność",
+        "Obracany ekran dotykowy 10,1\": wygodna obsługa funkcji auta"
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Dolphin Surf stawia na praktyczne EV: sprawne ładowanie, dużo wsparcia kierowcy i wygodne multimedia na co dzień.",
+      "items": [
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        },
+        {
+          "title": "Bogate wsparcie jazdy",
+          "desc": "Na pokładzie są m.in. ACC/ICC, AEB, ELKA oraz rozpoznawanie znaków. To mniej stresu w korkach i więcej kontroli na dłuższych odcinkach."
+        },
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        }
+      ],
+      "board": {
+        "intro": "BYD Dolphin Surf: kluczowe atuty na co dzień.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/byd-dolphin-surf/zewnatrz%202.jpg",
+            "alt": "zewnatrz 2"
+          },
+          "interior": {
+            "src": "/grafiki/byd-dolphin-surf/wnetrze%201.jpg",
+            "alt": "wnetrze 1"
+          },
+          "tech": {
+            "src": "/grafiki/byd-dolphin-surf/detal%203.jpg",
+            "alt": "detal 3"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "Bateria Blade (LFP)",
+              "subtitle": "Trwała chemia i spokój w eksploatacji",
+              "icon": "shield"
+            },
+            {
+              "value": "Technologia",
+              "subtitle": "Szybkie doładowanie w trasie",
+              "icon": "zap"
+            },
+            {
+              "value": "Ładowanie",
+              "subtitle": "Sprawne ładowanie AC w domu i w pracy",
+              "icon": "battery"
+            },
+            {
+              "value": "AEB + FCW",
+              "subtitle": "Mniej stresu w mieście, auto hamuje awaryjnie",
+              "icon": "shield"
+            }
+          ],
+          "row2": [
+            {
+              "value": "ACC/ICC",
+              "subtitle": "Wygodniejsza jazda w korkach i na obwodnicy",
+              "icon": "gauge"
+            },
+            {
+              "value": "ELKA + TSR",
+              "subtitle": "Łatwiej trzymać pas i pilnować znaków",
+              "icon": "shield"
+            },
+            {
+              "value": "Parkowanie",
+              "subtitle": "Czytelna obsługa multimediów i nawigacji",
+              "icon": "camera"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit do 250 000 km / 150 000 km — wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "Comfort",
+        "items": [
+          {
+            "trim": "Boost",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
+            "trim": "Comfort",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-dolphin-surf.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/byd-dolphin-surf/premium%201.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/byd-dolphin-surf/premium%202.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

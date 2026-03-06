@@ -1,0 +1,40 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F3F6"/>
+    </linearGradient>
+    <linearGradient id="pane" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#EAF1F8"/>
+      <stop offset="60%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EEF1F5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+
+  <!-- calm "interior detail" abstraction -->
+  <rect x="90" y="120" width="1020" height="660" rx="28" fill="url(#pane)" stroke="#ECECEC"/>
+
+  <g opacity="0.9">
+    <rect x="150" y="190" width="520" height="28" rx="14" fill="#D6DCE5"/>
+    <rect x="150" y="238" width="420" height="16" rx="8" fill="#E3E8EF"/>
+
+    <rect x="150" y="330" width="900" height="1" fill="#ECECEC"/>
+
+    <rect x="150" y="380" width="280" height="180" rx="18" fill="#FFFFFF" stroke="#ECECEC"/>
+    <rect x="460" y="380" width="280" height="180" rx="18" fill="#FFFFFF" stroke="#ECECEC"/>
+    <rect x="770" y="380" width="280" height="180" rx="18" fill="#FFFFFF" stroke="#ECECEC"/>
+
+    <rect x="180" y="410" width="220" height="12" rx="6" fill="#E3E8EF"/>
+    <rect x="490" y="410" width="220" height="12" rx="6" fill="#E3E8EF"/>
+    <rect x="800" y="410" width="220" height="12" rx="6" fill="#E3E8EF"/>
+
+    <rect x="180" y="450" width="160" height="10" rx="5" fill="#F1F3F6"/>
+    <rect x="490" y="450" width="160" height="10" rx="5" fill="#F1F3F6"/>
+    <rect x="800" y="450" width="160" height="10" rx="5" fill="#F1F3F6"/>
+  </g>
+
+  <!-- gold micro accent -->
+  <rect x="150" y="680" width="220" height="2" fill="#C9A13B" opacity="0.55"/>
+</svg>

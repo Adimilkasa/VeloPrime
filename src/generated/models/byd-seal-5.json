@@ -1,0 +1,216 @@
+{
+  "slug": "byd-seal-5",
+  "brand": "BYD",
+  "model": "Seal 5",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/Seal%205/premium%201.jpg",
+        "alt": "premium 1"
+      },
+      {
+        "src": "/grafiki/Seal%205/premium%202.jpg",
+        "alt": "premium 2"
+      },
+      {
+        "src": "/grafiki/Seal%205/premium.jpg",
+        "alt": "premium"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/Seal%205/zewnatrz%203.jpg",
+        "alt": "zewnatrz 3"
+      },
+      {
+        "src": "/grafiki/Seal%205/zewnatrz%204.jpg",
+        "alt": "zewnatrz 4"
+      },
+      {
+        "src": "/grafiki/Seal%205/zewnatrz%205.jpg",
+        "alt": "zewnatrz 5"
+      },
+      {
+        "src": "/grafiki/Seal%205/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/Seal%205/wewnatrz%202.jpg",
+        "alt": "wewnatrz 2"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/Seal%205/wewnatrz%202.jpg",
+          "alt": "wewnatrz 2"
+        },
+        {
+          "src": "/grafiki/Seal%205/wewnatrz%204.jpg",
+          "alt": "wewnatrz 4"
+        },
+        {
+          "src": "/grafiki/Seal%205/wewnatrz%205.jpg",
+          "alt": "wewnatrz 5"
+        },
+        {
+          "src": "/grafiki/Seal%205/wewnatrz.jpg",
+          "alt": "wewnatrz"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/Seal%205/detal%202.jpg",
+        "alt": "detal 2"
+      },
+      {
+        "src": "/grafiki/Seal%205/detal%203.jpg",
+        "alt": "detal 3"
+      },
+      {
+        "src": "/grafiki/Seal%205/detal.jpg",
+        "alt": "detal"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Seal 5 to auto z napędem hybrydowym plug-in i akumulatorem BYD Blade (LFP). W praktyce możesz jeździć na prądzie na co dzień, a na dłuższe trasy masz wsparcie silnika spalinowego.",
+      "bullets": [
+        "Zasięg WLTP: tryb EV i łączny – dane w cenniku.",
+        "Ładowanie AC: ładowarka pokładowa (OBC) 6,6 kW.",
+        "Wsparcie kierowcy: ACC/ICC, LKA, BSD i kamery 360°."
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Seal 5 stawia na wygodę na co dzień: sprawne wsparcie kierowcy, nowoczesne multimedia i dopracowane wnętrze.",
+      "items": [
+        {
+          "title": "Bogate wsparcie jazdy",
+          "desc": "Masz m.in. ACC/ICC, AEB, asystenta pasa (LKA/ELKA) i monitoring martwego pola. To mniej stresu w trasie i w korkach."
+        },
+        {
+          "title": "Bezpieczna baza",
+          "desc": "Na pokładzie są liczne poduszki powietrzne, ISOFIX/i-Size oraz TPMS. Daje to większy spokój przy jeździe z pasażerami."
+        },
+        {
+          "title": "Nowe multimedia i łączność",
+          "desc": "Obracany ekran dotykowy, Android Auto i Apple CarPlay oraz ładowanie bez kabli ułatwiają obsługę telefonu. Do tego są porty USB z przodu i z tyłu."
+        }
+      ],
+      "board": {
+        "intro": "BYD Seal 5: kluczowe atuty z cennika/specyfikacji – bezpieczeństwo, wygoda i technologia na co dzień.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/Seal%205/zewnatrz%205.jpg",
+            "alt": "zewnatrz 5"
+          },
+          "interior": {
+            "src": "/grafiki/Seal%205/wewnatrz%205.jpg",
+            "alt": "wewnatrz 5"
+          },
+          "tech": {
+            "src": "/grafiki/Seal%205/detal.jpg",
+            "alt": "detal"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "BYD Blade Battery (LFP)",
+              "subtitle": "Trwały akumulator do codziennej jazdy",
+              "icon": "battery"
+            },
+            {
+              "value": "ACC + ICC",
+              "subtitle": "Mniej zmęczenia w trasie i w korkach",
+              "icon": "timer"
+            },
+            {
+              "value": "AEB",
+              "subtitle": "Wsparcie w nagłych sytuacjach na drodze",
+              "icon": "shield"
+            },
+            {
+              "value": "ELKA",
+              "subtitle": "Pomaga utrzymać tor jazdy przy ryzyku zjazdu",
+              "icon": "shield"
+            }
+          ],
+          "row2": [
+            {
+              "value": "Parkowanie",
+              "subtitle": "Łatwiejsze parkowanie w ciasnych miejscach",
+              "icon": "camera"
+            },
+            {
+              "value": "Technologia",
+              "subtitle": "Zasilisz sprzęt z auta poza domem",
+              "icon": "zap"
+            },
+            {
+              "value": "Komfort",
+              "subtitle": "Wygodna obsługa multimediów w pionie lub poziomie",
+              "icon": "sparkles"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit do 150 000 km / 250 000 km — wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "DM-i Comfort",
+        "items": [
+          {
+            "trim": "DM-i Comfort",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-seal-5.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/Seal%205/premium%201.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/Seal%205/premium%202.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "slug": "byd-seal-6",
+  "brand": "BYD",
+  "model": "Seal 6",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/seal-6-dmi/premium%203.jpg",
+        "alt": "premium 3"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/premium%20bok.jpg",
+        "alt": "premium bok"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/premium%20przod%202.jpg",
+        "alt": "premium przod 2"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/premium%20przod.jpg",
+        "alt": "premium przod"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/premium%20przud%204.png",
+        "alt": "premium przud 4"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/premium%20ty%C5%82%20samochodu.jpg",
+        "alt": "premium tył samochodu"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/seal-6-dmi/03%E3%80%81SEAL-6_LHD_Sandstone_Exterior_Rear_download_JPG_5000PX_RGB%20(1).jpg",
+        "alt": "03、SEAL 6 LHD Sandstone Exterior Rear download JPG 5000PX RGB (1)"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/seal-6-dmi/kokpit%20ciemne%20kanapy.jpg",
+        "alt": "kokpit ciemne kanapy"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/seal-6-dmi/kokpit%20ciemne%20kanapy.jpg",
+          "alt": "kokpit ciemne kanapy"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/kokpit%20jasne%20kanapy%202.jpg",
+          "alt": "kokpit jasne kanapy 2"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/kokpit%20jasne%20kanapy.jpg",
+          "alt": "kokpit jasne kanapy"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/prz%C3%B3d%20wn%C4%99trze.jpg",
+          "alt": "przód wnętrze"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/kanapy%20tylne%20jasne.jpg",
+          "alt": "kanapy tylne jasne"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/szklany%20dach.jpg",
+          "alt": "szklany dach"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/tylne%20kanapy%20ciemne.jpg",
+          "alt": "tylne kanapy ciemne"
+        },
+        {
+          "src": "/grafiki/seal-6-dmi/wy%C5%9Bwietlacz.webp",
+          "alt": "wyświetlacz"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/seal-6-dmi/klamka%20led.jpg",
+        "alt": "klamka led"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/ko%C5%82o.jpg",
+        "alt": "koło"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/otwieranie%20smartfonem.jpg",
+        "alt": "otwieranie smartfonem"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/przednie%20leflektory.jpg",
+        "alt": "przednie leflektory"
+      },
+      {
+        "src": "/grafiki/seal-6-dmi/%C5%82adowanie%20samochodu.jpg",
+        "alt": "ładowanie samochodu"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Seal 6 to elektryczny sedan z akumulatorem BYD Blade (LFP) i ładowaniem przez CCS2. W praktyce dostajesz auto na co dzień: komfort w kabinie, wsparcie w trasie i funkcje, które ułatwiają użytkowanie.",
+      "bullets": [
+        "Pompa ciepła + ładowarka pokładowa 11 kW: sprawniej ładujesz i jeździsz cały rok",
+        "V2L (Vehicle​-to-Load​): zasilisz sprzęt z auta, gdy nie ma gniazdka",
+        "Wnętrze: 15,6\" ekran + DAB+ i audio Dynaudio® — wygodna obsługa i lepszy dźwięk"
+      ]
+    },
+    "strengths": {
+      "intro": "BYD Seal 6 stawia na wygodę na co dzień i wsparcie kierowcy, bez rezygnacji z nowoczesnych funkcji auta elektrycznego.",
+      "items": [
+        {
+          "title": "Szybkie ładowanie",
+          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+        },
+        {
+          "title": "Bezpieczeństwo",
+          "desc": "Systemy wsparcia kierowcy pomagają w codziennej jeździe i zmniejszają stres w mieście."
+        },
+        {
+          "title": "Komfort w kabinie",
+          "desc": "Przemyślane wnętrze i prosta obsługa ułatwiają dojazdy i dłuższe przejazdy."
+        }
+      ],
+      "board": {
+        "intro": "BYD Seal 6: bezpieczeństwo, komfort i tech, które realnie ułatwiają jazdę na co dzień.",
+        "images": {
+          "exterior": {
+            "src": "/grafiki/seal-6-dmi/03%E3%80%81SEAL-6_LHD_Sandstone_Exterior_Rear_download_JPG_5000PX_RGB%20(1).jpg",
+            "alt": "03、SEAL 6 LHD Sandstone Exterior Rear download JPG 5000PX RGB (1)"
+          },
+          "interior": {
+            "src": "/grafiki/seal-6-dmi/wy%C5%9Bwietlacz.webp",
+            "alt": "wyświetlacz"
+          },
+          "tech": {
+            "src": "/grafiki/seal-6-dmi/przednie%20leflektory.jpg",
+            "alt": "przednie leflektory"
+          }
+        },
+        "rows": {
+          "row1": [
+            {
+              "value": "Akumulator Blade (LFP)",
+              "subtitle": "Spokojna eksploatacja i trwała chemia baterii",
+              "icon": "shield"
+            },
+            {
+              "value": "ACC + ICC",
+              "subtitle": "Mniej zmęczenia w trasie i płynna jazda w ruchu",
+              "icon": "gauge"
+            },
+            {
+              "value": "AEB + FCW/RCW",
+              "subtitle": "Wsparcie w nagłych sytuacjach i mniej stresu w mieście",
+              "icon": "zap"
+            },
+            {
+              "value": "ELKA + LDA/LDW",
+              "subtitle": "Pewniejsze trzymanie pasa na dłuższych odcinkach",
+              "icon": "shield"
+            }
+          ],
+          "row2": [
+            {
+              "value": "Parkowanie",
+              "subtitle": "Łatwiejsze parkowanie i lepsza kontrola otoczenia",
+              "icon": "camera"
+            },
+            {
+              "value": "Ładowanie",
+              "subtitle": "Zasilisz sprzęt poza autem, gdy nie ma gniazdka",
+              "icon": "battery"
+            },
+            {
+              "value": "Pompa ciepła",
+              "subtitle": "Sprawniejsze ogrzewanie i lepsza wydajność w chłodzie",
+              "icon": "sun"
+            },
+            {
+              "value": "8 lat",
+              "subtitle": "Gwarancja 8 lat. Limit km wg warunków.",
+              "icon": "award"
+            }
+          ],
+          "row3": []
+        }
+      }
+    },
+    "versions": {
+      "intro": "Wybierz wariant dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "DM-i Comfort",
+        "items": [
+          {
+            "trim": "DM-i Boost",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
+            "trim": "DM-i Comfort",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Polecana"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+      "href": "/spec/byd-seal-6.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/seal-6-dmi/premium%203.jpg",
+        "description": "Pełna specyfikacja i wyposażenie w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne",
+          "Porównanie wersji (jeśli dotyczy)"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Pobieranie rozpocznie się automatycznie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualne możliwości rabatowe i finansowanie — przygotujemy konkretną propozycję po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/seal-6-dmi/premium%20bok.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}
