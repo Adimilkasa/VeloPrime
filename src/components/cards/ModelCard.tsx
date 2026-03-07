@@ -84,17 +84,18 @@ export function ModelCard({ item }: { item: InventoryItem }) {
             <Text variant="muted" className="line-through">
               {formatPLN(listPrice)}
             </Text>
-            <div className="mt-1 text-3xl font-semibold tracking-tight text-text-primary">
+            <div className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">
               {formatPLN(offer.clientPrice)}
             </div>
             <Text variant="muted" className="mt-1">
               {mode === 'business' ? 'netto' : 'brutto'}
             </Text>
-            <Text variant="secondary" className="mt-2">
-              od <span className="font-semibold text-text-primary">{formatPLN(monthly60)}</span>
-              <span className="text-text-muted"> / mies.</span>{' '}
-              <span className="text-text-muted">(60 mies.)</span>
-            </Text>
+            <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
+              <span className="text-sm text-text-muted">od</span>
+              <span className="text-3xl font-semibold tracking-tight text-text-primary">{formatPLN(monthly60)}</span>
+              <span className="text-sm font-medium text-text-muted">/ mies.</span>
+              <span className="text-xs text-text-muted">(60 mies.)</span>
+            </div>
             <Text variant="muted" className="mt-2">
               Rata jest estymacją – finalna zależy od banku i parametrów umowy.
             </Text>

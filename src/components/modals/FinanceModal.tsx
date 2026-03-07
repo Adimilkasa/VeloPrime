@@ -108,7 +108,7 @@ export function FinanceModal({
                 <div className="mt-6 grid gap-6 md:grid-cols-2">
                   <div className="rounded-xl border border-stroke bg-bg-primary p-5">
                     <Text variant="muted">Rata (estymacja)</Text>
-                    <div className="mt-2 text-3xl font-semibold tracking-tight text-text-primary">
+                    <div className="mt-2 text-4xl font-semibold tracking-tight text-text-primary">
                       {formatPLN(monthly)}<span className="text-base font-medium text-text-muted"> / mies.</span>
                     </div>
                     <Text variant="muted" className="mt-2">

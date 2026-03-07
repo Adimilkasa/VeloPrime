@@ -36,7 +36,7 @@ export function VersionPricing({ ourPriceGross, ourPriceNet, months = 60 }: Vers
   return (
     <>
       <Text variant="muted">{label}</Text>
-      <div className="mt-2 text-3xl font-semibold tracking-tight text-text-primary">
+      <div className="mt-2 text-2xl font-semibold tracking-tight text-text-primary">
         {primary ? formatPLN(primary) : '—'}
       </div>
 
@@ -47,11 +47,15 @@ export function VersionPricing({ ourPriceGross, ourPriceNet, months = 60 }: Vers
       ) : null}
 
       {monthly ? (
-        <Text variant="secondary" className="mt-2">
-          od <span className="font-semibold text-text-primary">{formatPLN(monthly)}</span>
-          <span className="text-text-muted"> / mies.</span>{' '}
-          <span className="text-text-muted">({months} mies.)</span>
-        </Text>
+        <div className="mt-3">
+          <Text variant="muted">Rata (estymacja)</Text>
+          <div className="mt-2 flex flex-wrap items-baseline gap-x-2">
+            <span className="text-sm text-text-muted">od</span>
+            <span className="text-3xl font-semibold tracking-tight text-text-primary">{formatPLN(monthly)}</span>
+            <span className="text-sm font-medium text-text-muted">/ mies.</span>
+            <span className="text-xs text-text-muted">({months} mies.)</span>
+          </div>
+        </div>
       ) : null}
     </>
   )

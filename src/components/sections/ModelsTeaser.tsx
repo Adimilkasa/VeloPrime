@@ -94,7 +94,7 @@ export function ModelsTeaser() {
         <div
           ref={scrollerRef}
           className={cn(
-            'no-scrollbar flex gap-4 overflow-x-auto pb-2',
+            'no-scrollbar flex gap-6 overflow-x-auto pb-4 pt-1',
             'scroll-smooth snap-x snap-mandatory',
             'cursor-grab active:cursor-grabbing',
           )}
