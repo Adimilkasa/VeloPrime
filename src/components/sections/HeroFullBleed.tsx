@@ -23,7 +23,7 @@ export function HeroFullBleed() {
           <div className="min-w-0 rounded-2xl bg-white/40 backdrop-blur-lg ring-1 ring-black/10 shadow-card px-5 py-6 sm:px-6 sm:py-7">
             <Heading
               level={1}
-              className="max-w-[26ch] break-words [overflow-wrap:anywhere] hyphens-auto text-4xl sm:text-5xl lg:text-6xl"
+              className="max-w-[26ch] text-[clamp(1.75rem,6vw,2.25rem)] sm:text-5xl lg:text-6xl"
             >
               Nowy wymiar motoryzacyjnego <span className="text-brand-gold">premium</span>.
             </Heading>
