@@ -119,7 +119,7 @@ export default async function ModelDetailsPage({
       {content.media ? (
         <section
           aria-label="Hero modelu"
-          className="relative h-[calc(100vh-4rem)] min-h-[680px] bg-bg-section"
+          className="relative h-[calc(100vh-4rem)] min-h-[460px] sm:min-h-[640px] bg-bg-section"
         >
           <ModelHeroGallery items={heroItems} />
         </section>

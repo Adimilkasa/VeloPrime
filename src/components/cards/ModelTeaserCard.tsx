@@ -104,15 +104,15 @@ export function ModelTeaserCard({ group }: { group: ModelGroup }) {
         <div className="mt-3 rounded-2xl border border-brand-gold/20 bg-bg-primary p-4 transition-colors duration-300 group-hover:border-brand-gold/35">
           <Text variant="secondary" className="leading-snug">
             Już od{' '}
-            <span className="font-semibold text-text-primary">{price ? formatPLN(price) : '—'}</span>
+            <span className="font-semibold text-text-primary tabular-nums whitespace-nowrap">{price ? formatPLN(price) : '—'}</span>
             <span className="text-text-muted"> {mode === 'business' ? 'netto' : 'brutto'}</span>
           </Text>
 
           {monthly60 ? (
             <Text variant="muted" className="mt-3 flex flex-wrap items-baseline gap-x-2">
               <span className="text-sm text-text-muted">od</span>
-              <span className="text-3xl font-semibold tracking-tight text-text-primary">{formatPLN(monthly60)}</span>
-              <span className="text-sm font-medium text-text-muted">/ mies.</span>
+              <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-text-primary tabular-nums whitespace-nowrap">{formatPLN(monthly60)}</span>
+              <span className="text-sm font-medium text-text-muted whitespace-nowrap">/ mies.</span>
               <span className="text-xs text-text-muted">(60 mies.)</span>
             </Text>
           ) : null}

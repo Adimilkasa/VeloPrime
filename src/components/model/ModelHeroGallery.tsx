@@ -145,7 +145,7 @@ export function ModelHeroGallery({
       {/* Caption (changes with visible slide) */}
       <div className="absolute inset-x-0 bottom-0 z-10">
         <Container className="pb-10">
-          <div className="max-w-[70ch] -translate-y-[8vh]">
+          <div className="max-w-[70ch] -translate-y-[4vh] sm:-translate-y-[8vh]">
             <div className="text-xs font-medium uppercase tracking-wide text-white/80">Design</div>
             <div className="mt-2 text-2xl font-semibold leading-tight text-white sm:text-3xl">
               {caption}

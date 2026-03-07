@@ -17,15 +17,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-stroke bg-bg-section">
       <Container as="div" className="flex h-16 items-center gap-4">
-        <Link href="/" className="flex items-center gap-3 shrink-0">
-          <span className="relative h-16 w-[300px] sm:w-[420px] lg:w-[560px] xl:w-[700px] overflow-hidden">
+        <Link href="/" className="flex min-w-0 items-center gap-3 shrink-0">
+          <span className="relative h-10 w-[150px] sm:h-12 sm:w-[240px] md:w-[320px] lg:h-16 lg:w-[480px] xl:w-[640px] overflow-hidden">
             <Image
               src={logoSrc}
               alt="Velo Prime"
               fill
-              className="pointer-events-none object-contain object-left origin-left scale-[1.7] sm:scale-[1.9] lg:scale-[2.1]"
+              className="pointer-events-none object-contain object-left origin-left scale-[1.05] sm:scale-[1.25] md:scale-[1.45] lg:scale-[1.85]"
               priority
-              sizes="(max-width: 640px) 300px, (max-width: 1024px) 420px, (max-width: 1280px) 560px, 700px"
+              sizes="(max-width: 640px) 150px, (max-width: 768px) 240px, (max-width: 1024px) 320px, (max-width: 1280px) 480px, 640px"
             />
           </span>
           <span className="sr-only">Velo Prime</span>
@@ -97,7 +97,7 @@ export function Header() {
               Firma
             </button>
           </div>
-          <Button asChild variant="primary" size="md">
+          <Button asChild variant="primary" size="sm" className="hidden md:inline-flex">
             <a href="/#kontakt">Umów konsultację</a>
           </Button>
         </div>
@@ -165,6 +165,14 @@ export function Header() {
                 Kontakt
               </a>
             </nav>
+
+            <div className="mt-4">
+              <Button asChild variant="primary" size="lg" className="w-full">
+                <a href="/#kontakt" onClick={() => setMobileOpen(false)}>
+                  Umów konsultację
+                </a>
+              </Button>
+            </div>
           </Container>
         </div>
       ) : null}

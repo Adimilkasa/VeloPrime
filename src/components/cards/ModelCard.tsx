@@ -84,7 +84,7 @@ export function ModelCard({ item }: { item: InventoryItem }) {
             <Text variant="muted" className="line-through">
               {formatPLN(listPrice)}
             </Text>
-            <div className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">
+            <div className="mt-1 text-xl sm:text-2xl font-semibold tracking-tight text-text-primary tabular-nums">
               {formatPLN(offer.clientPrice)}
             </div>
             <Text variant="muted" className="mt-1">
@@ -92,8 +92,8 @@ export function ModelCard({ item }: { item: InventoryItem }) {
             </Text>
             <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
               <span className="text-sm text-text-muted">od</span>
-              <span className="text-3xl font-semibold tracking-tight text-text-primary">{formatPLN(monthly60)}</span>
-              <span className="text-sm font-medium text-text-muted">/ mies.</span>
+              <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-text-primary tabular-nums whitespace-nowrap">{formatPLN(monthly60)}</span>
+              <span className="text-sm font-medium text-text-muted whitespace-nowrap">/ mies.</span>
               <span className="text-xs text-text-muted">(60 mies.)</span>
             </div>
             <Text variant="muted" className="mt-2">
