@@ -18,10 +18,13 @@ export function HeroFullBleed() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="max-w-[640px]"
+          className="min-w-0 max-w-[640px]"
         >
-          <div className="rounded-2xl bg-white/40 backdrop-blur-lg ring-1 ring-black/10 shadow-card px-5 py-6 sm:px-6 sm:py-7">
-            <Heading level={1} className="max-w-[26ch]">
+          <div className="min-w-0 rounded-2xl bg-white/40 backdrop-blur-lg ring-1 ring-black/10 shadow-card px-5 py-6 sm:px-6 sm:py-7">
+            <Heading
+              level={1}
+              className="max-w-[26ch] break-words [overflow-wrap:anywhere] hyphens-auto text-4xl sm:text-5xl lg:text-6xl"
+            >
               Nowy wymiar motoryzacyjnego <span className="text-brand-gold">premium</span>.
             </Heading>
 
