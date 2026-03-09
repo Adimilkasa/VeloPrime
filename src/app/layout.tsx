@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 import { PricingModeProvider } from '@/components/providers/PricingModeProvider'
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
         <PricingModeProvider>
           <Header />
           {children}
+          <Footer />
         </PricingModeProvider>
       </body>
     </html>

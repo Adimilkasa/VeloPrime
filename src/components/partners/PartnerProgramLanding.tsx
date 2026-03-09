@@ -23,6 +23,7 @@ import { Text } from '@/components/ui/Text'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
+import { PartnerSignupModal } from '@/components/modals/PartnerSignupModal'
 
 type Feature = {
   title: string
@@ -156,7 +157,7 @@ const startSteps: StartStep[] = [
 
 type Plan = {
   name: 'SOLO' | 'DUO' | 'TEAM'
-  price: string
+  amount: number
   includes: string[]
   featured?: boolean
 }
@@ -164,12 +165,12 @@ type Plan = {
 const plans: Plan[] = [
   {
     name: 'SOLO',
-    price: '2490 zł',
+    amount: 2490,
     includes: ['szkolenie', 'materiały sprzedażowe', 'wsparcie wdrożeniowe', 'kampania startowa'],
   },
   {
     name: 'DUO',
-    price: '3990 zł',
+    amount: 3990,
     includes: [
       'szkolenie dla dwóch osób',
       'materiały sprzedażowe',
@@ -180,7 +181,7 @@ const plans: Plan[] = [
   },
   {
     name: 'TEAM',
-    price: '4990 zł',
+    amount: 4990,
     includes: [
       'szkolenie zespołu',
       'materiały sprzedażowe',
@@ -189,6 +190,13 @@ const plans: Plan[] = [
     ],
   },
 ]
+
+function formatPlanPrice(amount: number, paymentMode: 'one' | 'installments', installmentMonths: number) {
+  if (paymentMode === 'one') return `${amount} zł`
+
+  const installmentValue = Math.round(amount / installmentMonths)
+  return `${installmentMonths} x ${installmentValue} zł`
+}
 
 type FaqItem = {
   q: string
@@ -537,8 +545,19 @@ function WhyPaidCard({ title, description }: { title: string; description: strin
   )
 }
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({
+  plan,
+  paymentMode,
+  installmentMonths,
+  onChoose,
+}: {
+  plan: Plan
+  paymentMode: 'one' | 'installments'
+  installmentMonths: number
+  onChoose: (plan: Plan) => void
+}) {
   const featured = Boolean(plan.featured)
+  const priceLabel = formatPlanPrice(plan.amount, paymentMode, installmentMonths)
 
   return (
     <Card
@@ -560,9 +579,9 @@ function PlanCard({ plan }: { plan: Plan }) {
           <Heading level={3} className={'text-2xl' + (featured ? ' text-text-primary' : '')}>
             {plan.name}
           </Heading>
-          <Text variant="muted" className="mt-2">
-            {plan.price}
-          </Text>
+          <div className="mt-2 text-sm font-semibold text-black sm:text-base">
+            {priceLabel}
+          </div>
         </div>
       </div>
 
@@ -577,10 +596,11 @@ function PlanCard({ plan }: { plan: Plan }) {
 
       <div className="mt-auto pt-7">
         <Button
-          href="#final-cta"
+          type="button"
           variant="primary"
           size="lg"
           className="w-full bg-gradient-to-br from-brand-gold to-brand-goldDark text-white hover:shadow-[0_10px_20px_rgba(201,161,59,0.30)] hover:-translate-y-0.5"
+          onClick={() => onChoose(plan)}
         >
           Wybieram {plan.name}
         </Button>
@@ -630,12 +650,12 @@ function SummaryFeature({ label }: { label: string }) {
 
 function PaymentModeToggle({ value, onChange }: { value: 'one' | 'installments'; onChange: (v: 'one' | 'installments') => void }) {
   return (
-    <div className="inline-flex items-center rounded-full border border-white/40 bg-white/75 backdrop-blur p-1 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
+    <div className="inline-flex min-w-[320px] items-center rounded-full border border-white/40 bg-white/85 backdrop-blur p-[3px] text-sm shadow-[0_14px_34px_rgba(0,0,0,0.07)]">
       <button
         type="button"
         onClick={() => onChange('one')}
         className={
-          'rounded-full border border-transparent px-3 py-1 transition ' +
+          'flex-1 rounded-full border border-transparent px-6 py-1.5 transition ' +
           (value === 'one'
             ? 'border-brand-gold bg-brand-gold text-white font-semibold shadow-[0_10px_22px_rgba(201,161,59,0.18)]'
             : 'text-text-secondary hover:text-text-primary hover:bg-white/70')
@@ -648,7 +668,7 @@ function PaymentModeToggle({ value, onChange }: { value: 'one' | 'installments';
         type="button"
         onClick={() => onChange('installments')}
         className={
-          'rounded-full border border-transparent px-3 py-1 transition ' +
+          'flex-1 rounded-full border border-transparent px-6 py-1.5 transition ' +
           (value === 'installments'
             ? 'border-brand-gold bg-brand-gold text-white font-semibold shadow-[0_10px_22px_rgba(201,161,59,0.18)]'
             : 'text-text-secondary hover:text-text-primary hover:bg-white/70')
@@ -661,7 +681,42 @@ function PaymentModeToggle({ value, onChange }: { value: 'one' | 'installments';
   )
 }
 
-function MiniComparisonRow({ paymentMode }: { paymentMode: 'one' | 'installments' }) {
+function InstallmentMonthsToggle({
+  value,
+  onChange,
+}: {
+  value: number
+  onChange: (value: number) => void
+}) {
+  return (
+    <div className="inline-flex flex-wrap items-center justify-end gap-2">
+      {[1, 2, 3, 4, 5, 6].map((month) => (
+        <button
+          key={month}
+          type="button"
+          onClick={() => onChange(month)}
+          className={
+            'inline-flex min-w-12 items-center justify-center rounded-full border px-3 py-1.5 text-xs font-medium transition ' +
+            (value === month
+              ? 'border-brand-gold bg-brand-gold text-white shadow-[0_10px_22px_rgba(201,161,59,0.18)]'
+              : 'border-stroke bg-bg-section text-text-secondary hover:border-brand-gold/30 hover:text-text-primary')
+          }
+          aria-pressed={value === month}
+        >
+          {month} msc
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function MiniComparisonRow({
+  paymentMode,
+  installmentMonths,
+}: {
+  paymentMode: 'one' | 'installments'
+  installmentMonths: number
+}) {
   return (
     <Card className="relative overflow-hidden rounded-2xl p-6 bg-bg-section/70 backdrop-blur border border-stroke shadow-card">
       <div aria-hidden className="absolute inset-0">
@@ -688,7 +743,7 @@ function MiniComparisonRow({ paymentMode }: { paymentMode: 'one' | 'installments
 
       {paymentMode === 'installments' ? (
         <Text variant="muted" className="relative mt-4">
-          Możesz rozłożyć koszt na 2–4 miesiące.
+          Wybrany wariant ratalny: {installmentMonths} {installmentMonths === 1 ? 'miesiąc' : installmentMonths < 5 ? 'miesiące' : 'miesięcy'}.
         </Text>
       ) : null}
     </Card>
@@ -739,9 +794,28 @@ function FundingMiniBar() {
 
 export function PartnerProgramLanding() {
   const [paymentMode, setPaymentMode] = React.useState<'one' | 'installments'>('one')
+  const [installmentMonths, setInstallmentMonths] = React.useState(3)
+  const [selectedPlan, setSelectedPlan] = React.useState<Plan | null>(null)
+  const [signupOpen, setSignupOpen] = React.useState(false)
+
+  function openSignup(plan: Plan) {
+    setSelectedPlan(plan)
+    setSignupOpen(true)
+  }
 
   return (
     <>
+      {selectedPlan ? (
+        <PartnerSignupModal
+          open={signupOpen}
+          onOpenChange={setSignupOpen}
+          planName={selectedPlan.name}
+          priceLabel={formatPlanPrice(selectedPlan.amount, paymentMode, installmentMonths)}
+          paymentMode={paymentMode}
+          installmentMonths={installmentMonths}
+        />
+      ) : null}
+
       <StickyPartnerCTA />
 
       {/* SECTION 1 — HERO */}
@@ -788,6 +862,15 @@ export function PartnerProgramLanding() {
                   className="text-sm font-medium text-white/80 hover:text-white transition"
                 >
                   Zobacz jak wygląda start
+                </a>
+              </div>
+
+              <div className="mt-5">
+                <a
+                  href="/regulamin-partnerstwa"
+                  className="text-sm font-medium text-white/78 underline decoration-brand-gold/60 underline-offset-4 transition hover:text-white"
+                >
+                  Regulamin zakupu szkolenia i uczestnictwa w programie partnerskim Velo Prime
                 </a>
               </div>
             </Card>
@@ -1150,20 +1233,44 @@ export function PartnerProgramLanding() {
           </Text>
         </div>
 
-        <div className="mt-8 flex items-center justify-between gap-4">
-          <Text variant="muted">Forma płatności</Text>
+        <div className="mt-8 flex flex-col gap-2.5 rounded-2xl border border-stroke bg-bg-section/80 px-5 py-3 shadow-card sm:flex-row sm:items-center sm:justify-between">
+          <Text variant="secondary" className="text-text-primary">
+            Forma płatności
+          </Text>
           <PaymentModeToggle value={paymentMode} onChange={setPaymentMode} />
+        </div>
+
+        {paymentMode === 'installments' ? (
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-stroke bg-bg-section/75 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <Text variant="muted">Liczba miesięcy</Text>
+            <InstallmentMonthsToggle value={installmentMonths} onChange={setInstallmentMonths} />
+          </div>
+        ) : null}
+
+        <div className="mt-4">
+          <a
+            href="/regulamin-partnerstwa"
+            className="inline-flex text-sm text-text-secondary underline decoration-brand-gold/60 underline-offset-4 transition hover:text-text-primary"
+          >
+            Zobacz regulamin zakupu szkolenia i uczestnictwa w programie partnerskim Velo Prime
+          </a>
         </div>
 
         <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:items-start">
           <div className="grid gap-6 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3 lg:items-stretch">
             {plans.map((p) => (
-              <PlanCard key={p.name} plan={p} />
+              <PlanCard
+                key={p.name}
+                plan={p}
+                paymentMode={paymentMode}
+                installmentMonths={installmentMonths}
+                onChoose={openSignup}
+              />
             ))}
           </div>
 
           <div className="lg:col-span-4 lg:sticky lg:top-[100px]">
-            <MiniComparisonRow paymentMode={paymentMode} />
+            <MiniComparisonRow paymentMode={paymentMode} installmentMonths={installmentMonths} />
           </div>
         </div>
       </Section>
