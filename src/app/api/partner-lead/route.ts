@@ -54,7 +54,22 @@ export async function POST(req: Request) {
           )
         }
 
-        await confirmPartnerSignupPayment(leadId)
+        try {
+          await confirmPartnerSignupPayment(leadId)
+        } catch (error) {
+          console.error('[partner-signup:confirm-payment:error]', { leadId, error })
+          return NextResponse.json(
+            {
+              ok: false,
+              error:
+                error instanceof Error
+                  ? `Nie udało się potwierdzić płatności: ${error.message}`
+                  : 'Nie udało się potwierdzić płatności.',
+            },
+            { status: 500 },
+          )
+        }
+
         return NextResponse.json({ ok: true })
       }
 

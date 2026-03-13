@@ -629,7 +629,11 @@ async function findRowByLeadId(client: SheetClient, tabName: string, leadId: str
   const rows = response.data.values || []
   const leadIdColumnIndex = PARTNER_SIGNUP_HEADERS.length - 1
   for (let index = 1; index < rows.length; index += 1) {
-    if ((rows[index]?.[leadIdColumnIndex] || '').trim() === leadId) {
+    const row = rows[index]?.map((value) => String(value ?? '').trim()) || []
+    const hasLeadIdInExpectedColumn = (row[leadIdColumnIndex] || '') === leadId
+    const hasLeadIdAnywhereInRow = row.includes(leadId)
+
+    if (hasLeadIdInExpectedColumn || hasLeadIdAnywhereInRow) {
       return {
         rowNumber: index + 1,
         values: rows[index].map((value) => String(value ?? '')),
