@@ -40,6 +40,7 @@ type SheetRowMatch = {
 }
 
 const PARTNER_SIGNUP_COLUMNS_RANGE = 'A:T'
+const SHEET_STRUCTURE_CACHE_TTL_MS = 5 * 60 * 1000
 const PARTNER_SIGNUP_HEADERS = [
   'Data zgloszenia',
   'Data potwierdzenia wplaty',
@@ -87,9 +88,59 @@ const LEGACY_PARTNER_SIGNUP_HEADERS = [
   'acceptEarlyStart',
 ]
 
+let ensuredSheetTabsAt = 0
+let ensuredSheetTabsPromise: Promise<void> | null = null
+let ensuredSheetTabsSpreadsheetId = ''
+
 function env(name: string) {
   const value = process.env[name]
   return value === undefined ? '' : value.trim()
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function isRetryableGoogleError(error: unknown) {
+  if (!(error instanceof Error)) {
+    return false
+  }
+
+  const status = 'code' in error && typeof error.code === 'number' ? error.code : null
+  if (status === 429 || status === 500 || status === 502 || status === 503 || status === 504) {
+    return true
+  }
+
+  const message = error.message.toLowerCase()
+  return (
+    message.includes('quota') ||
+    message.includes('rate limit') ||
+    message.includes('timeout') ||
+    message.includes('timed out') ||
+    message.includes('econnreset') ||
+    message.includes('socket hang up')
+  )
+}
+
+async function withSheetsRetry<T>(operation: string, task: () => Promise<T>, attempts = 3): Promise<T> {
+  let lastError: unknown
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await task()
+    } catch (error) {
+      lastError = error
+      if (attempt === attempts || !isRetryableGoogleError(error)) {
+        throw error
+      }
+
+      const delayMs = 250 * 2 ** (attempt - 1) + Math.floor(Math.random() * 150)
+      console.warn(`[partner-signup:sheets-retry] ${operation} attempt ${attempt} failed, retrying in ${delayMs}ms`, error)
+      await sleep(delayMs)
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error(`Google Sheets operation failed: ${operation}`)
 }
 
 function resolveSpreadsheetId(value: string) {
@@ -166,79 +217,81 @@ async function createSheetClient(): Promise<SheetClient> {
 async function formatSheetTab(client: SheetClient, tabName: string) {
   const sheetId = await getSheetIdByTitle(client, tabName)
 
-  await client.sheets.spreadsheets.batchUpdate({
-    spreadsheetId: client.spreadsheetId,
-    requestBody: {
-      requests: [
-        {
-          updateSheetProperties: {
-            properties: {
-              sheetId,
-              gridProperties: {
-                frozenRowCount: 1,
-              },
-            },
-            fields: 'gridProperties.frozenRowCount',
-          },
-        },
-        {
-          repeatCell: {
-            range: {
-              sheetId,
-              startRowIndex: 0,
-              endRowIndex: 1,
-              startColumnIndex: 0,
-              endColumnIndex: PARTNER_SIGNUP_HEADERS.length,
-            },
-            cell: {
-              userEnteredFormat: {
-                backgroundColor: {
-                  red: 0.788,
-                  green: 0.631,
-                  blue: 0.231,
+  await withSheetsRetry(`formatSheetTab:${tabName}`, () =>
+    client.sheets.spreadsheets.batchUpdate({
+      spreadsheetId: client.spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            updateSheetProperties: {
+              properties: {
+                sheetId,
+                gridProperties: {
+                  frozenRowCount: 1,
                 },
-                horizontalAlignment: 'CENTER',
-                textFormat: {
-                  bold: true,
-                  foregroundColor: {
-                    red: 1,
-                    green: 1,
-                    blue: 1,
+              },
+              fields: 'gridProperties.frozenRowCount',
+            },
+          },
+          {
+            repeatCell: {
+              range: {
+                sheetId,
+                startRowIndex: 0,
+                endRowIndex: 1,
+                startColumnIndex: 0,
+                endColumnIndex: PARTNER_SIGNUP_HEADERS.length,
+              },
+              cell: {
+                userEnteredFormat: {
+                  backgroundColor: {
+                    red: 0.788,
+                    green: 0.631,
+                    blue: 0.231,
                   },
+                  horizontalAlignment: 'CENTER',
+                  textFormat: {
+                    bold: true,
+                    foregroundColor: {
+                      red: 1,
+                      green: 1,
+                      blue: 1,
+                    },
+                  },
+                  wrapStrategy: 'WRAP',
                 },
-                wrapStrategy: 'WRAP',
+              },
+              fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment,wrapStrategy)',
+            },
+          },
+          {
+            updateDimensionProperties: {
+              range: {
+                sheetId,
+                dimension: 'COLUMNS',
+                startIndex: PARTNER_SIGNUP_HEADERS.length - 1,
+                endIndex: PARTNER_SIGNUP_HEADERS.length,
+              },
+              properties: {
+                hiddenByUser: true,
+              },
+              fields: 'hiddenByUser',
+            },
+          },
+          {
+            autoResizeDimensions: {
+              dimensions: {
+                sheetId,
+                dimension: 'COLUMNS',
+                startIndex: 0,
+                endIndex: PARTNER_SIGNUP_HEADERS.length - 1,
               },
             },
-            fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment,wrapStrategy)',
           },
-        },
-        {
-          updateDimensionProperties: {
-            range: {
-              sheetId,
-              dimension: 'COLUMNS',
-              startIndex: PARTNER_SIGNUP_HEADERS.length - 1,
-              endIndex: PARTNER_SIGNUP_HEADERS.length,
-            },
-            properties: {
-              hiddenByUser: true,
-            },
-            fields: 'hiddenByUser',
-          },
-        },
-        {
-          autoResizeDimensions: {
-            dimensions: {
-              sheetId,
-              dimension: 'COLUMNS',
-              startIndex: 0,
-              endIndex: PARTNER_SIGNUP_HEADERS.length - 1,
-            },
-          },
-        },
-      ],
-    },
-  })
+        ],
+      },
+    }),
+  )
 }
 
 function toReadableSheetRow(
@@ -326,10 +379,12 @@ function convertLegacyRowToReadable(values: string[]) {
 }
 
 async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
-  const response = await client.sheets.spreadsheets.values.get({
-    spreadsheetId: client.spreadsheetId,
-    range: `${tabName}!A:V`,
-  })
+  const response = await withSheetsRetry(`ensureSheetTabStructure:get:${tabName}`, () =>
+    client.sheets.spreadsheets.values.get({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!A:V`,
+    }),
+  )
 
   const rows = response.data.values || []
   const headerRow = rows[0] || []
@@ -346,14 +401,16 @@ async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
     normalizedLegacyHeader.every((value, index) => normalizedHeader[index] === value)
 
   if (rows.length === 0) {
-    await client.sheets.spreadsheets.values.update({
-      spreadsheetId: client.spreadsheetId,
-      range: `${tabName}!A1:T1`,
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [PARTNER_SIGNUP_HEADERS],
-      },
-    })
+    await withSheetsRetry(`ensureSheetTabStructure:init:${tabName}`, () =>
+      client.sheets.spreadsheets.values.update({
+        spreadsheetId: client.spreadsheetId,
+        range: `${tabName}!A1:T1`,
+        valueInputOption: 'RAW',
+        requestBody: {
+          values: [PARTNER_SIGNUP_HEADERS],
+        },
+      }),
+    )
     await formatSheetTab(client, tabName)
     return
   }
@@ -367,65 +424,97 @@ async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
     ? rows.slice(1).map(convertLegacyRowToReadable)
     : rows.slice(1).map((row) => row.slice(0, PARTNER_SIGNUP_HEADERS.length))
 
-  await client.sheets.spreadsheets.values.clear({
-    spreadsheetId: client.spreadsheetId,
-    range: `${tabName}!A:V`,
-  })
+  await withSheetsRetry(`ensureSheetTabStructure:clear:${tabName}`, () =>
+    client.sheets.spreadsheets.values.clear({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!A:V`,
+    }),
+  )
 
-  await client.sheets.spreadsheets.values.update({
-    spreadsheetId: client.spreadsheetId,
-    range: `${tabName}!A1:T${readableRows.length + 1}`,
-    valueInputOption: 'RAW',
-    requestBody: {
-      values: [PARTNER_SIGNUP_HEADERS, ...readableRows],
-    },
-  })
+  await withSheetsRetry(`ensureSheetTabStructure:update:${tabName}`, () =>
+    client.sheets.spreadsheets.values.update({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!A1:T${readableRows.length + 1}`,
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [PARTNER_SIGNUP_HEADERS, ...readableRows],
+      },
+    }),
+  )
 
   await formatSheetTab(client, tabName)
 }
 
 async function ensureSheetTabExists(client: SheetClient, tabName: string) {
-  const spreadsheet = await client.sheets.spreadsheets.get({
-    spreadsheetId: client.spreadsheetId,
-  })
+  const spreadsheet = await withSheetsRetry(`ensureSheetTabExists:get:${tabName}`, () =>
+    client.sheets.spreadsheets.get({
+      spreadsheetId: client.spreadsheetId,
+    }),
+  )
 
   const existingSheet = spreadsheet.data.sheets?.find((item) => item.properties?.title === tabName)
   if (existingSheet) {
     return
   }
 
-  await client.sheets.spreadsheets.batchUpdate({
-    spreadsheetId: client.spreadsheetId,
-    requestBody: {
-      requests: [
-        {
-          addSheet: {
-            properties: {
-              title: tabName,
+  await withSheetsRetry(`ensureSheetTabExists:add:${tabName}`, () =>
+    client.sheets.spreadsheets.batchUpdate({
+      spreadsheetId: client.spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            addSheet: {
+              properties: {
+                title: tabName,
+              },
             },
           },
-        },
-      ],
-    },
-  })
+        ],
+      },
+    }),
+  )
 
-  await client.sheets.spreadsheets.values.update({
-    spreadsheetId: client.spreadsheetId,
-    range: `${tabName}!A1:T1`,
-    valueInputOption: 'RAW',
-    requestBody: {
-      values: [PARTNER_SIGNUP_HEADERS],
-    },
-  })
+  await withSheetsRetry(`ensureSheetTabExists:header:${tabName}`, () =>
+    client.sheets.spreadsheets.values.update({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!A1:T1`,
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [PARTNER_SIGNUP_HEADERS],
+      },
+    }),
+  )
 
   await formatSheetTab(client, tabName)
 }
 
 async function ensureRequiredSheetTabs(client: SheetClient) {
-  await ensureSheetTabExists(client, getPendingSheetTab())
-  await ensureSheetTabExists(client, getPaidSheetTab())
-  await ensureSheetTabStructure(client, getPendingSheetTab())
-  await ensureSheetTabStructure(client, getPaidSheetTab())
+  if (
+    ensuredSheetTabsSpreadsheetId === client.spreadsheetId &&
+    Date.now() - ensuredSheetTabsAt < SHEET_STRUCTURE_CACHE_TTL_MS
+  ) {
+    return
+  }
+
+  if (ensuredSheetTabsPromise && ensuredSheetTabsSpreadsheetId === client.spreadsheetId) {
+    await ensuredSheetTabsPromise
+    return
+  }
+
+  ensuredSheetTabsSpreadsheetId = client.spreadsheetId
+  ensuredSheetTabsPromise = (async () => {
+    await ensureSheetTabExists(client, getPendingSheetTab())
+    await ensureSheetTabExists(client, getPaidSheetTab())
+    await ensureSheetTabStructure(client, getPendingSheetTab())
+    await ensureSheetTabStructure(client, getPaidSheetTab())
+    ensuredSheetTabsAt = Date.now()
+  })()
+
+  try {
+    await ensuredSheetTabsPromise
+  } finally {
+    ensuredSheetTabsPromise = null
+  }
 }
 
 function getPendingSheetTab() {
@@ -450,22 +539,26 @@ function fromSheetRow(values: string[]): PartnerSignupPayload {
 }
 
 async function appendRowToTab(client: SheetClient, tabName: string, row: Array<string | number>) {
-  await client.sheets.spreadsheets.values.append({
-    spreadsheetId: client.spreadsheetId,
-    range: `${tabName}!${PARTNER_SIGNUP_COLUMNS_RANGE}`,
-    valueInputOption: 'USER_ENTERED',
-    insertDataOption: 'INSERT_ROWS',
-    requestBody: {
-      values: [row],
-    },
-  })
+  await withSheetsRetry(`appendRowToTab:${tabName}`, () =>
+    client.sheets.spreadsheets.values.append({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!${PARTNER_SIGNUP_COLUMNS_RANGE}`,
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: {
+        values: [row],
+      },
+    }),
+  )
 }
 
 async function findRowByLeadId(client: SheetClient, tabName: string, leadId: string): Promise<SheetRowMatch | null> {
-  const response = await client.sheets.spreadsheets.values.get({
-    spreadsheetId: client.spreadsheetId,
-    range: `${tabName}!${PARTNER_SIGNUP_COLUMNS_RANGE}`,
-  })
+  const response = await withSheetsRetry(`findRowByLeadId:${tabName}`, () =>
+    client.sheets.spreadsheets.values.get({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!${PARTNER_SIGNUP_COLUMNS_RANGE}`,
+    }),
+  )
 
   const rows = response.data.values || []
   const leadIdColumnIndex = PARTNER_SIGNUP_HEADERS.length - 1
@@ -482,9 +575,11 @@ async function findRowByLeadId(client: SheetClient, tabName: string, leadId: str
 }
 
 async function getSheetIdByTitle(client: SheetClient, tabName: string) {
-  const spreadsheet = await client.sheets.spreadsheets.get({
-    spreadsheetId: client.spreadsheetId,
-  })
+  const spreadsheet = await withSheetsRetry(`getSheetIdByTitle:${tabName}`, () =>
+    client.sheets.spreadsheets.get({
+      spreadsheetId: client.spreadsheetId,
+    }),
+  )
 
   const sheet = spreadsheet.data.sheets?.find((item) => item.properties?.title === tabName)
   const sheetId = sheet?.properties?.sheetId
@@ -498,23 +593,25 @@ async function getSheetIdByTitle(client: SheetClient, tabName: string) {
 async function deleteRow(client: SheetClient, tabName: string, rowNumber: number) {
   const sheetId = await getSheetIdByTitle(client, tabName)
 
-  await client.sheets.spreadsheets.batchUpdate({
-    spreadsheetId: client.spreadsheetId,
-    requestBody: {
-      requests: [
-        {
-          deleteDimension: {
-            range: {
-              sheetId,
-              dimension: 'ROWS',
-              startIndex: rowNumber - 1,
-              endIndex: rowNumber,
+  await withSheetsRetry(`deleteRow:${tabName}:${rowNumber}`, () =>
+    client.sheets.spreadsheets.batchUpdate({
+      spreadsheetId: client.spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            deleteDimension: {
+              range: {
+                sheetId,
+                dimension: 'ROWS',
+                startIndex: rowNumber - 1,
+                endIndex: rowNumber,
+              },
             },
           },
-        },
-      ],
-    },
-  })
+        ],
+      },
+    }),
+  )
 }
 
 function createTransport() {
@@ -652,13 +749,22 @@ export async function confirmPartnerSignupPayment(leadId: string) {
   const pendingTab = getPendingSheetTab()
   const paidTab = getPaidSheetTab()
 
+  const alreadyPaid = await findRowByLeadId(client, paidTab, leadId)
   const pendingRow = await findRowByLeadId(client, pendingTab, leadId)
-  if (!pendingRow) {
-    const alreadyPaid = await findRowByLeadId(client, paidTab, leadId)
-    if (alreadyPaid) {
-      return
+
+  if (alreadyPaid) {
+    if (pendingRow) {
+      try {
+        await deleteRow(client, pendingTab, pendingRow.rowNumber)
+      } catch (error) {
+        console.warn('[partner-signup:pending-cleanup]', error)
+      }
     }
 
+    return
+  }
+
+  if (!pendingRow) {
     throw new Error('Nie znaleziono zgłoszenia do potwierdzenia płatności.')
   }
 
