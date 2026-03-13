@@ -40,6 +40,30 @@ type SheetRowMatch = {
 }
 
 const PARTNER_SIGNUP_COLUMNS_RANGE = 'A:V'
+const PARTNER_SIGNUP_HEADERS = [
+  'leadId',
+  'createdAt',
+  'paymentConfirmedAt',
+  'source',
+  'status',
+  'planName',
+  'paymentMode',
+  'installmentMonths',
+  'priceLabel',
+  'customerType',
+  'name',
+  'company',
+  'taxId',
+  'email',
+  'phone',
+  'addressLine',
+  'postalCode',
+  'city',
+  'note',
+  'acceptTerms',
+  'acceptPrivacy',
+  'acceptEarlyStart',
+]
 
 function env(name: string) {
   const value = process.env[name]
@@ -88,6 +112,46 @@ async function createSheetClient(): Promise<SheetClient> {
     sheets: google.sheets({ version: 'v4', auth }),
     spreadsheetId,
   }
+}
+
+async function ensureSheetTabExists(client: SheetClient, tabName: string) {
+  const spreadsheet = await client.sheets.spreadsheets.get({
+    spreadsheetId: client.spreadsheetId,
+  })
+
+  const existingSheet = spreadsheet.data.sheets?.find((item) => item.properties?.title === tabName)
+  if (existingSheet) {
+    return
+  }
+
+  await client.sheets.spreadsheets.batchUpdate({
+    spreadsheetId: client.spreadsheetId,
+    requestBody: {
+      requests: [
+        {
+          addSheet: {
+            properties: {
+              title: tabName,
+            },
+          },
+        },
+      ],
+    },
+  })
+
+  await client.sheets.spreadsheets.values.update({
+    spreadsheetId: client.spreadsheetId,
+    range: `${tabName}!A1:V1`,
+    valueInputOption: 'RAW',
+    requestBody: {
+      values: [PARTNER_SIGNUP_HEADERS],
+    },
+  })
+}
+
+async function ensureRequiredSheetTabs(client: SheetClient) {
+  await ensureSheetTabExists(client, getPendingSheetTab())
+  await ensureSheetTabExists(client, getPaidSheetTab())
 }
 
 function getPendingSheetTab() {
@@ -331,6 +395,7 @@ async function sendDiscordNotification(payload: PartnerSignupPayload) {
 
 export async function registerPartnerSignup(payload: Omit<PartnerSignupPayload, 'leadId'>) {
   const client = await createSheetClient()
+  await ensureRequiredSheetTabs(client)
   const leadId = createPartnerLeadId()
   const record: PartnerSignupPayload = {
     ...payload,
@@ -353,6 +418,7 @@ export async function registerPartnerSignup(payload: Omit<PartnerSignupPayload, 
 
 export async function confirmPartnerSignupPayment(leadId: string) {
   const client = await createSheetClient()
+  await ensureRequiredSheetTabs(client)
   const pendingTab = getPendingSheetTab()
   const paidTab = getPaidSheetTab()
 
