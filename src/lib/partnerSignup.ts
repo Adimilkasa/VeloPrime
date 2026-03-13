@@ -615,6 +615,42 @@ function normalizeCellValue(value: string | undefined) {
   return String(value ?? '').trim().toLowerCase()
 }
 
+function escapeHtml(value: string | null | undefined) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function toPaymentSummary(payload: PartnerSignupPayload) {
+  if (payload.paymentMode === 'installments') {
+    return `Raty (${payload.installmentMonths ?? '—'} mies.)`
+  }
+
+  return 'Jednorazowo'
+}
+
+function toAddressSummary(payload: PartnerSignupPayload) {
+  return [payload.addressLine, `${payload.postalCode} ${payload.city}`.trim()].filter(Boolean).join(', ')
+}
+
+async function getWelcomeEmailImageAttachment() {
+  const imagePath = path.join(process.cwd(), 'public', 'cars', 'do email.png')
+
+  try {
+    await fs.access(imagePath)
+    return {
+      filename: 'veloprime-welcome.png',
+      path: imagePath,
+      cid: 'veloprime-welcome-image',
+    }
+  } catch {
+    return null
+  }
+}
+
 function rowMatchesIdentity(values: string[], identity: PartnerSignupIdentity) {
   const emailMatches = identity.email
     ? normalizeCellValue(values[10]) === normalizeCellValue(identity.email)
@@ -769,24 +805,86 @@ async function sendWelcomeEmail(payload: PartnerSignupPayload) {
   }
 
   try {
+    const imageAttachment = await getWelcomeEmailImageAttachment()
+    const paymentSummary = toPaymentSummary(payload)
     await transport.sendMail({
       from: config.from,
       to: payload.email,
       replyTo: env('PARTNER_WELCOME_REPLY_TO') || undefined,
-      subject: 'Witamy w programie partnerskim Velo Prime',
+      subject: `Potwierdzenie zgłoszenia Velo Prime - ${payload.planName || 'Pakiet partnerski'}`,
       text: [
         `Dzień dobry ${payload.name},`,
         '',
         'dziękujemy za potwierdzenie udziału w programie partnerskim Velo Prime.',
-        'Otrzymaliśmy Twoje zgłoszenie i w ciągu 24 godzin skontaktujemy się z Tobą w sprawie dalszych kroków wdrożenia.',
+        'Twoje zgłoszenie zostało zapisane i przekazane do dalszej obsługi.',
         '',
-        `Wybrany pakiet: ${payload.planName || '—'}`,
-        `Forma płatności: ${payload.paymentMode === 'installments' ? `Raty (${payload.installmentMonths ?? '—'} msc)` : 'Jednorazowo'}`,
+        'Podsumowanie zgłoszenia:',
+        `Pakiet: ${payload.planName || '—'}`,
+        `Forma płatności: ${toPaymentSummary(payload)}`,
         `Kwota: ${payload.priceLabel || '—'}`,
+        `Typ klienta: ${toCustomerTypeLabel(payload.customerType)}`,
+        `Telefon kontaktowy: ${payload.phone}`,
+        `Adres e-mail: ${payload.email}`,
+        '',
+        'Co dalej:',
+        '1. W ciągu 24 godzin roboczych skontaktujemy się z Tobą w sprawie startu wdrożenia.',
+        '2. Potwierdzimy kolejne kroki organizacyjne i terminy działań.',
+        payload.paymentMode === 'installments'
+          ? `3. Przekażemy harmonogram kolejnych ${Math.max((payload.installmentMonths ?? 1) - 1, 0)} rat.`
+          : '3. Przekażemy dalsze informacje organizacyjne dotyczące wdrożenia.',
+        '',
+        'Jeżeli chcesz uzupełnić dane lub doprecyzować zgłoszenie, odpowiedz na tę wiadomość.',
         '',
         'Pozdrawiamy,',
         'Zespół Velo Prime',
       ].join('\n'),
+      html: [
+        '<div style="margin:0;padding:0;background:#efe7da;">',
+        '<div style="max-width:720px;margin:0 auto;padding:36px 20px;font-family:Arial,sans-serif;color:#1f2937;line-height:1.65;">',
+        '<div style="background:#ffffff;border:1px solid #e5d8c2;border-radius:28px;overflow:hidden;box-shadow:0 18px 48px rgba(15,23,42,0.10);">',
+        '<div style="padding:18px 32px;background:#111111;color:#f7f1e7;border-bottom:1px solid #2a2a2a;">',
+        '<div style="display:inline-block;padding:7px 12px;border:1px solid rgba(201,161,59,0.45);border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#c9a13b;">Velo Prime</div>',
+        '<h1 style="margin:18px 0 10px;font-size:30px;line-height:1.2;font-weight:700;color:#ffffff;">Potwierdzenie zgłoszenia do programu partnerskiego</h1>',
+        '<p style="margin:0;font-size:15px;color:#d8d1c7;">Twoje zgłoszenie zostało przyjęte. Przechodzimy do kolejnego etapu przygotowania wdrożenia.</p>',
+        '</div>',
+        '<div style="padding:32px;">',
+        '<p style="margin:0 0 16px;font-size:16px;">Dzień dobry ' + escapeHtml(payload.name) + ',</p>',
+        '<p style="margin:0 0 12px;font-size:16px;">dziękujemy za potwierdzenie udziału w programie partnerskim Velo Prime.</p>',
+        '<p style="margin:0 0 28px;font-size:16px;color:#4b5563;">To moment, w którym formalnie rozpoczynamy przygotowanie Twojego wejścia do programu i dalszych działań organizacyjnych.</p>',
+        '<div style="margin:0 0 26px;padding:22px;border-radius:20px;background:linear-gradient(180deg,#fbf8f3,#f5ede1);border:1px solid #e8dcc8;">',
+        '<div style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#9a7b2f;">Podsumowanie zgłoszenia</div>',
+        '<table role="presentation" style="width:100%;border-collapse:collapse;">',
+        '<tr><td style="padding:0 0 10px;font-size:14px;color:#6b7280;width:42%;">Pakiet</td><td style="padding:0 0 10px;font-size:15px;font-weight:600;color:#111827;">' + escapeHtml(payload.planName || '—') + '</td></tr>',
+        '<tr><td style="padding:0 0 10px;font-size:14px;color:#6b7280;">Forma płatności</td><td style="padding:0 0 10px;font-size:15px;font-weight:600;color:#111827;">' + escapeHtml(paymentSummary) + '</td></tr>',
+        '<tr><td style="padding:0 0 10px;font-size:14px;color:#6b7280;">Kwota</td><td style="padding:0 0 10px;font-size:15px;font-weight:600;color:#111827;">' + escapeHtml(payload.priceLabel || '—') + '</td></tr>',
+        '<tr><td style="padding:0 0 10px;font-size:14px;color:#6b7280;">Typ klienta</td><td style="padding:0 0 10px;font-size:15px;font-weight:600;color:#111827;">' + escapeHtml(toCustomerTypeLabel(payload.customerType)) + '</td></tr>',
+        '<tr><td style="padding:0 0 10px;font-size:14px;color:#6b7280;">Telefon kontaktowy</td><td style="padding:0 0 10px;font-size:15px;font-weight:600;color:#111827;">' + escapeHtml(payload.phone) + '</td></tr>',
+        '<tr><td style="padding:0;font-size:14px;color:#6b7280;">Adres e-mail</td><td style="padding:0;font-size:15px;font-weight:600;color:#111827;">' + escapeHtml(payload.email) + '</td></tr>',
+        '</table>',
+        '</div>',
+        '<div style="margin:0 0 26px;padding:22px 22px 18px;border-radius:20px;background:#ffffff;border:1px solid #ece5d8;box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);">',
+        '<div style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#9a7b2f;">Co dalej</div>',
+        '<ol style="margin:0;padding-left:20px;color:#374151;">',
+        '<li style="margin:0 0 10px;">W ciągu 24 godzin roboczych skontaktujemy się z Tobą w sprawie startu wdrożenia.</li>',
+        '<li style="margin:0 0 10px;">Potwierdzimy kolejne kroki organizacyjne i terminy działań.</li>',
+        '<li style="margin:0;">' + escapeHtml(
+          payload.paymentMode === 'installments'
+            ? `Przekażemy harmonogram kolejnych ${Math.max((payload.installmentMonths ?? 1) - 1, 0)} rat.`
+            : 'Przekażemy dalsze informacje organizacyjne dotyczące wdrożenia.',
+        ) + '</li>',
+        '</ol>',
+        '</div>',
+        '<div style="margin:0 0 24px;padding:18px 20px;border-left:3px solid #c9a13b;background:#faf7f2;border-radius:0 14px 14px 0;font-size:15px;color:#374151;">Jeżeli chcesz uzupełnić dane lub doprecyzować zgłoszenie, odpowiedz na tę wiadomość.</div>',
+        '<p style="margin:0 0 20px;font-size:15px;">Pozdrawiamy,<br /><span style="font-weight:700;color:#111827;">Zespół Velo Prime</span></p>',
+        imageAttachment
+          ? '<div style="margin-top:28px;border-radius:20px;overflow:hidden;border:1px solid #e6dac6;box-shadow:0 12px 24px rgba(15,23,42,0.08);"><img src="cid:veloprime-welcome-image" alt="Velo Prime" style="display:block;width:100%;height:auto;" /></div>'
+          : '',
+        '<div style="margin-top:18px;font-size:12px;color:#8b8b8b;">Velo Prime • program partnerski • wdrożenie • sprzedaż premium</div>',
+        '</div>',
+        '</div>',
+        '</div>',
+      ].join(''),
+      attachments: imageAttachment ? [imageAttachment] : [],
     })
   } catch (error) {
     console.error('[partner-signup:welcome-email]', describeMailError(error), error)
@@ -811,23 +909,40 @@ async function sendAdminEmail(payload: PartnerSignupPayload) {
     await transport.sendMail({
       from: config.from,
       to: adminEmail,
-      subject: `Nowe zgłoszenie partnera: ${payload.name} (${payload.planName || 'brak pakietu'})`,
+      subject: `Nowe zgłoszenie partnera Velo Prime - ${payload.name} (${payload.planName || 'brak pakietu'})`,
       text: [
         'Nowe zgłoszenie partnera Velo Prime.',
         '',
-        `ID: ${payload.leadId}`,
-        `Data: ${payload.createdAt}`,
+        'Status: oczekuje na potwierdzenie płatności',
+        '',
+        'Pakiet i płatność:',
+        `Pakiet: ${payload.planName || '—'}`,
+        `Forma płatności: ${toPaymentSummary(payload)}`,
+        `Kwota: ${payload.priceLabel || '—'}`,
+        '',
+        'Dane kontaktowe:',
         `Imię i nazwisko: ${payload.name}`,
-        `Typ klienta: ${payload.customerType}`,
+        `Typ klienta: ${toCustomerTypeLabel(payload.customerType)}`,
+        `Telefon: ${payload.phone}`,
+        `E-mail: ${payload.email}`,
+        `Adres: ${toAddressSummary(payload) || '—'}`,
+        '',
+        'Dane rozliczeniowe:',
         `Firma: ${payload.company || '—'}`,
         `NIP: ${payload.taxId || '—'}`,
-        `Telefon: ${payload.phone}`,
-        `Email: ${payload.email}`,
-        `Adres: ${payload.addressLine}, ${payload.postalCode} ${payload.city}`,
-        `Pakiet: ${payload.planName || '—'}`,
-        `Płatność: ${payload.paymentMode === 'installments' ? `Raty (${payload.installmentMonths ?? '—'} msc)` : 'Jednorazowo'}`,
-        `Kwota: ${payload.priceLabel || '—'}`,
+        '',
+        'Zgody:',
+        `Regulamin: ${payload.consents.acceptTerms ? 'TAK' : 'NIE'}`,
+        `Polityka prywatności: ${payload.consents.acceptPrivacy ? 'TAK' : 'NIE'}`,
+        `Wcześniejsze wdrożenie: ${payload.consents.acceptEarlyStart === null ? 'nie dotyczy' : payload.consents.acceptEarlyStart ? 'TAK' : 'NIE'}`,
+        '',
+        'Dodatkowe informacje:',
         `Notatka: ${payload.note || '—'}`,
+        '',
+        'Dane techniczne:',
+        `ID: ${payload.leadId}`,
+        `Data: ${payload.createdAt}`,
+        `Źródło: ${payload.source}`,
       ].join('\n'),
     })
   } catch (error) {
