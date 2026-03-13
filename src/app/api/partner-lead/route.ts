@@ -55,7 +55,12 @@ export async function POST(req: Request) {
         }
 
         try {
-          await confirmPartnerSignupPayment(leadId)
+          await confirmPartnerSignupPayment(leadId, {
+            name,
+            email,
+            phone,
+            planName: body.planName || null,
+          })
         } catch (error) {
           console.error('[partner-signup:confirm-payment:error]', { leadId, error })
           return NextResponse.json(

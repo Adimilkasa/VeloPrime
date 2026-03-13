@@ -170,6 +170,10 @@ export function PartnerSignupModal({
           action: 'confirm-payment',
           source: 'partnerstwo-modal',
           leadId,
+          name: fullName,
+          email,
+          phone,
+          planName,
         }),
       })
 

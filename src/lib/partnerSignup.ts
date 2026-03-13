@@ -39,6 +39,13 @@ type SheetRowMatch = {
   values: string[]
 }
 
+type PartnerSignupIdentity = {
+  name?: string
+  email?: string
+  phone?: string
+  planName?: string | null
+}
+
 type MailConfig = {
   host: string
   port: number
@@ -604,6 +611,27 @@ function fromSheetRow(values: string[]): PartnerSignupPayload {
   return fromReadableSheetRow(values)
 }
 
+function normalizeCellValue(value: string | undefined) {
+  return String(value ?? '').trim().toLowerCase()
+}
+
+function rowMatchesIdentity(values: string[], identity: PartnerSignupIdentity) {
+  const emailMatches = identity.email
+    ? normalizeCellValue(values[10]) === normalizeCellValue(identity.email)
+    : true
+  const phoneMatches = identity.phone
+    ? normalizeCellValue(values[11]) === normalizeCellValue(identity.phone)
+    : true
+  const nameMatches = identity.name
+    ? normalizeCellValue(values[7]) === normalizeCellValue(identity.name)
+    : true
+  const planMatches = identity.planName
+    ? normalizeCellValue(values[2]) === normalizeCellValue(identity.planName)
+    : true
+
+  return emailMatches && phoneMatches && nameMatches && planMatches
+}
+
 async function appendRowToTab(client: SheetClient, tabName: string, row: Array<string | number>) {
   await withSheetsRetry(`appendRowToTab:${tabName}`, () =>
     client.sheets.spreadsheets.values.append({
@@ -637,6 +665,32 @@ async function findRowByLeadId(client: SheetClient, tabName: string, leadId: str
       return {
         rowNumber: index + 1,
         values: rows[index].map((value) => String(value ?? '')),
+      }
+    }
+  }
+
+  return null
+}
+
+async function findLatestRowByIdentity(
+  client: SheetClient,
+  tabName: string,
+  identity: PartnerSignupIdentity,
+): Promise<SheetRowMatch | null> {
+  const response = await withSheetsRetry(`findLatestRowByIdentity:${tabName}`, () =>
+    client.sheets.spreadsheets.values.get({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!${PARTNER_SIGNUP_COLUMNS_RANGE}`,
+    }),
+  )
+
+  const rows = response.data.values || []
+  for (let index = rows.length - 1; index >= 1; index -= 1) {
+    const values = rows[index].map((value) => String(value ?? ''))
+    if (rowMatchesIdentity(values, identity)) {
+      return {
+        rowNumber: index + 1,
+        values,
       }
     }
   }
@@ -830,14 +884,16 @@ export async function registerPartnerSignup(payload: Omit<PartnerSignupPayload, 
   return leadId
 }
 
-export async function confirmPartnerSignupPayment(leadId: string) {
+export async function confirmPartnerSignupPayment(leadId: string, identity?: PartnerSignupIdentity) {
   const client = await createSheetClient()
   await ensureRequiredSheetTabs(client)
   const pendingTab = getPendingSheetTab()
   const paidTab = getPaidSheetTab()
 
   const alreadyPaid = await findRowByLeadId(client, paidTab, leadId)
-  const pendingRow = await findRowByLeadId(client, pendingTab, leadId)
+  const pendingRow =
+    (await findRowByLeadId(client, pendingTab, leadId)) ||
+    (identity ? await findLatestRowByIdentity(client, pendingTab, identity) : null)
 
   if (alreadyPaid) {
     if (pendingRow) {
@@ -855,7 +911,10 @@ export async function confirmPartnerSignupPayment(leadId: string) {
     throw new Error('Nie znaleziono zgłoszenia do potwierdzenia płatności.')
   }
 
-  const payload = fromSheetRow(pendingRow.values)
+  const payload = {
+    ...fromSheetRow(pendingRow.values),
+    leadId,
+  }
   const paymentConfirmedAt = new Date().toISOString()
 
   try {
