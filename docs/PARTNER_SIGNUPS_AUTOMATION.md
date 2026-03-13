@@ -79,6 +79,23 @@ Wysyłka działa przez SMTP. Potrzebne zmienne środowiskowe:
 - `PARTNER_WELCOME_REPLY_TO` (opcjonalnie)
 - `PARTNER_SIGNUP_ADMIN_EMAIL`
 
+Jeżeli używasz Zoho Mail, najczęściej poprawna konfiguracja wygląda tak:
+
+- konto domenowe Zoho: `SMTP_HOST=smtppro.zoho.eu`
+- konto osobiste / free Zoho: `SMTP_HOST=smtp.zoho.eu`
+- TLS: `SMTP_PORT=587`, `SMTP_SECURE=false`
+- SSL: `SMTP_PORT=465`, `SMTP_SECURE=true`
+- `SMTP_USER` musi być pełnym adresem e-mail
+- `SMTP_FROM` powinien być tym samym adresem co `SMTP_USER` albo jego aliasem
+- przy włączonym 2FA w Zoho potrzebne jest hasło aplikacyjne w `SMTP_PASS`
+
+Najczęstsze przyczyny błędu `535 Authentication Failed`:
+
+- błędny host dla typu konta lub regionu Zoho
+- zwykłe hasło zamiast hasła aplikacyjnego
+- literówka w pełnym adresie w `SMTP_USER`
+- `SMTP_FROM` niepasujące do konta lub aliasu
+
 Mail powitalny jest wysyłany dopiero po kliknięciu `Wykonałem przelew`. Treść jest tymczasowa i można ją później podmienić w `src/lib/partnerSignup.ts`.
 
 Jeśli `PARTNER_SIGNUP_ADMIN_EMAIL` nie jest ustawiony, powiadomienie administracyjne poleci na adres z `SMTP_FROM`.

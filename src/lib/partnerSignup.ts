@@ -39,6 +39,15 @@ type SheetRowMatch = {
   values: string[]
 }
 
+type MailConfig = {
+  host: string
+  port: number
+  secure: boolean
+  user: string
+  pass: string
+  from: string
+}
+
 const PARTNER_SIGNUP_COLUMNS_RANGE = 'A:T'
 const SHEET_STRUCTURE_CACHE_TTL_MS = 5 * 60 * 1000
 const PARTNER_SIGNUP_HEADERS = [
@@ -99,6 +108,63 @@ function env(name: string) {
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function readMailConfig(): MailConfig | null {
+  const host = env('SMTP_HOST')
+  const portRaw = env('SMTP_PORT')
+  const user = env('SMTP_USER')
+  const pass = env('SMTP_PASS')
+  const from = env('SMTP_FROM')
+
+  if (!host || !portRaw || !user || !pass || !from) {
+    return null
+  }
+
+  return {
+    host,
+    port: Number(portRaw),
+    secure: env('SMTP_SECURE') === 'true' || Number(portRaw) === 465,
+    user,
+    pass,
+    from,
+  }
+}
+
+function getMissingMailConfigFields() {
+  return ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'].filter(
+    (name) => !env(name),
+  )
+}
+
+function describeMailError(error: unknown) {
+  if (!(error instanceof Error)) {
+    return 'Nieznany błąd SMTP.'
+  }
+
+  const message = error.message.toLowerCase()
+
+  if (message.includes('invalid login') || message.includes('authentication failed') || message.includes('535')) {
+    return [
+      'Błąd autoryzacji SMTP.',
+      'Sprawdź pełny adres w SMTP_USER, poprawność SMTP_PASS oraz czy konto Zoho wymaga hasła aplikacyjnego.',
+      'Dla domenowego konta Zoho zwykle użyj smtppro.zoho.eu:587 (TLS) albo smtppro.zoho.eu:465 (SSL).',
+    ].join(' ')
+  }
+
+  if (message.includes('relaying disallowed')) {
+    return 'Serwer odrzucił wysyłkę, bo SMTP_FROM nie pasuje do konta SMTP_USER albo jego aliasu.'
+  }
+
+  if (message.includes('enotfound') || message.includes('eai_again')) {
+    return 'Nie udało się odnaleźć hosta SMTP. Sprawdź SMTP_HOST i region Zoho (np. .eu).'
+  }
+
+  if (message.includes('self signed certificate') || message.includes('certificate')) {
+    return 'Błąd certyfikatu TLS po stronie SMTP. Sprawdź poprawność hosta i ustawień szyfrowania.'
+  }
+
+  return error.message
 }
 
 function isRetryableGoogleError(error: unknown) {
@@ -615,84 +681,101 @@ async function deleteRow(client: SheetClient, tabName: string, rowNumber: number
 }
 
 function createTransport() {
-  const host = env('SMTP_HOST')
-  const portRaw = env('SMTP_PORT')
-  const user = env('SMTP_USER')
-  const pass = env('SMTP_PASS')
-
-  if (!host || !portRaw || !user || !pass) {
+  const config = readMailConfig()
+  if (!config) {
     return null
   }
 
-  const port = Number(portRaw)
   return nodemailer.createTransport({
-    host,
-    port,
-    secure: env('SMTP_SECURE') === 'true' || port === 465,
-    auth: { user, pass },
+    host: config.host,
+    port: config.port,
+    secure: config.secure,
+    requireTLS: !config.secure,
+    auth: { user: config.user, pass: config.pass },
+    tls: {
+      servername: config.host,
+    },
   })
 }
 
 async function sendWelcomeEmail(payload: PartnerSignupPayload) {
   const transport = createTransport()
-  const from = env('SMTP_FROM')
+  const config = readMailConfig()
 
-  if (!transport || !from) {
+  if (!transport || !config) {
+    const missingFields = getMissingMailConfigFields()
+    if (missingFields.length > 0) {
+      console.warn('[partner-signup:welcome-email:config]', `Brakuje: ${missingFields.join(', ')}`)
+    }
     return
   }
 
-  await transport.sendMail({
-    from,
-    to: payload.email,
-    replyTo: env('PARTNER_WELCOME_REPLY_TO') || undefined,
-    subject: 'Witamy w programie partnerskim Velo Prime',
-    text: [
-      `Dzień dobry ${payload.name},`,
-      '',
-      'dziękujemy za potwierdzenie udziału w programie partnerskim Velo Prime.',
-      'Otrzymaliśmy Twoje zgłoszenie i w ciągu 24 godzin skontaktujemy się z Tobą w sprawie dalszych kroków wdrożenia.',
-      '',
-      `Wybrany pakiet: ${payload.planName || '—'}`,
-      `Forma płatności: ${payload.paymentMode === 'installments' ? `Raty (${payload.installmentMonths ?? '—'} msc)` : 'Jednorazowo'}`,
-      `Kwota: ${payload.priceLabel || '—'}`,
-      '',
-      'Pozdrawiamy,',
-      'Zespół Velo Prime',
-    ].join('\n'),
-  })
+  try {
+    await transport.sendMail({
+      from: config.from,
+      to: payload.email,
+      replyTo: env('PARTNER_WELCOME_REPLY_TO') || undefined,
+      subject: 'Witamy w programie partnerskim Velo Prime',
+      text: [
+        `Dzień dobry ${payload.name},`,
+        '',
+        'dziękujemy za potwierdzenie udziału w programie partnerskim Velo Prime.',
+        'Otrzymaliśmy Twoje zgłoszenie i w ciągu 24 godzin skontaktujemy się z Tobą w sprawie dalszych kroków wdrożenia.',
+        '',
+        `Wybrany pakiet: ${payload.planName || '—'}`,
+        `Forma płatności: ${payload.paymentMode === 'installments' ? `Raty (${payload.installmentMonths ?? '—'} msc)` : 'Jednorazowo'}`,
+        `Kwota: ${payload.priceLabel || '—'}`,
+        '',
+        'Pozdrawiamy,',
+        'Zespół Velo Prime',
+      ].join('\n'),
+    })
+  } catch (error) {
+    console.error('[partner-signup:welcome-email]', describeMailError(error), error)
+    throw error
+  }
 }
 
 async function sendAdminEmail(payload: PartnerSignupPayload) {
   const transport = createTransport()
-  const from = env('SMTP_FROM')
-  const adminEmail = env('PARTNER_SIGNUP_ADMIN_EMAIL') || from
+  const config = readMailConfig()
+  const adminEmail = env('PARTNER_SIGNUP_ADMIN_EMAIL') || config?.from || ''
 
-  if (!transport || !from || !adminEmail) {
+  if (!transport || !config || !adminEmail) {
+    const missingFields = getMissingMailConfigFields()
+    if (missingFields.length > 0) {
+      console.warn('[partner-signup:admin-email:config]', `Brakuje: ${missingFields.join(', ')}`)
+    }
     return
   }
 
-  await transport.sendMail({
-    from,
-    to: adminEmail,
-    subject: `Nowe zgłoszenie partnera: ${payload.name} (${payload.planName || 'brak pakietu'})`,
-    text: [
-      'Nowe zgłoszenie partnera Velo Prime.',
-      '',
-      `ID: ${payload.leadId}`,
-      `Data: ${payload.createdAt}`,
-      `Imię i nazwisko: ${payload.name}`,
-      `Typ klienta: ${payload.customerType}`,
-      `Firma: ${payload.company || '—'}`,
-      `NIP: ${payload.taxId || '—'}`,
-      `Telefon: ${payload.phone}`,
-      `Email: ${payload.email}`,
-      `Adres: ${payload.addressLine}, ${payload.postalCode} ${payload.city}`,
-      `Pakiet: ${payload.planName || '—'}`,
-      `Płatność: ${payload.paymentMode === 'installments' ? `Raty (${payload.installmentMonths ?? '—'} msc)` : 'Jednorazowo'}`,
-      `Kwota: ${payload.priceLabel || '—'}`,
-      `Notatka: ${payload.note || '—'}`,
-    ].join('\n'),
-  })
+  try {
+    await transport.sendMail({
+      from: config.from,
+      to: adminEmail,
+      subject: `Nowe zgłoszenie partnera: ${payload.name} (${payload.planName || 'brak pakietu'})`,
+      text: [
+        'Nowe zgłoszenie partnera Velo Prime.',
+        '',
+        `ID: ${payload.leadId}`,
+        `Data: ${payload.createdAt}`,
+        `Imię i nazwisko: ${payload.name}`,
+        `Typ klienta: ${payload.customerType}`,
+        `Firma: ${payload.company || '—'}`,
+        `NIP: ${payload.taxId || '—'}`,
+        `Telefon: ${payload.phone}`,
+        `Email: ${payload.email}`,
+        `Adres: ${payload.addressLine}, ${payload.postalCode} ${payload.city}`,
+        `Pakiet: ${payload.planName || '—'}`,
+        `Płatność: ${payload.paymentMode === 'installments' ? `Raty (${payload.installmentMonths ?? '—'} msc)` : 'Jednorazowo'}`,
+        `Kwota: ${payload.priceLabel || '—'}`,
+        `Notatka: ${payload.note || '—'}`,
+      ].join('\n'),
+    })
+  } catch (error) {
+    console.error('[partner-signup:admin-email]', describeMailError(error), error)
+    throw error
+  }
 }
 
 async function sendDiscordNotification(payload: PartnerSignupPayload) {
@@ -771,8 +854,25 @@ export async function confirmPartnerSignupPayment(leadId: string) {
   const payload = fromSheetRow(pendingRow.values)
   const paymentConfirmedAt = new Date().toISOString()
 
-  await appendRowToTab(client, paidTab, toSheetRow(payload, 'payment_confirmed', paymentConfirmedAt))
-  await deleteRow(client, pendingTab, pendingRow.rowNumber)
+  try {
+    await appendRowToTab(client, paidTab, toSheetRow(payload, 'payment_confirmed', paymentConfirmedAt))
+  } catch (error) {
+    const paidRowAfterFailure = await findRowByLeadId(client, paidTab, leadId)
+    if (!paidRowAfterFailure) {
+      throw error
+    }
+  }
+
+  try {
+    await deleteRow(client, pendingTab, pendingRow.rowNumber)
+  } catch (error) {
+    const paidRowAfterFailure = await findRowByLeadId(client, paidTab, leadId)
+    if (!paidRowAfterFailure) {
+      throw error
+    }
+
+    console.warn('[partner-signup:pending-delete-skipped]', error)
+  }
 
   const notificationResults = await Promise.allSettled([
     sendWelcomeEmail(payload),
