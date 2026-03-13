@@ -39,32 +39,32 @@ Arkusz powinien mieć dwie zakładki:
 
 Rekomendowany układ kolumn w wierszu 1:
 
-- `leadId`
-- `createdAt`
-- `paymentConfirmedAt`
-- `source`
-- `status`
-- `planName`
-- `paymentMode`
-- `installmentMonths`
-- `priceLabel`
-- `customerType`
-- `name`
-- `company`
-- `taxId`
-- `email`
-- `phone`
-- `addressLine`
-- `postalCode`
-- `city`
-- `note`
-- `acceptTerms`
-- `acceptPrivacy`
-- `acceptEarlyStart`
+- `Data zgloszenia`
+- `Data potwierdzenia wplaty`
+- `Pakiet`
+- `Platnosc`
+- `Liczba rat`
+- `Kwota`
+- `Typ klienta`
+- `Imie i nazwisko`
+- `Firma`
+- `NIP`
+- `E-mail`
+- `Telefon`
+- `Adres`
+- `Kod pocztowy`
+- `Miasto`
+- `Notatka`
+- `Regulamin`
+- `Polityka prywatnosci`
+- `Wczesniejsze wdrozenie`
+- `ID zgloszenia`
 
 Do zapisu używany jest ten sam Service Account, który może już obsługiwać synchronizację z Google Sheets.
 
 Na Vercel najlepiej wkleić cały JSON klucza service account do zmiennej `GOOGLE_SERVICE_ACCOUNT_JSON` w jednej linii.
+
+Kolumna `ID zgloszenia` jest utrzymywana technicznie do przenoszenia rekordu między zakładkami i jest automatycznie ukrywana w arkuszu.
 
 ## E-mail
 
