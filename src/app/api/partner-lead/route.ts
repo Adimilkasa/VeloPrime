@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server'
+import { confirmPartnerSignupPayment, registerPartnerSignup } from '@/lib/partnerSignup'
+
+export const runtime = 'nodejs'
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as {
+      action?: 'create' | 'confirm-payment'
+      leadId?: string
       name?: string
       company?: string
       customerType?: 'private' | 'company'
@@ -27,6 +32,7 @@ export async function POST(req: Request) {
     }
 
     const name = (body.name || '').trim()
+    const action = body.action || 'create'
     const email = (body.email || '').trim()
     const phone = (body.phone || '').trim()
     const region = (body.region || '').trim()
@@ -39,6 +45,19 @@ export async function POST(req: Request) {
     const postalCode = (body.postalCode || '').trim()
 
     if (source === 'partnerstwo-modal') {
+      if (action === 'confirm-payment') {
+        const leadId = (body.leadId || '').trim()
+        if (!leadId) {
+          return NextResponse.json(
+            { ok: false, error: 'Brakuje identyfikatora zgłoszenia.' },
+            { status: 400 },
+          )
+        }
+
+        await confirmPartnerSignupPayment(leadId)
+        return NextResponse.json({ ok: true })
+      }
+
       if (!name || !email || !phone || !addressLine || !postalCode || !city) {
         return NextResponse.json(
           { ok: false, error: 'Uzupełnij wymagane pola formularza.' },
@@ -68,6 +87,7 @@ export async function POST(req: Request) {
       }
 
       console.log('[partner-signup]', {
+        action,
         name,
         email,
         phone,
@@ -86,7 +106,32 @@ export async function POST(req: Request) {
         createdAt: new Date().toISOString(),
       })
 
-      return NextResponse.json({ ok: true })
+      const leadId = await registerPartnerSignup({
+        name,
+        email,
+        phone,
+        addressLine,
+        postalCode,
+        city,
+        company,
+        taxId,
+        customerType,
+        planName: body.planName || null,
+        paymentMode: body.paymentMode || null,
+        installmentMonths: body.installmentMonths ?? null,
+        priceLabel: body.priceLabel || null,
+        note: (body.note || '').trim(),
+        consents: {
+          acceptTerms: Boolean(body.consents?.acceptTerms),
+          acceptPrivacy: Boolean(body.consents?.acceptPrivacy),
+          acceptEarlyStart:
+            customerType === 'private' ? Boolean(body.consents?.acceptEarlyStart) : null,
+        },
+        source,
+        createdAt: new Date().toISOString(),
+      })
+
+      return NextResponse.json({ ok: true, leadId })
     }
 
     if (!name || !email || !phone || !region) {
@@ -108,7 +153,11 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ ok: true })
-  } catch {
-    return NextResponse.json({ ok: false, error: 'Nieprawidłowe dane.' }, { status: 400 })
+  } catch (error) {
+    console.error('[partner-lead:error]', error)
+    return NextResponse.json(
+      { ok: false, error: 'Nie udało się zapisać zgłoszenia. Sprawdź konfigurację integracji.' },
+      { status: 500 },
+    )
   }
 }

@@ -690,7 +690,7 @@ function InstallmentMonthsToggle({
 }) {
   return (
     <div className="inline-flex flex-wrap items-center justify-end gap-2">
-      {[1, 2, 3, 4, 5, 6].map((month) => (
+      {[2, 3].map((month) => (
         <button
           key={month}
           type="button"
@@ -743,7 +743,7 @@ function MiniComparisonRow({
 
       {paymentMode === 'installments' ? (
         <Text variant="muted" className="relative mt-4">
-          Wybrany wariant ratalny: {installmentMonths} {installmentMonths === 1 ? 'miesiąc' : installmentMonths < 5 ? 'miesiące' : 'miesięcy'}.
+          Wybrany wariant ratalny: {installmentMonths} miesiące.
         </Text>
       ) : null}
     </Card>
@@ -810,6 +810,7 @@ export function PartnerProgramLanding() {
           open={signupOpen}
           onOpenChange={setSignupOpen}
           planName={selectedPlan.name}
+          planAmount={selectedPlan.amount}
           priceLabel={formatPlanPrice(selectedPlan.amount, paymentMode, installmentMonths)}
           paymentMode={paymentMode}
           installmentMonths={installmentMonths}

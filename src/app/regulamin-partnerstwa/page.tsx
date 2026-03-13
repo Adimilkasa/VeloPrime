@@ -64,9 +64,9 @@ const regulationsSections = [
     title: '5. Ceny i płatności',
     paragraphs: [
       'Ceny pakietów prezentowane na stronie partnerstwa są cenami brutto, chyba że przy ofercie wskazano inaczej.',
-      'Kupujący może dokonać płatności jednorazowej za pośrednictwem operatora płatności Przelewy24 albo skorzystać z wariantu ratalnego realizowanego przez zewnętrznego operatora płatności ratalnych lub subskrypcyjnych Tubapay.',
-      'W przypadku wyboru płatności ratalnej kupujący zawiera odrębną umowę z operatorem płatności ratalnych. Warunki rozliczeń, harmonogram spłat oraz odpowiedzialność za obsługę należności wynikają z zasad stosowanych przez tego operatora.',
-      'Organizator otrzymuje należność zgodnie z zasadami współpracy z operatorem płatności, natomiast obsługa spłaty rat przez kupującego realizowana jest przez zewnętrzny podmiot finansujący.',
+      'Kupujący dokonuje płatności przelewem tradycyjnym na rachunek bankowy wskazany po uzupełnieniu formularza zgłoszeniowego.',
+      'Kupujący może wybrać płatność jednorazową albo płatność ratalną rozłożoną maksymalnie na trzy raty.',
+      'W przypadku wyboru płatności ratalnej kupujący opłaca pierwszą ratę przelewem po rejestracji, natomiast kolejne raty są rozliczane na podstawie faktur wystawianych przez organizatora w miesięcznych odstępach.',
     ],
   },
   {
