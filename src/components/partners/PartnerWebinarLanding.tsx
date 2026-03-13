@@ -22,6 +22,12 @@ const heroBullets = [
   'potencjał nowych marek samochodowych',
 ]
 
+const heroStats = [
+  { label: 'Format', value: 'Bezpłatny webinar online' },
+  { label: 'Dla kogo', value: 'Sprzedaż premium i liderzy zespołów' },
+  { label: 'Cel', value: 'Ocena dopasowania do modelu partnerstwa' },
+]
+
 const forWhoYes = [
   'mają minimum 2 lata doświadczenia w sprzedaży',
   'pracowały w sprzedaży bezpośredniej',
@@ -55,13 +61,18 @@ function Field({
   autoComplete?: string
   labelTone?: 'light' | 'dark'
 }) {
+  const inputClassName =
+    labelTone === 'dark'
+      ? 'mt-2 h-11 w-full rounded-xl border border-white/14 bg-white/10 px-4 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-brand-gold/70 focus:ring-2 focus:ring-brand-gold/20'
+      : 'mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:border-brand-gold/70 focus:ring-2 focus:ring-brand-gold/20'
+
   return (
     <label className="block">
       <div className={labelTone === 'dark' ? 'text-xs font-semibold text-white/90' : 'text-xs font-semibold text-neutral-800'}>
         {label}
       </div>
       <input
-        className="mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:border-brand-gold/70 focus:ring-2 focus:ring-brand-gold/20"
+        className={inputClassName}
         type={type}
         inputMode={inputMode}
         autoComplete={autoComplete}
@@ -91,23 +102,24 @@ function ListCard({ title, items }: { title: string; items: string[] }) {
     <motion.div
       whileHover={{ y: -6, rotateX: 2, rotateY: -2 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-      className="relative h-full rounded-2xl border border-black/5 overflow-hidden will-change-transform"
+      className="relative h-full overflow-hidden rounded-[24px] border border-[#d8c7a6]/40 will-change-transform"
       style={{
-        background: '#ffffff',
-        borderRadius: 16,
-        padding: 28,
-        boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
+        background: 'linear-gradient(180deg,#fffdfa,#f6efe3)',
+        borderRadius: 24,
+        padding: 30,
+        boxShadow: '0 18px 40px rgba(25,24,21,0.08)',
       }}
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-brand-gold/15 blur-2xl" />
-        <div className="absolute inset-0 ring-1 ring-inset ring-brand-gold/10" />
+        <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-brand-gold/18 blur-2xl" />
+        <div className="absolute inset-0 ring-1 ring-inset ring-white/50" />
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand-gold/70 to-transparent" />
       </div>
-      <div className="text-sm font-semibold text-neutral-900">{title}</div>
+      <div className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b6a21]">{title}</div>
       <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-neutral-700">
         {items.map((it) => (
           <li key={it} className="flex items-start gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" aria-hidden />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold shadow-[0_0_12px_rgba(201,161,59,0.55)]" aria-hidden />
             <span>{it}</span>
           </li>
         ))}
@@ -196,9 +208,10 @@ function WebinarSignupForm({
           disabled={status === 'loading' || status === 'success'}
           className="inline-flex w-full items-center justify-center font-semibold text-white disabled:opacity-70"
           style={{
-            background: 'linear-gradient(135deg,#e0b95b,#c79c3c)',
-            borderRadius: 10,
-            padding: '10px 18px',
+            background: 'linear-gradient(135deg,#ebc971,#b6841c)',
+            borderRadius: 14,
+            padding: '12px 18px',
+            boxShadow: '0 16px 34px rgba(182,132,28,0.28)',
           }}
         >
           {status === 'loading' ? 'Wysyłanie…' : status === 'success' ? 'Zapisano' : 'Zarezerwuj miejsce na webinarze'}
@@ -231,15 +244,15 @@ function InfoCard({ title, body }: { title: string; body: string }) {
     <motion.div
       whileHover={{ y: -6, rotateX: 2, rotateY: 2 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-      className="relative rounded-2xl p-6 border border-black/5 overflow-hidden will-change-transform"
+      className="relative overflow-hidden rounded-[24px] border border-[#d8c7a6]/35 p-6 will-change-transform"
       style={{
-        background: '#ffffff',
-        borderRadius: 16,
-        boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
+        background: 'linear-gradient(180deg,#fffdf9,#f7efe4)',
+        borderRadius: 24,
+        boxShadow: '0 16px 34px rgba(25,24,21,0.06)',
       }}
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-20 -left-20 h-44 w-44 rounded-full bg-brand-gold/12 blur-2xl" />
+        <div className="absolute -top-20 -left-20 h-44 w-44 rounded-full bg-brand-gold/14 blur-2xl" />
         <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand-gold/70 to-transparent" />
       </div>
       <div className="text-sm font-semibold text-neutral-900">{title}</div>
@@ -265,44 +278,96 @@ export function PartnerWebinarLanding() {
         id="hero"
         variant="white"
         aria-label="Webinar — zapis"
-        className="scroll-mt-32 relative overflow-hidden min-h-[100svh] flex items-center"
+        className="scroll-mt-32 relative overflow-hidden min-h-[62svh] flex items-center"
       >
         <div aria-hidden className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/grafiki/webinar-hero.png')" }}
+            style={{ backgroundImage: "url('/grafiki/Seal%207/premium%202.jpg')" }}
           />
-          <div className="absolute inset-0 bg-black/35" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,5,5,0.88)_0%,rgba(5,5,5,0.72)_48%,rgba(5,5,5,0.42)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,161,59,0.24),transparent_35%)]" />
         </div>
 
-        <div className="relative w-full py-12 md:py-20">
+        <div className="relative w-full py-6 md:py-10">
           <Container>
-            <div className="mx-auto max-w-[920px]">
-              <div className="max-w-[920px]">
+            <div className="mx-auto max-w-[1180px]">
+              <div className="grid gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)] lg:items-end">
                 <motion.div
                   {...enter}
                   viewport={{ once: true, amount: 0.6 }}
-                  className="relative rounded-2xl border border-brand-gold/55 bg-black/35 backdrop-blur px-6 py-10 sm:px-8 overflow-hidden"
-                  style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.15)' }}
+                  className="relative overflow-hidden rounded-[30px] border border-brand-gold/45 bg-black/30 px-6 py-6 backdrop-blur-md sm:px-8 lg:px-10"
+                  style={{ boxShadow: '0 28px 80px rgba(0,0,0,0.22)' }}
                 >
                   <div aria-hidden className="pointer-events-none absolute inset-0">
-                    <div className="absolute -top-28 -right-28 h-72 w-72 rounded-full bg-brand-gold/18 blur-3xl" />
+                    <div className="absolute -top-28 -right-28 h-72 w-72 rounded-full bg-brand-gold/22 blur-3xl" />
+                    <div className="absolute left-0 top-0 h-full w-[1px] bg-gradient-to-b from-transparent via-brand-gold/50 to-transparent" />
                     <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+                  </div>
+
+                  <div className="inline-flex items-center rounded-full border border-brand-gold/35 bg-white/8 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-goldSoft">
+                    Webinar Velo Prime
                   </div>
 
                   <Heading
                     level={1}
-                    className="max-w-[34ch] text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-balance"
+                    className="mt-5 max-w-[18ch] text-balance text-3xl leading-tight text-white sm:text-4xl md:text-5xl lg:text-[42px]"
                   >
-                    Zostań partnerem Velo Prime
-                    <br />i sprzedawaj samochody premium w swoim regionie
+                    Wejdź do sprzedaży premium z modelem partnerstwa Velo Prime
                   </Heading>
 
-                  <div className="mt-6 max-w-[78ch] border-l-2 border-brand-gold/60 pl-4">
+                  <div className="mt-5 max-w-[72ch] border-l-2 border-brand-gold/60 pl-4">
                     <Text className="text-[15px] sm:text-base font-medium leading-relaxed text-white/95">
-                      Bezpłatny webinar dla osób z doświadczeniem sprzedażowym, które chcą wejść w sprzedaż samochodów
-                      elektrycznych i hybrydowych z gotowym produktem, procesem i wsparciem marketingowym.
+                      Bezpłatny webinar dla osób z doświadczeniem sprzedażowym, które chcą wejść w nowy segment rynku z gotowym produktem, procesem współpracy i wsparciem marketingowym.
                     </Text>
+                  </div>
+
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    {heroStats.map((item) => (
+                      <div
+                        key={item.label}
+                        className="rounded-2xl border border-white/10 bg-white/6 px-4 py-4 backdrop-blur"
+                      >
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-goldSoft/90">
+                          {item.label}
+                        </div>
+                        <div className="mt-2 text-sm font-medium leading-relaxed text-white/92">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-3 text-sm text-white/78">
+                    <span className="rounded-full border border-white/12 bg-white/8 px-4 py-2">samochody premium</span>
+                    <span className="rounded-full border border-white/12 bg-white/8 px-4 py-2">partnerstwo regionalne</span>
+                    <span className="rounded-full border border-white/12 bg-white/8 px-4 py-2">sprzedaż i finansowanie</span>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  {...enter}
+                  viewport={{ once: true, amount: 0.45 }}
+                  className="relative overflow-hidden rounded-[30px] border border-brand-gold/45 bg-[linear-gradient(180deg,rgba(10,10,10,0.86),rgba(20,16,10,0.88))] p-5 backdrop-blur md:p-6"
+                  style={{ boxShadow: '0 28px 90px rgba(0,0,0,0.26)' }}
+                >
+                  <div aria-hidden className="pointer-events-none absolute inset-0">
+                    <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-gold/20 blur-3xl" />
+                    <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+                  </div>
+
+                  <div className="relative">
+                    <div className="inline-flex items-center rounded-full border border-brand-gold/25 bg-white/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-goldSoft">
+                      Rezerwacja miejsca
+                    </div>
+                    <Heading level={2} className="mt-4 text-[28px] leading-tight text-white sm:text-[32px]">
+                      Zarezerwuj miejsce na najbliższy webinar
+                    </Heading>
+                    <Text className="mt-3 text-sm leading-relaxed text-white/78">
+                      Otrzymasz szczegóły spotkania, link do webinaru i informację, jak wygląda kolejny etap wejścia do programu partnerskiego.
+                    </Text>
+
+                    <div className="mt-5 rounded-[22px] border border-white/10 bg-white/6 p-4 backdrop-blur-sm">
+                      <WebinarSignupForm variant="hero" />
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -323,8 +388,8 @@ export function PartnerWebinarLanding() {
       <Section
         variant="white"
         aria-label="Webinar — punkty"
-        className="py-5"
-        style={{ background: '#0b0b0b' }}
+        className="py-3"
+        style={{ background: 'linear-gradient(180deg,#060606,#120f0a)' }}
       >
         <Container>
           <div className="mx-auto max-w-[1100px]">
@@ -332,7 +397,7 @@ export function PartnerWebinarLanding() {
               {heroBullets.map((label) => (
                 <motion.div
                   key={label}
-                  className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 text-[15px] font-semibold text-white/90"
+                  className="flex items-start gap-3 rounded-[22px] border border-brand-gold/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-5 py-3 text-[15px] font-semibold text-white/90"
                   whileHover={{ y: -4, rotateX: 2, rotateY: -2 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                 >
@@ -352,22 +417,23 @@ export function PartnerWebinarLanding() {
         aria-label="Dlaczego powstał ten webinar"
         className="scroll-mt-32"
         style={{
-          background: 'radial-gradient(circle at top, #ffffff, #fafafa)',
+          background: 'radial-gradient(circle at top, #fbf7f0, #f2e9db)',
         }}
       >
         <Container>
           <motion.div
             {...enter}
             viewport={{ once: true, amount: 0.4 }}
-            className="relative max-w-[80ch] rounded-2xl border border-black/5 bg-white p-7 sm:p-8 overflow-hidden"
-            style={{ boxShadow: '0 12px 30px rgba(0,0,0,0.05)' }}
+            className="relative max-w-[88ch] overflow-hidden rounded-[28px] border border-[#d9c8a7]/35 bg-[linear-gradient(180deg,#fffdfa,#f6efe3)] p-7 sm:p-8"
+            style={{ boxShadow: '0 18px 42px rgba(20,20,20,0.07)' }}
           >
             <div aria-hidden className="pointer-events-none absolute inset-0">
-              <div className="absolute -top-28 -right-28 h-64 w-64 rounded-full bg-brand-gold/10 blur-3xl" />
-              <div className="absolute inset-0 ring-1 ring-inset ring-brand-gold/10" />
+              <div className="absolute -top-28 -right-28 h-64 w-64 rounded-full bg-brand-gold/12 blur-3xl" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-white/55" />
             </div>
 
-            <Heading level={2} className="text-balance">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6a21]">Rynek i model</div>
+            <Heading level={2} className="mt-3 text-balance">
               Dlaczego powstał ten webinar
             </Heading>
             <div className="mt-5 border-l-2 border-brand-gold/50 pl-4">
@@ -394,11 +460,12 @@ export function PartnerWebinarLanding() {
       </Section>
 
       {/* SECTION 3 — DLA KOGO */}
-      <Section id="dla-kogo" variant="white" aria-label="Dla kogo jest webinar" className="scroll-mt-32">
+      <Section id="dla-kogo" variant="white" aria-label="Dla kogo jest webinar" className="scroll-mt-32" style={{ background: 'linear-gradient(180deg,#0b0b0b,#14110c)' }}>
         <Container>
           <div className="max-w-[80ch]">
-            <Heading level={2}>Dla kogo jest ten webinar</Heading>
-            <Text className="mt-3 text-neutral-700">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-goldSoft">Dopasowanie</div>
+            <Heading level={2} className="mt-3 text-white">Dla kogo jest ten webinar</Heading>
+            <Text className="mt-3 text-white/76">
               Ten webinar jest skierowany do osób, które mają doświadczenie w sprzedaży i szukają nowego produktu lub
               nowego kierunku rozwoju.
               <br />
@@ -469,10 +536,11 @@ export function PartnerWebinarLanding() {
       </Section>
 
       {/* SECTION 5 — CO POKAŻĘ */}
-      <Section id="co-pokaze" variant="white" aria-label="Co pokażę na webinarze" className="scroll-mt-32">
+      <Section id="co-pokaze" variant="white" aria-label="Co pokażę na webinarze" className="scroll-mt-32" style={{ background: 'radial-gradient(circle at top, #fbf7f0, #f3eadc)' }}>
         <Container>
           <div className="max-w-[80ch]">
-            <Heading level={2}>Co pokażę podczas webinaru</Heading>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6a21]">Agenda</div>
+            <Heading level={2} className="mt-3">Co pokażę podczas webinaru</Heading>
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -494,10 +562,11 @@ export function PartnerWebinarLanding() {
       </Section>
 
       {/* SECTION 6 — WIARYGODNOŚĆ */}
-      <Section id="wiarygodnosc" variant="white" aria-label="Wiarygodność" className="scroll-mt-32" style={{ background: '#fafafa' }}>
+      <Section id="wiarygodnosc" variant="white" aria-label="Wiarygodność" className="scroll-mt-32" style={{ background: '#f8f2e8' }}>
         <Container>
           <div className="max-w-[80ch]">
-            <Heading level={2}>Projekt oparty na realnym ekosystemie sprzedaży</Heading>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6a21]">Wiarygodność</div>
+            <Heading level={2} className="mt-3">Projekt oparty na realnym ekosystemie sprzedaży</Heading>
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">

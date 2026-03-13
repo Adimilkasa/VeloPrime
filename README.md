@@ -64,3 +64,26 @@ Przykład buttonów:
 npm run build
 npm run start
 ```
+
+## Webinar Automation
+
+Formularz webinaru zapisuje zgłoszenia do Google Sheets i wysyła maile potwierdzające oraz przypomnienia.
+
+Wymagane env:
+
+- `GOOGLE_SERVICE_ACCOUNT_JSON` lub `GOOGLE_SERVICE_ACCOUNT_FILE`
+- `GOOGLE_WEBINAR_SHEET_ID` lub `GOOGLE_PARTNER_SIGNUPS_SHEET_ID`
+- `GOOGLE_WEBINAR_SHEET_TAB` opcjonalnie, domyślnie `Webinar`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `SMTP_FROM`
+- `WEBINAR_LINK_TUESDAY_2000`
+- `WEBINAR_LINK_THURSDAY_2000`
+- `WEBINAR_LINK_SATURDAY_1100`
+- `WEBINAR_CONFIRMATION_REPLY_TO` opcjonalnie
+- `WEBINAR_REMINDER_REPLY_TO` opcjonalnie
+- `CRON_SECRET` lub `WEBINAR_CRON_SECRET` dla endpointu przypomnień
+
+Automatyczne przypomnienia są skonfigurowane w `vercel.json` i uruchamiają endpoint `/api/webinar-lead/reminders` w dni webinarowe.
