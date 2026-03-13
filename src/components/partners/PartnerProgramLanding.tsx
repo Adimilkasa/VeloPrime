@@ -567,7 +567,7 @@ function PlanCard({
       }
     >
       {featured ? (
-        <div aria-hidden className="absolute inset-0">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-brand-gold/22 blur-3xl" />
           <div className="absolute -right-24 -bottom-24 h-80 w-80 rounded-full bg-brand-gold/16 blur-3xl" />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/22 to-transparent" />

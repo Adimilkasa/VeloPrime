@@ -468,8 +468,9 @@ async function findRowByLeadId(client: SheetClient, tabName: string, leadId: str
   })
 
   const rows = response.data.values || []
+  const leadIdColumnIndex = PARTNER_SIGNUP_HEADERS.length - 1
   for (let index = 1; index < rows.length; index += 1) {
-    if ((rows[index]?.[0] || '').trim() === leadId) {
+    if ((rows[index]?.[leadIdColumnIndex] || '').trim() === leadId) {
       return {
         rowNumber: index + 1,
         values: rows[index].map((value) => String(value ?? '')),
