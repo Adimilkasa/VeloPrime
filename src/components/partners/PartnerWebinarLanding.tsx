@@ -15,6 +15,29 @@ type LeadState = {
   phone: string
 }
 
+type WebinarSlotKey = 'tuesday-2000' | 'thursday-2000' | 'saturday-1100'
+
+type WebinarAvailabilitySlot = {
+  key: WebinarSlotKey
+  label: string
+  helper: string
+  webinarDateLabel: string
+  webinarDayLabel: string
+  webinarTimeLabel: string
+  remainingSeats: number
+  capacity: number
+  isAvailable: boolean
+  isFull: boolean
+  isExpired: boolean
+  isSingleUse: boolean
+}
+
+const webinarSlotOptions: Array<{ key: WebinarSlotKey; label: string; helper: string }> = [
+  { key: 'tuesday-2000', label: 'Wtorek, 20:00', helper: 'Najbliższy wtorek o 20:00 (czas PL)' },
+  { key: 'thursday-2000', label: 'Czwartek, 20:00', helper: 'Najbliższy czwartek o 20:00 (czas PL)' },
+  { key: 'saturday-1100', label: 'Sobota, 11:00', helper: 'Najbliższa sobota o 11:00 (czas PL)' },
+]
+
 const heroBullets = [
   'sprzedaż samochodów premium',
   'model partnerski Velo Prime',
@@ -136,14 +159,89 @@ function WebinarSignupForm({
   initialLead?: LeadState
 }) {
   const [lead, setLead] = React.useState<LeadState>(initialLead ?? { name: '', email: '', phone: '' })
+  const [step, setStep] = React.useState<1 | 2>(1)
+  const [selectedSlot, setSelectedSlot] = React.useState<WebinarSlotKey | null>(null)
+  const [acceptPrivacy, setAcceptPrivacy] = React.useState(false)
+  const [acceptContact, setAcceptContact] = React.useState(false)
   const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = React.useState<string>('')
+  const [successMessage, setSuccessMessage] = React.useState<string>('')
+  const [availability, setAvailability] = React.useState<WebinarAvailabilitySlot[] | null>(null)
   const tone: 'dark' | 'light' = variant === 'hero' || variant === 'final' ? 'dark' : 'light'
+
+  const stepCardClassName =
+    tone === 'dark'
+      ? 'rounded-[18px] border border-white/10 bg-white/6 p-4 backdrop-blur-sm'
+      : 'rounded-[18px] border border-black/10 bg-white p-4'
+
+  const labelClassName =
+    tone === 'dark' ? 'text-xs font-semibold text-white/90' : 'text-xs font-semibold text-neutral-800'
+
+  const helperClassName = tone === 'dark' ? 'mt-1 text-[11px] text-white/55' : 'mt-1 text-[11px] text-neutral-500'
+
+  const checkboxClassName =
+    tone === 'dark'
+      ? 'h-4 w-4 rounded border border-white/25 bg-white/10 accent-[#c9a13b]'
+      : 'h-4 w-4 rounded border border-black/20 bg-white accent-[#c9a13b]'
+
+  React.useEffect(() => {
+    let cancelled = false
+
+    const loadAvailability = async () => {
+      try {
+        const res = await fetch('/api/webinar-lead', { cache: 'no-store' })
+        const json = (await res.json().catch(() => null)) as null | {
+          ok?: boolean
+          availability?: WebinarAvailabilitySlot[]
+        }
+
+        if (!cancelled && res.ok && json?.ok && Array.isArray(json.availability)) {
+          setAvailability(json.availability)
+        }
+      } catch {
+        // Fallback to static slot options when availability cannot be loaded.
+      }
+    }
+
+    void loadAvailability()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const slotCards = availability ?? webinarSlotOptions.map((option) => ({
+    ...option,
+    webinarDateLabel: option.helper,
+    webinarDayLabel: option.label.split(',')[0] || '',
+    webinarTimeLabel: option.label.split(',')[1]?.trim() || '',
+    remainingSeats: 50,
+    capacity: 50,
+    isAvailable: true,
+    isFull: false,
+    isExpired: false,
+    isSingleUse: false,
+  }))
+
+  const allSlotsUnavailable = slotCards.length > 0 && slotCards.every((slot) => !slot.isAvailable)
+  const canProceed = (allSlotsUnavailable || Boolean(selectedSlot)) && acceptPrivacy && acceptContact
+
+  React.useEffect(() => {
+    if (!availability || !selectedSlot) {
+      return
+    }
+
+    const selectedAvailability = availability.find((slot) => slot.key === selectedSlot)
+    if (!selectedAvailability?.isAvailable) {
+      setSelectedSlot(null)
+    }
+  }, [availability, selectedSlot])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
     setErrorMessage('')
+    setSuccessMessage('')
 
     try {
       const res = await fetch('/api/webinar-lead', {
@@ -154,18 +252,42 @@ function WebinarSignupForm({
           email: lead.email,
           phone: lead.phone,
           source: variant,
+          selectedSlot: selectedSlot || undefined,
+          consents: {
+            acceptPrivacy,
+            acceptContact,
+          },
         }),
       })
 
-      const json = (await res.json().catch(() => null)) as null | { ok?: boolean; error?: string }
+      const json = (await res.json().catch(() => null)) as null | {
+        ok?: boolean
+        error?: string
+        message?: string
+        status?: 'confirmed' | 'waitlist'
+        availability?: WebinarAvailabilitySlot[]
+      }
+
+      if (Array.isArray(json?.availability)) {
+        setAvailability(json.availability)
+      }
 
       if (!res.ok || !json?.ok) {
         setStatus('error')
         setErrorMessage(json?.error || 'Nie udało się wysłać zgłoszenia. Spróbuj ponownie.')
+        if (json?.availability) {
+          setStep(1)
+        }
         return
       }
 
       setStatus('success')
+      setSuccessMessage(
+        json?.message ||
+          (json?.status === 'waitlist'
+            ? 'Wszystkie terminy są obecnie zajęte. Zapisaliśmy Twoje dane i powiadomimy Cię o kolejnym webinarze.'
+            : 'Dzięki! Zgłoszenie zapisane. Szczegóły webinaru wyślemy na podany email.'),
+      )
     } catch {
       setStatus('error')
       setErrorMessage('Nie udało się wysłać zgłoszenia. Spróbuj ponownie.')
@@ -174,67 +296,247 @@ function WebinarSignupForm({
 
   return (
     <form className="grid gap-4" onSubmit={onSubmit}>
-      <div className="grid gap-4">
-        <Field
-          label="Imię"
-          value={lead.name}
-          onChange={(name) => setLead((s) => ({ ...s, name }))}
-          autoComplete="given-name"
-          labelTone={tone}
-        />
-        <Field
-          label="Email"
-          type="email"
-          value={lead.email}
-          onChange={(email) => setLead((s) => ({ ...s, email }))}
-          autoComplete="email"
-          inputMode="email"
-          labelTone={tone}
-        />
-        <Field
-          label="Telefon"
-          type="tel"
-          value={lead.phone}
-          onChange={(phone) => setLead((s) => ({ ...s, phone }))}
-          autoComplete="tel"
-          inputMode="tel"
-          labelTone={tone}
-        />
-      </div>
+      {step === 1 ? (
+        <div className={stepCardClassName}>
+          <div className={labelClassName}>
+            {allSlotsUnavailable ? 'Wszystkie bieżące terminy są zajęte' : 'Wybierz termin webinaru'}
+          </div>
+          <div className={helperClassName}>
+            {allSlotsUnavailable
+              ? 'Możesz zostawić dane, a damy znać, gdy uruchomimy nowy webinar.'
+              : 'Każdy termin ma limit 50 miejsc. Gdy termin się zapełni, trzeba wybrać inny.'}
+          </div>
+          <div className="mt-3 grid gap-2">
+            {slotCards.map((option) => {
+              const active = selectedSlot === option.key
+              const disabled = !option.isAvailable
+              const buttonClassName =
+                tone === 'dark'
+                  ? [
+                      'flex w-full items-start justify-between gap-4 rounded-2xl border px-4 py-3 text-left transition',
+                      active
+                        ? 'border-brand-gold/60 bg-white/10'
+                        : disabled
+                          ? 'border-white/8 bg-white/[0.03] opacity-55'
+                          : 'border-white/10 bg-white/6 hover:border-brand-gold/35',
+                    ].join(' ')
+                  : [
+                      'flex w-full items-start justify-between gap-4 rounded-2xl border px-4 py-3 text-left transition',
+                      active
+                        ? 'border-brand-gold/60 bg-brand-gold/5'
+                        : disabled
+                          ? 'border-black/8 bg-neutral-50 opacity-55'
+                          : 'border-black/10 bg-white hover:border-brand-gold/35',
+                    ].join(' ')
 
-      <div className="mt-1">
-        <button
-          type="submit"
-          disabled={status === 'loading' || status === 'success'}
-          className="inline-flex w-full items-center justify-center font-semibold text-white disabled:opacity-70"
-          style={{
-            background: 'linear-gradient(135deg,#ebc971,#b6841c)',
-            borderRadius: 14,
-            padding: '12px 18px',
-            boxShadow: '0 16px 34px rgba(182,132,28,0.28)',
-          }}
-        >
-          {status === 'loading' ? 'Wysyłanie…' : status === 'success' ? 'Zapisano' : 'Zarezerwuj miejsce na webinarze'}
-        </button>
+              return (
+                <button
+                  key={option.key}
+                  type="button"
+                  className={buttonClassName}
+                  onClick={() => {
+                    if (!disabled) {
+                      setSelectedSlot(option.key)
+                    }
+                  }}
+                  disabled={disabled}
+                >
+                  <div>
+                    <div className={tone === 'dark' ? 'text-sm font-semibold text-white' : 'text-sm font-semibold text-neutral-900'}>
+                      {option.label}
+                    </div>
+                    <div className={helperClassName}>{option.helper}</div>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <span
+                      className={
+                        tone === 'dark'
+                          ? [
+                              'rounded-full px-2.5 py-1 text-[11px] font-semibold',
+                              option.isAvailable
+                                ? 'border border-brand-gold/30 bg-brand-gold/10 text-brand-goldSoft'
+                                : 'border border-white/10 bg-white/5 text-white/60',
+                            ].join(' ')
+                          : [
+                              'rounded-full px-2.5 py-1 text-[11px] font-semibold',
+                              option.isAvailable
+                                ? 'border border-brand-gold/30 bg-brand-gold/10 text-[#8b6a21]'
+                                : 'border border-black/10 bg-neutral-100 text-neutral-500',
+                            ].join(' ')
+                      }
+                    >
+                      {option.isAvailable
+                        ? `${option.remainingSeats}/${option.capacity} miejsc`
+                        : option.isExpired
+                          ? 'Termin zamknięty'
+                          : 'Brak miejsc'}
+                    </span>
+                    <div
+                      aria-hidden
+                      className={
+                        tone === 'dark'
+                          ? [
+                              'mt-0.5 flex h-5 w-5 items-center justify-center rounded-full border',
+                              active ? 'border-brand-gold bg-brand-gold/20 text-brand-gold' : 'border-white/18 text-white/40',
+                            ].join(' ')
+                          : [
+                              'mt-0.5 flex h-5 w-5 items-center justify-center rounded-full border',
+                              active ? 'border-brand-gold bg-brand-gold/10 text-brand-gold' : 'border-black/15 text-neutral-400',
+                            ].join(' ')
+                      }
+                    >
+                      {active ? <Check className="h-3.5 w-3.5" aria-hidden /> : null}
+                    </div>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
 
-        <div className={tone === 'dark' ? 'mt-3 text-xs leading-relaxed text-white/70' : 'mt-3 text-xs leading-relaxed text-neutral-600'}>
-          Liczba miejsc ograniczona.
-          <br />
-          Po zapisie otrzymasz szczegóły webinaru oraz link do spotkania.
+          <div className="mt-4 grid gap-3">
+            <label className="flex items-start gap-3">
+              <input
+                className={checkboxClassName}
+                type="checkbox"
+                checked={acceptPrivacy}
+                onChange={(event) => setAcceptPrivacy(event.target.checked)}
+                required
+              />
+              <span className={tone === 'dark' ? 'text-xs leading-relaxed text-white/80' : 'text-xs leading-relaxed text-neutral-700'}>
+                Akceptuję{' '}
+                <a className="underline decoration-brand-gold/60 underline-offset-2 hover:decoration-brand-gold" href="/polityka-prywatnosci">
+                  politykę prywatności
+                </a>
+                .
+              </span>
+            </label>
+
+            <label className="flex items-start gap-3">
+              <input
+                className={checkboxClassName}
+                type="checkbox"
+                checked={acceptContact}
+                onChange={(event) => setAcceptContact(event.target.checked)}
+                required
+              />
+              <span className={tone === 'dark' ? 'text-xs leading-relaxed text-white/80' : 'text-xs leading-relaxed text-neutral-700'}>
+                Wyrażam zgodę na kontakt w sprawie webinaru i programu partnerskiego.
+              </span>
+            </label>
+          </div>
+
+          <div className="mt-4">
+            <button
+              type="button"
+              disabled={!canProceed}
+              onClick={() => setStep(2)}
+              className="inline-flex w-full items-center justify-center font-semibold text-white disabled:opacity-60"
+              style={{
+                background: 'linear-gradient(135deg,#ebc971,#b6841c)',
+                borderRadius: 14,
+                padding: '12px 18px',
+                boxShadow: '0 16px 34px rgba(182,132,28,0.28)',
+              }}
+            >
+              {allSlotsUnavailable ? 'Dołącz do listy oczekujących' : 'Przejdź dalej'}
+            </button>
+          </div>
         </div>
+      ) : (
+        <>
+          <div className={stepCardClassName}>
+            <div className={labelClassName}>Twoje dane kontaktowe</div>
+            <div className={helperClassName}>
+              {allSlotsUnavailable
+                ? 'Zapiszemy Cię na listę oczekujących i damy znać, gdy pojawi się nowy termin.'
+                : 'Zapiszemy zgłoszenie i wyślemy potwierdzenie na e-mail.'}
+            </div>
 
-        {status === 'error' ? (
-          <div className={tone === 'dark' ? 'mt-3 text-xs font-medium text-red-300' : 'mt-3 text-xs font-medium text-red-600'}>
-            {errorMessage}
+            <div className="mt-4 grid gap-4">
+              <Field
+                label="Imię"
+                value={lead.name}
+                onChange={(name) => setLead((s) => ({ ...s, name }))}
+                autoComplete="given-name"
+                labelTone={tone}
+              />
+              <Field
+                label="Email"
+                type="email"
+                value={lead.email}
+                onChange={(email) => setLead((s) => ({ ...s, email }))}
+                autoComplete="email"
+                inputMode="email"
+                labelTone={tone}
+              />
+              <Field
+                label="Telefon"
+                type="tel"
+                value={lead.phone}
+                onChange={(phone) => setLead((s) => ({ ...s, phone }))}
+                autoComplete="tel"
+                inputMode="tel"
+                labelTone={tone}
+              />
+            </div>
           </div>
-        ) : null}
 
-        {status === 'success' ? (
-          <div className={tone === 'dark' ? 'mt-3 text-xs font-medium text-white/90' : 'mt-3 text-xs font-medium text-neutral-800'}>
-            Dzięki! Zgłoszenie zapisane. Szczegóły webinaru wyślemy na podany email.
+          <div className="mt-1 grid gap-3">
+            <button
+              type="submit"
+              disabled={status === 'loading' || status === 'success'}
+              className="inline-flex w-full items-center justify-center font-semibold text-white disabled:opacity-70"
+              style={{
+                background: 'linear-gradient(135deg,#ebc971,#b6841c)',
+                borderRadius: 14,
+                padding: '12px 18px',
+                boxShadow: '0 16px 34px rgba(182,132,28,0.28)',
+              }}
+            >
+              {status === 'loading'
+                ? 'Wysyłanie…'
+                : status === 'success'
+                  ? 'Zapisano'
+                  : allSlotsUnavailable
+                    ? 'Dołącz do listy oczekujących'
+                    : 'Zarezerwuj miejsce na webinarze'}
+            </button>
+
+            <button
+              type="button"
+              disabled={status === 'loading'}
+              onClick={() => setStep(1)}
+              className={tone === 'dark' ? 'text-xs font-semibold text-white/70 hover:text-white transition disabled:opacity-60' : 'text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition disabled:opacity-60'}
+            >
+              Wróć do wyboru terminu
+            </button>
+
+            <div className={tone === 'dark' ? 'text-xs leading-relaxed text-white/70' : 'text-xs leading-relaxed text-neutral-600'}>
+              {allSlotsUnavailable ? (
+                'Jeśli wszystkie terminy są zajęte, zachowamy Twoje dane i powiadomimy Cię o najbliższym webinarze.'
+              ) : (
+                <>
+                  Liczba miejsc ograniczona do 50 na termin.
+                  <br />
+                  Po zapisie otrzymasz szczegóły webinaru oraz link do spotkania.
+                </>
+              )}
+            </div>
+
+            {status === 'error' ? (
+              <div className={tone === 'dark' ? 'text-xs font-medium text-red-300' : 'text-xs font-medium text-red-600'}>
+                {errorMessage}
+              </div>
+            ) : null}
+
+            {status === 'success' ? (
+              <div className={tone === 'dark' ? 'text-xs font-medium text-white/90' : 'text-xs font-medium text-neutral-800'}>
+                {successMessage}
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
+        </>
+      )}
     </form>
   )
 }

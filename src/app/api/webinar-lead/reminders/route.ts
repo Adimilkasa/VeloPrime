@@ -12,7 +12,9 @@ function env(name: string) {
 function isAuthorized(request: Request) {
   const expected = env('CRON_SECRET') || env('WEBINAR_CRON_SECRET')
   if (!expected) {
-    return false
+    const userAgent = request.headers.get('user-agent') || ''
+    const vercelRequestId = request.headers.get('x-vercel-id') || ''
+    return userAgent.startsWith('vercel-cron/') && Boolean(vercelRequestId)
   }
 
   const authorization = request.headers.get('authorization') || ''

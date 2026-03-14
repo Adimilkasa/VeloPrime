@@ -35,3 +35,6 @@ Secret.txt
 *.sln
 *.sw?
 
+
+.vercel
+.env*.local

@@ -11,14 +11,17 @@ export type WebinarSignupInput = {
   email: string
   phone: string
   source: string
-  selectedSlot: WebinarSlotKey
+  selectedSlot?: WebinarSlotKey
   consents: {
     acceptPrivacy: boolean
     acceptContact: boolean
   }
 }
 
-export type WebinarLeadRecord = WebinarSignupInput & {
+export type WebinarRecordStatus = 'booked' | 'waitlist'
+
+export type WebinarLeadRecord = Omit<WebinarSignupInput, 'selectedSlot'> & {
+  selectedSlot: WebinarSlotKey | null
   leadId: string
   createdAt: string
   webinarDateLabel: string
@@ -28,6 +31,55 @@ export type WebinarLeadRecord = WebinarSignupInput & {
   webinarDateIso: string
   webinarDateKey: string
   reminderSentAt: string
+  status: WebinarRecordStatus
+  note: string
+}
+
+export type WebinarSlotAvailability = {
+  key: WebinarSlotKey
+  label: string
+  helper: string
+  webinarDateLabel: string
+  webinarDayLabel: string
+  webinarTimeLabel: string
+  remainingSeats: number
+  capacity: number
+  isAvailable: boolean
+  isFull: boolean
+  isExpired: boolean
+  isSingleUse: boolean
+}
+
+export type WebinarRegistrationResult = {
+  status: 'confirmed' | 'waitlist'
+  leadId: string
+  webinarDateLabel: string
+  webinarDayLabel: string
+  webinarTimeLabel: string
+  hasWebinarLink: boolean
+  message: string
+  availability: WebinarSlotAvailability[]
+}
+
+export class WebinarSignupError extends Error {
+  statusCode: number
+  code: 'slot-required' | 'slot-unavailable'
+  availability: WebinarSlotAvailability[]
+
+  constructor(
+    message: string,
+    options: {
+      statusCode: number
+      code: 'slot-required' | 'slot-unavailable'
+      availability: WebinarSlotAvailability[]
+    },
+  ) {
+    super(message)
+    this.name = 'WebinarSignupError'
+    this.statusCode = options.statusCode
+    this.code = options.code
+    this.availability = options.availability
+  }
 }
 
 type SheetClient = {
@@ -59,7 +111,7 @@ type WarsawParts = {
 }
 
 const WARSAW_TIME_ZONE = 'Europe/Warsaw'
-const WEBINAR_COLUMNS_RANGE = 'A:N'
+const WEBINAR_COLUMNS_RANGE = 'A:P'
 const WEBINAR_HEADERS = [
   'Data zgloszenia',
   'Termin webinaru',
@@ -75,8 +127,12 @@ const WEBINAR_HEADERS = [
   'Przypomnienie wyslane',
   'ID zgloszenia',
   'Data webinaru ISO',
+  'Status',
+  'Notatka',
 ]
 const SHEET_STRUCTURE_CACHE_TTL_MS = 5 * 60 * 1000
+const DEFAULT_SLOT_CAPACITY = 50
+const SLOT_KEYS: WebinarSlotKey[] = ['tuesday-2000', 'thursday-2000', 'saturday-1100']
 const WEEKDAY_MAP: Record<string, number> = {
   Sun: 0,
   Mon: 1,
@@ -95,6 +151,8 @@ const SLOT_CONFIG: Record<
     minute: number
     timeLabel: string
     linkEnvName: string
+    capacityEnvName: string
+    fixedDateEnvName?: string
   }
 > = {
   'tuesday-2000': {
@@ -104,6 +162,7 @@ const SLOT_CONFIG: Record<
     minute: 0,
     timeLabel: '20:00',
     linkEnvName: 'WEBINAR_LINK_TUESDAY_2000',
+    capacityEnvName: 'WEBINAR_SLOT_TUESDAY_2000_CAPACITY',
   },
   'thursday-2000': {
     weekday: 4,
@@ -112,6 +171,8 @@ const SLOT_CONFIG: Record<
     minute: 0,
     timeLabel: '20:00',
     linkEnvName: 'WEBINAR_LINK_THURSDAY_2000',
+    capacityEnvName: 'WEBINAR_SLOT_THURSDAY_2000_CAPACITY',
+    fixedDateEnvName: 'WEBINAR_SLOT_THURSDAY_2000_FIXED_DATE',
   },
   'saturday-1100': {
     weekday: 6,
@@ -120,6 +181,7 @@ const SLOT_CONFIG: Record<
     minute: 0,
     timeLabel: '11:00',
     linkEnvName: 'WEBINAR_LINK_SATURDAY_1100',
+    capacityEnvName: 'WEBINAR_SLOT_SATURDAY_1100_CAPACITY',
   },
 }
 
@@ -138,6 +200,14 @@ function sleep(ms: number) {
 
 function pad(value: number) {
   return String(value).padStart(2, '0')
+}
+
+function parsePositiveInteger(value: string, fallback: number) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return fallback
+  }
+  return Math.floor(parsed)
 }
 
 function normalizeHeader(value: string) {
@@ -167,6 +237,33 @@ function resolveSpreadsheetId(value: string) {
   return match?.[1] || trimmedValue
 }
 
+function getSlotCapacity(slotKey: WebinarSlotKey) {
+  return parsePositiveInteger(env(SLOT_CONFIG[slotKey].capacityEnvName), DEFAULT_SLOT_CAPACITY)
+}
+
+function getConfiguredSlotDate(slotKey: WebinarSlotKey) {
+  const fixedDateEnvName = SLOT_CONFIG[slotKey].fixedDateEnvName
+  if (!fixedDateEnvName) {
+    return null
+  }
+
+  const rawValue = env(fixedDateEnvName)
+  if (!rawValue) {
+    return null
+  }
+
+  const configuredDate = new Date(rawValue)
+  if (Number.isNaN(configuredDate.getTime())) {
+    throw new Error(`Nieprawidlowa data dla ${fixedDateEnvName}. Uzyj formatu ISO, np. 2026-03-19T20:00:00+01:00.`)
+  }
+
+  return configuredDate
+}
+
+function getRecordStatus(values: string[]): WebinarRecordStatus {
+  return normalizeCellValue(values[14]) === 'waitlist' ? 'waitlist' : 'booked'
+}
+
 function readMailConfig(): MailConfig | null {
   const host = env('SMTP_HOST')
   const portRaw = env('SMTP_PORT')
@@ -194,29 +291,29 @@ function getMissingMailConfigFields() {
 
 function describeMailError(error: unknown) {
   if (!(error instanceof Error)) {
-    return 'Nieznany błąd SMTP.'
+    return 'Nieznany blad SMTP.'
   }
 
   const message = error.message.toLowerCase()
 
   if (message.includes('invalid login') || message.includes('authentication failed') || message.includes('535')) {
     return [
-      'Błąd autoryzacji SMTP.',
-      'Sprawdź pełny adres w SMTP_USER, poprawność SMTP_PASS oraz czy konto Zoho wymaga hasła aplikacyjnego.',
-      'Dla domenowego konta Zoho zwykle użyj smtppro.zoho.eu:587 (TLS) albo smtppro.zoho.eu:465 (SSL).',
+      'Blad autoryzacji SMTP.',
+      'Sprawdz pelny adres w SMTP_USER, poprawnosc SMTP_PASS oraz czy konto Zoho wymaga hasla aplikacyjnego.',
+      'Dla domenowego konta Zoho zwykle uzyj smtppro.zoho.eu:587 (TLS) albo smtppro.zoho.eu:465 (SSL).',
     ].join(' ')
   }
 
   if (message.includes('relaying disallowed')) {
-    return 'Serwer odrzucił wysyłkę, bo SMTP_FROM nie pasuje do konta SMTP_USER albo jego aliasu.'
+    return 'Serwer odrzucil wysylke, bo SMTP_FROM nie pasuje do konta SMTP_USER albo jego aliasu.'
   }
 
   if (message.includes('enotfound') || message.includes('eai_again')) {
-    return 'Nie udało się odnaleźć hosta SMTP. Sprawdź SMTP_HOST i region usługi SMTP.'
+    return 'Nie udalo sie odnalezc hosta SMTP. Sprawdz SMTP_HOST i region uslugi SMTP.'
   }
 
   if (message.includes('self signed certificate') || message.includes('certificate')) {
-    return 'Błąd certyfikatu TLS po stronie SMTP. Sprawdź poprawność hosta i ustawień szyfrowania.'
+    return 'Blad certyfikatu TLS po stronie SMTP. Sprawdz poprawnosc hosta i ustawien szyfrowania.'
   }
 
   return error.message
@@ -285,7 +382,11 @@ function createTransport() {
 async function loadGoogleCredentials() {
   const rawJson = env('GOOGLE_SERVICE_ACCOUNT_JSON')
   if (rawJson) {
-    return JSON.parse(rawJson)
+    try {
+      return JSON.parse(rawJson)
+    } catch {
+      return JSON.parse(rawJson.replace(/\r?\n/g, '\\n'))
+    }
   }
 
   const filePath = env('GOOGLE_SERVICE_ACCOUNT_FILE')
@@ -320,17 +421,26 @@ function getWebinarSheetTab() {
   return env('GOOGLE_WEBINAR_SHEET_TAB') || 'Webinar'
 }
 
+async function getWebinarRows(client: SheetClient, tabName: string) {
+  const response = await withSheetsRetry(`getWebinarRows:${tabName}`, () =>
+    client.sheets.spreadsheets.values.get({
+      spreadsheetId: client.spreadsheetId,
+      range: `${tabName}!${WEBINAR_COLUMNS_RANGE}`,
+    }),
+  )
+
+  return response.data.values || []
+}
+
 async function getSheetIdByTitle(client: SheetClient, tabName: string) {
   const spreadsheet = await withSheetsRetry(`getSheetIdByTitle:${tabName}`, () =>
-    client.sheets.spreadsheets.get({
-      spreadsheetId: client.spreadsheetId,
-    }),
+    client.sheets.spreadsheets.get({ spreadsheetId: client.spreadsheetId }),
   )
 
   const sheet = spreadsheet.data.sheets?.find((item) => item.properties?.title === tabName)
   const sheetId = sheet?.properties?.sheetId
   if (sheetId === undefined) {
-    throw new Error(`Nie znaleziono zakładki Google Sheets: ${tabName}`)
+    throw new Error(`Nie znaleziono zakladki Google Sheets: ${tabName}`)
   }
 
   return sheetId
@@ -346,12 +456,7 @@ async function formatSheetTab(client: SheetClient, tabName: string) {
         requests: [
           {
             updateSheetProperties: {
-              properties: {
-                sheetId,
-                gridProperties: {
-                  frozenRowCount: 1,
-                },
-              },
+              properties: { sheetId, gridProperties: { frozenRowCount: 1 } },
               fields: 'gridProperties.frozenRowCount',
             },
           },
@@ -366,19 +471,11 @@ async function formatSheetTab(client: SheetClient, tabName: string) {
               },
               cell: {
                 userEnteredFormat: {
-                  backgroundColor: {
-                    red: 0.788,
-                    green: 0.631,
-                    blue: 0.231,
-                  },
+                  backgroundColor: { red: 0.788, green: 0.631, blue: 0.231 },
                   horizontalAlignment: 'CENTER',
                   textFormat: {
                     bold: true,
-                    foregroundColor: {
-                      red: 1,
-                      green: 1,
-                      blue: 1,
-                    },
+                    foregroundColor: { red: 1, green: 1, blue: 1 },
                   },
                   wrapStrategy: 'WRAP',
                 },
@@ -404,9 +501,7 @@ async function formatSheetTab(client: SheetClient, tabName: string) {
 
 async function ensureSheetTabExists(client: SheetClient, tabName: string) {
   const spreadsheet = await withSheetsRetry(`ensureSheetTabExists:get:${tabName}`, () =>
-    client.sheets.spreadsheets.get({
-      spreadsheetId: client.spreadsheetId,
-    }),
+    client.sheets.spreadsheets.get({ spreadsheetId: client.spreadsheetId }),
   )
 
   const existingSheet = spreadsheet.data.sheets?.find((item) => item.properties?.title === tabName)
@@ -418,15 +513,7 @@ async function ensureSheetTabExists(client: SheetClient, tabName: string) {
     client.sheets.spreadsheets.batchUpdate({
       spreadsheetId: client.spreadsheetId,
       requestBody: {
-        requests: [
-          {
-            addSheet: {
-              properties: {
-                title: tabName,
-              },
-            },
-          },
-        ],
+        requests: [{ addSheet: { properties: { title: tabName } } }],
       },
     }),
   )
@@ -434,11 +521,9 @@ async function ensureSheetTabExists(client: SheetClient, tabName: string) {
   await withSheetsRetry(`ensureSheetTabExists:header:${tabName}`, () =>
     client.sheets.spreadsheets.values.update({
       spreadsheetId: client.spreadsheetId,
-      range: `${tabName}!A1:N1`,
+      range: `${tabName}!A1:P1`,
       valueInputOption: 'RAW',
-      requestBody: {
-        values: [WEBINAR_HEADERS],
-      },
+      requestBody: { values: [WEBINAR_HEADERS] },
     }),
   )
 
@@ -449,7 +534,7 @@ async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
   const response = await withSheetsRetry(`ensureSheetTabStructure:get:${tabName}`, () =>
     client.sheets.spreadsheets.values.get({
       spreadsheetId: client.spreadsheetId,
-      range: `${tabName}!A:N`,
+      range: `${tabName}!A:P`,
     }),
   )
 
@@ -466,11 +551,9 @@ async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
     await withSheetsRetry(`ensureSheetTabStructure:init:${tabName}`, () =>
       client.sheets.spreadsheets.values.update({
         spreadsheetId: client.spreadsheetId,
-        range: `${tabName}!A1:N1`,
+        range: `${tabName}!A1:P1`,
         valueInputOption: 'RAW',
-        requestBody: {
-          values: [WEBINAR_HEADERS],
-        },
+        requestBody: { values: [WEBINAR_HEADERS] },
       }),
     )
     await formatSheetTab(client, tabName)
@@ -493,18 +576,16 @@ async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
   await withSheetsRetry(`ensureSheetTabStructure:clear:${tabName}`, () =>
     client.sheets.spreadsheets.values.clear({
       spreadsheetId: client.spreadsheetId,
-      range: `${tabName}!A:N`,
+      range: `${tabName}!A:P`,
     }),
   )
 
   await withSheetsRetry(`ensureSheetTabStructure:update:${tabName}`, () =>
     client.sheets.spreadsheets.values.update({
       spreadsheetId: client.spreadsheetId,
-      range: `${tabName}!A1:N${preservedRows.length + 1}`,
+      range: `${tabName}!A1:P${preservedRows.length + 1}`,
       valueInputOption: 'RAW',
-      requestBody: {
-        values: [WEBINAR_HEADERS, ...preservedRows],
-      },
+      requestBody: { values: [WEBINAR_HEADERS, ...preservedRows] },
     }),
   )
 
@@ -512,10 +593,7 @@ async function ensureSheetTabStructure(client: SheetClient, tabName: string) {
 }
 
 async function ensureRequiredSheetTabs(client: SheetClient) {
-  if (
-    ensuredSheetTabSpreadsheetId === client.spreadsheetId &&
-    Date.now() - ensuredSheetTabAt < SHEET_STRUCTURE_CACHE_TTL_MS
-  ) {
+  if (ensuredSheetTabSpreadsheetId === client.spreadsheetId && Date.now() - ensuredSheetTabAt < SHEET_STRUCTURE_CACHE_TTL_MS) {
     return
   }
 
@@ -600,25 +678,39 @@ function formatWebinarDateLabel(date: Date) {
 
 function resolveSlot(slotKey: WebinarSlotKey, now = new Date()) {
   const config = SLOT_CONFIG[slotKey]
-  const nowWarsaw = getWarsawParts(now)
-  let dayDelta = (config.weekday - nowWarsaw.weekday + 7) % 7
-  const currentMinutes = nowWarsaw.hour * 60 + nowWarsaw.minute
-  const targetMinutes = config.hour * 60 + config.minute
+  const configuredDate = getConfiguredSlotDate(slotKey)
 
-  if (dayDelta === 0 && currentMinutes >= targetMinutes) {
-    dayDelta = 7
+  let startsAt: Date
+  let isSingleUse = false
+
+  if (configuredDate) {
+    startsAt = configuredDate
+    isSingleUse = true
+  } else {
+    const nowWarsaw = getWarsawParts(now)
+    let dayDelta = (config.weekday - nowWarsaw.weekday + 7) % 7
+    const currentMinutes = nowWarsaw.hour * 60 + nowWarsaw.minute
+    const targetMinutes = config.hour * 60 + config.minute
+
+    if (dayDelta === 0 && currentMinutes >= targetMinutes) {
+      dayDelta = 7
+    }
+
+    const targetDateSeed = new Date(
+      Date.UTC(nowWarsaw.year, nowWarsaw.month - 1, nowWarsaw.day) + dayDelta * 24 * 60 * 60 * 1000,
+    )
+    startsAt = zonedLocalToUtc({
+      year: targetDateSeed.getUTCFullYear(),
+      month: targetDateSeed.getUTCMonth() + 1,
+      day: targetDateSeed.getUTCDate(),
+      hour: config.hour,
+      minute: config.minute,
+    })
   }
 
-  const targetDateSeed = new Date(Date.UTC(nowWarsaw.year, nowWarsaw.month - 1, nowWarsaw.day) + dayDelta * 24 * 60 * 60 * 1000)
-  const startsAt = zonedLocalToUtc({
-    year: targetDateSeed.getUTCFullYear(),
-    month: targetDateSeed.getUTCMonth() + 1,
-    day: targetDateSeed.getUTCDate(),
-    hour: config.hour,
-    minute: config.minute,
-  })
-
   return {
+    startsAt,
+    isSingleUse,
     webinarDateIso: startsAt.toISOString(),
     webinarDateKey: toWarsawDateKey(startsAt),
     webinarDateLabel: formatWebinarDateLabel(startsAt),
@@ -626,6 +718,64 @@ function resolveSlot(slotKey: WebinarSlotKey, now = new Date()) {
     webinarTimeLabel: config.timeLabel,
     webinarLink: env(config.linkEnvName),
   }
+}
+
+function countBookedSeats(rows: string[][], webinarDateKey: string) {
+  return rows
+    .slice(1)
+    .map((values) => values.map((value) => String(value ?? '')))
+    .filter((values) => values[13] && getRecordStatus(values) !== 'waitlist')
+    .filter((values) => toWarsawDateKey(new Date(values[13])) === webinarDateKey).length
+}
+
+function buildSlotAvailability(rows: string[][], slotKey: WebinarSlotKey, now = new Date()): WebinarSlotAvailability {
+  const config = SLOT_CONFIG[slotKey]
+  const slot = resolveSlot(slotKey, now)
+  const capacity = getSlotCapacity(slotKey)
+  const isExpired = slot.startsAt.getTime() <= now.getTime()
+  const bookedSeats = isExpired ? capacity : countBookedSeats(rows, slot.webinarDateKey)
+  const remainingSeats = isExpired ? 0 : Math.max(0, capacity - bookedSeats)
+  const isFull = !isExpired && remainingSeats <= 0
+
+  let helper = `${slot.webinarDateLabel}. Pozostalo ${remainingSeats} z ${capacity} miejsc.`
+  if (isExpired) {
+    helper = slot.isSingleUse ? 'Ten jednorazowy termin nie jest juz dostepny.' : 'Ten termin nie jest juz dostepny.'
+  } else if (isFull) {
+    helper = `${slot.webinarDateLabel}. Brak miejsc (${capacity}/${capacity}).`
+  }
+
+  return {
+    key: slotKey,
+    label: `${config.dayLabel}, ${config.timeLabel}`,
+    helper,
+    webinarDateLabel: slot.webinarDateLabel,
+    webinarDayLabel: slot.webinarDayLabel,
+    webinarTimeLabel: slot.webinarTimeLabel,
+    remainingSeats,
+    capacity,
+    isAvailable: !isExpired && !isFull,
+    isFull,
+    isExpired,
+    isSingleUse: slot.isSingleUse,
+  }
+}
+
+function buildAvailability(rows: string[][], now = new Date()) {
+  return SLOT_KEYS.map((slotKey) => buildSlotAvailability(rows, slotKey, now))
+}
+
+function buildAvailabilityNote(availability: WebinarSlotAvailability[]) {
+  return availability
+    .map((slot) => {
+      if (slot.isAvailable) {
+        return `${slot.label}: ${slot.remainingSeats}/${slot.capacity} miejsc`
+      }
+      if (slot.isExpired) {
+        return `${slot.label}: termin niedostepny`
+      }
+      return `${slot.label}: brak miejsc`
+    })
+    .join(' | ')
 }
 
 function toSheetRow(record: WebinarLeadRecord): Array<string | number> {
@@ -644,10 +794,18 @@ function toSheetRow(record: WebinarLeadRecord): Array<string | number> {
     record.reminderSentAt,
     record.leadId,
     record.webinarDateIso,
+    record.status,
+    record.note,
   ]
 }
 
 function fromSheetRow(values: string[]): WebinarLeadRecord {
+  const selectedSlot: WebinarSlotKey | null =
+    values[2] === 'Wtorek' ? 'tuesday-2000' : values[2] === 'Czwartek' ? 'thursday-2000' : values[2] === 'Sobota' ? 'saturday-1100' : null
+
+  const storedWebinarLink = values[10] || ''
+  const envWebinarLink = selectedSlot ? env(SLOT_CONFIG[selectedSlot].linkEnvName) : ''
+
   return {
     leadId: values[12] || '',
     createdAt: values[0] || '',
@@ -662,11 +820,13 @@ function fromSheetRow(values: string[]): WebinarLeadRecord {
       acceptContact: normalizeCellValue(values[8]) === 'tak',
     },
     source: values[9] || 'webinar',
-    webinarLink: values[10] || '',
+    webinarLink: storedWebinarLink || envWebinarLink,
     reminderSentAt: values[11] || '',
     webinarDateIso: values[13] || '',
     webinarDateKey: values[13] ? toWarsawDateKey(new Date(values[13])) : '',
-    selectedSlot: values[2] === 'Wtorek' ? 'tuesday-2000' : values[2] === 'Czwartek' ? 'thursday-2000' : 'saturday-1100',
+    selectedSlot,
+    status: getRecordStatus(values),
+    note: values[15] || '',
   }
 }
 
@@ -677,9 +837,7 @@ async function appendRowToTab(client: SheetClient, tabName: string, row: Array<s
       range: `${tabName}!${WEBINAR_COLUMNS_RANGE}`,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
-      requestBody: {
-        values: [row],
-      },
+      requestBody: { values: [row] },
     }),
   )
 }
@@ -688,11 +846,9 @@ async function updateRow(client: SheetClient, tabName: string, rowNumber: number
   await withSheetsRetry(`updateRow:${tabName}:${rowNumber}`, () =>
     client.sheets.spreadsheets.values.update({
       spreadsheetId: client.spreadsheetId,
-      range: `${tabName}!A${rowNumber}:N${rowNumber}`,
+      range: `${tabName}!A${rowNumber}:P${rowNumber}`,
       valueInputOption: 'USER_ENTERED',
-      requestBody: {
-        values: [row],
-      },
+      requestBody: { values: [row] },
     }),
   )
 }
@@ -709,10 +865,7 @@ async function findRowByLeadId(client: SheetClient, tabName: string, leadId: str
   for (let index = 1; index < rows.length; index += 1) {
     const row = rows[index]?.map((value) => String(value ?? '').trim()) || []
     if ((row[12] || '') === leadId || row.includes(leadId)) {
-      return {
-        rowNumber: index + 1,
-        values: rows[index].map((value) => String(value ?? '')),
-      }
+      return { rowNumber: index + 1, values: rows[index].map((value) => String(value ?? '')) }
     }
   }
 
@@ -738,26 +891,26 @@ async function getRowsNeedingReminder(client: SheetClient, tabName: string) {
 
 function buildConfirmationText(record: WebinarLeadRecord) {
   return [
-    `Dzień dobry ${record.name},`,
+    `Dzien dobry ${record.name},`,
     '',
-    'Twoje miejsce na webinarze Velo Prime zostało zarezerwowane.',
+    'Twoje miejsce na webinarze Velo Prime zostalo zarezerwowane.',
     '',
-    'Szczegóły spotkania:',
+    'Szczegoly spotkania:',
     `Termin: ${record.webinarDateLabel}`,
     `Telefon kontaktowy: ${record.phone}`,
     `Adres e-mail: ${record.email}`,
-    record.webinarLink ? `Link do webinaru: ${record.webinarLink}` : 'Link do webinaru uzupełnimy w osobnej wiadomości po podaniu adresu spotkania.',
+    record.webinarLink ? `Link do webinaru: ${record.webinarLink}` : 'Link do webinaru uzupelnimy w osobnej wiadomosci po podaniu adresu spotkania.',
     '',
-    'W dniu webinaru wyślemy dodatkowe przypomnienie e-mail.',
+    'W dniu webinaru wyslemy dodatkowe przypomnienie e-mail.',
     '',
     'Pozdrawiamy,',
-    'Zespół Velo Prime',
+    'Zespol Velo Prime',
   ].join('\n')
 }
 
 function buildReminderText(record: WebinarLeadRecord) {
   return [
-    `Dzień dobry ${record.name},`,
+    `Dzien dobry ${record.name},`,
     '',
     'Przypominamy o dzisiejszym webinarze Velo Prime.',
     '',
@@ -765,7 +918,22 @@ function buildReminderText(record: WebinarLeadRecord) {
     record.webinarLink ? `Link do webinaru: ${record.webinarLink}` : 'Link do webinaru zostanie przekazany osobno.',
     '',
     'Do zobaczenia online,',
-    'Zespół Velo Prime',
+    'Zespol Velo Prime',
+  ].join('\n')
+}
+
+function buildWaitlistText(record: WebinarLeadRecord) {
+  return [
+    `Dzien dobry ${record.name},`,
+    '',
+    'Wszystkie obecne terminy webinaru Velo Prime sa juz zajete.',
+    'Zapisalismy Twoje dane na liste oczekujacych i powiadomimy Cie, gdy uruchomimy kolejny termin.',
+    '',
+    `Telefon kontaktowy: ${record.phone}`,
+    `Adres e-mail: ${record.email}`,
+    '',
+    'Pozdrawiamy,',
+    'Zespol Velo Prime',
   ].join('\n')
 }
 
@@ -801,17 +969,17 @@ function buildEmailShell(options: {
     '</div>',
     '<div style="padding:32px;">',
     '<div style="margin:0 0 26px;padding:22px;border-radius:20px;background:linear-gradient(180deg,#fbf8f3,#f5ede1);border:1px solid #e8dcc8;">',
-    '<div style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#9a7b2f;">Szczegóły</div>',
+    '<div style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#9a7b2f;">Szczegoly</div>',
     '<table role="presentation" style="width:100%;border-collapse:collapse;">',
     summaryHtml,
     '</table>',
     '</div>',
     options.buttonHref
-      ? '<div style="margin:0 0 24px;"><a href="' + escapeHtml(options.buttonHref) + '" style="display:inline-block;padding:13px 20px;border-radius:14px;background:linear-gradient(135deg,#ebc971,#b6841c);color:#ffffff;text-decoration:none;font-weight:700;box-shadow:0 16px 34px rgba(182,132,28,0.28);">' + escapeHtml(options.buttonLabel || 'Otwórz webinar') + '</a></div>'
+      ? '<div style="margin:0 0 24px;"><a href="' + escapeHtml(options.buttonHref) + '" style="display:inline-block;padding:13px 20px;border-radius:14px;background:linear-gradient(135deg,#ebc971,#b6841c);color:#ffffff;text-decoration:none;font-weight:700;box-shadow:0 16px 34px rgba(182,132,28,0.28);">' + escapeHtml(options.buttonLabel || 'Otworz webinar') + '</a></div>'
       : '',
     '<div style="margin:0 0 24px;padding:18px 20px;border-left:3px solid #c9a13b;background:#faf7f2;border-radius:0 14px 14px 0;font-size:15px;color:#374151;">' + escapeHtml(options.note) + '</div>',
     '<p style="margin:0;font-size:15px;">' + escapeHtml(options.footer) + '</p>',
-    '<div style="margin-top:18px;font-size:12px;color:#8b8b8b;">Velo Prime • webinar • sprzedaż premium • partnerstwo regionalne</div>',
+    '<div style="margin-top:18px;font-size:12px;color:#8b8b8b;">Velo Prime • webinar • sprzedaz premium • partnerstwo regionalne</div>',
     '</div>',
     '</div>',
     '</div>',
@@ -840,19 +1008,19 @@ async function sendConfirmationEmail(record: WebinarLeadRecord) {
       html: buildEmailShell({
         eyebrow: 'Webinar Velo Prime',
         title: 'Potwierdzenie rezerwacji miejsca',
-        intro: 'Twoje zgłoszenie zostało zapisane. Poniżej znajdziesz szczegóły najbliższego webinaru.',
+        intro: 'Twoje zgloszenie zostalo zapisane. Ponizej znajdziesz szczegoly najblizszego webinaru.',
         summaryRows: [
           { label: 'Termin', value: record.webinarDateLabel },
           { label: 'Telefon', value: record.phone },
           { label: 'E-mail', value: record.email },
-          { label: 'Źródło zapisu', value: record.source },
+          { label: 'Zrodlo zapisu', value: record.source },
         ],
-        buttonLabel: record.webinarLink ? 'Przejdź do webinaru' : undefined,
+        buttonLabel: record.webinarLink ? 'Przejdz do webinaru' : undefined,
         buttonHref: record.webinarLink || undefined,
         note: record.webinarLink
-          ? 'W dniu webinaru wyślemy dodatkowe przypomnienie z tym samym linkiem.'
-          : 'Link do webinaru uzupełnimy po otrzymaniu właściwego adresu spotkania.',
-        footer: 'Pozdrawiamy, Zespół Velo Prime',
+          ? 'W dniu webinaru wyslemy dodatkowe przypomnienie z tym samym linkiem.'
+          : 'Link do webinaru uzupelnimy po otrzymaniu wlasciwego adresu spotkania.',
+        footer: 'Pozdrawiamy, Zespol Velo Prime',
       }),
     })
   } catch (error) {
@@ -881,19 +1049,19 @@ async function sendReminderEmail(record: WebinarLeadRecord) {
       text: buildReminderText(record),
       html: buildEmailShell({
         eyebrow: 'Przypomnienie webinaru',
-        title: 'Dzisiaj widzimy się online',
-        intro: 'To krótkie przypomnienie o Twoim dzisiejszym webinarze Velo Prime.',
+        title: 'Dzisiaj widzimy sie online',
+        intro: 'To krotkie przypomnienie o Twoim dzisiejszym webinarze Velo Prime.',
         summaryRows: [
           { label: 'Termin', value: record.webinarDateLabel },
           { label: 'Telefon', value: record.phone },
           { label: 'E-mail', value: record.email },
         ],
-        buttonLabel: record.webinarLink ? 'Otwórz pokój webinarowy' : undefined,
+        buttonLabel: record.webinarLink ? 'Otworz pokoj webinarowy' : undefined,
         buttonHref: record.webinarLink || undefined,
         note: record.webinarLink
-          ? 'Zachowaj tę wiadomość pod ręką. Link pozostaje aktywny dla wybranego terminu.'
+          ? 'Zachowaj te wiadomosc pod reka. Link pozostaje aktywny dla wybranego terminu.'
           : 'Link do webinaru zostanie przekazany osobno.',
-        footer: 'Do zobaczenia, Zespół Velo Prime',
+        footer: 'Do zobaczenia, Zespol Velo Prime',
       }),
     })
   } catch (error) {
@@ -902,11 +1070,131 @@ async function sendReminderEmail(record: WebinarLeadRecord) {
   }
 }
 
-export async function registerWebinarLead(input: WebinarSignupInput) {
+async function sendWaitlistEmail(record: WebinarLeadRecord) {
+  const transport = createTransport()
+  const config = readMailConfig()
+
+  if (!transport || !config) {
+    const missingFields = getMissingMailConfigFields()
+    if (missingFields.length > 0) {
+      console.warn('[webinar:waitlist-email:config]', `Brakuje: ${missingFields.join(', ')}`)
+    }
+    return
+  }
+
+  try {
+    await transport.sendMail({
+      from: config.from,
+      to: record.email,
+      replyTo: env('WEBINAR_CONFIRMATION_REPLY_TO') || undefined,
+      subject: 'Lista oczekujacych webinaru Velo Prime',
+      text: buildWaitlistText(record),
+      html: buildEmailShell({
+        eyebrow: 'Lista oczekujacych',
+        title: 'Wszystkie aktualne terminy sa zajete',
+        intro: 'Zapisalismy Twoje dane i damy znac, gdy pojawi sie nowy termin webinaru Velo Prime.',
+        summaryRows: [
+          { label: 'Telefon', value: record.phone },
+          { label: 'E-mail', value: record.email },
+          { label: 'Zrodlo zapisu', value: record.source },
+        ],
+        note: 'Nie musisz robic nic wiecej. Powiadomimy Cie o najblizszym dostepnym terminie.',
+        footer: 'Pozdrawiamy, Zespol Velo Prime',
+      }),
+    })
+  } catch (error) {
+    console.error('[webinar:waitlist-email]', describeMailError(error), error)
+  }
+}
+
+async function registerWebinarWaitlistLead(
+  client: SheetClient,
+  input: WebinarSignupInput,
+  availability: WebinarSlotAvailability[],
+): Promise<WebinarRegistrationResult> {
+  const leadId = randomUUID()
+  const record: WebinarLeadRecord = {
+    ...input,
+    selectedSlot: input.selectedSlot || null,
+    leadId,
+    createdAt: new Date().toISOString(),
+    webinarDateLabel: 'Wszystkie obecne terminy sa zajete',
+    webinarDayLabel: '',
+    webinarTimeLabel: '',
+    webinarLink: '',
+    webinarDateIso: '',
+    webinarDateKey: '',
+    reminderSentAt: '',
+    status: 'waitlist',
+    note: buildAvailabilityNote(availability),
+  }
+
+  await appendRowToTab(client, getWebinarSheetTab(), toSheetRow(record))
+  await sendWaitlistEmail(record)
+
+  return {
+    status: 'waitlist',
+    leadId: record.leadId,
+    webinarDateLabel: record.webinarDateLabel,
+    webinarDayLabel: record.webinarDayLabel,
+    webinarTimeLabel: record.webinarTimeLabel,
+    hasWebinarLink: false,
+    message: 'Wszystkie aktualne terminy sa juz zajete. Zapisalismy Twoje dane i powiadomimy Cie o kolejnym webinarze.',
+    availability,
+  }
+}
+
+export async function getWebinarAvailability() {
+  const client = await createSheetClient()
+  await ensureRequiredSheetTabs(client)
+
+  const rows = await getWebinarRows(client, getWebinarSheetTab())
+  return buildAvailability(rows)
+}
+
+export async function registerWebinarLead(input: WebinarSignupInput): Promise<WebinarRegistrationResult> {
+  const client = await createSheetClient()
+  await ensureRequiredSheetTabs(client)
+
+  const rows = await getWebinarRows(client, getWebinarSheetTab())
+  const availability = buildAvailability(rows)
+  const availableSlots = availability.filter((slot) => slot.isAvailable)
+
+  if (!input.selectedSlot) {
+    if (availableSlots.length === 0) {
+      return registerWebinarWaitlistLead(client, input, availability)
+    }
+
+    throw new WebinarSignupError('Wybierz termin webinaru.', {
+      statusCode: 400,
+      code: 'slot-required',
+      availability,
+    })
+  }
+
+  const selectedAvailability = availability.find((slot) => slot.key === input.selectedSlot)
+  if (!selectedAvailability?.isAvailable) {
+    if (availableSlots.length === 0) {
+      return registerWebinarWaitlistLead(client, input, availability)
+    }
+
+    throw new WebinarSignupError(
+      selectedAvailability?.isExpired
+        ? 'Ten termin webinaru nie jest juz dostepny. Wybierz inny termin.'
+        : 'Ten termin webinaru jest juz zajety. Wybierz inny termin.',
+      {
+        statusCode: 409,
+        code: 'slot-unavailable',
+        availability,
+      },
+    )
+  }
+
   const leadId = randomUUID()
   const slot = resolveSlot(input.selectedSlot)
   const record: WebinarLeadRecord = {
     ...input,
+    selectedSlot: input.selectedSlot,
     leadId,
     createdAt: new Date().toISOString(),
     webinarDateLabel: slot.webinarDateLabel,
@@ -916,19 +1204,22 @@ export async function registerWebinarLead(input: WebinarSignupInput) {
     webinarDateIso: slot.webinarDateIso,
     webinarDateKey: slot.webinarDateKey,
     reminderSentAt: '',
+    status: 'booked',
+    note: '',
   }
 
-  const client = await createSheetClient()
-  await ensureRequiredSheetTabs(client)
   await appendRowToTab(client, getWebinarSheetTab(), toSheetRow(record))
   await sendConfirmationEmail(record)
 
   return {
+    status: 'confirmed',
     leadId: record.leadId,
     webinarDateLabel: record.webinarDateLabel,
     webinarDayLabel: record.webinarDayLabel,
     webinarTimeLabel: record.webinarTimeLabel,
     hasWebinarLink: Boolean(record.webinarLink),
+    message: 'Dzieki! Zgloszenie zapisane. Szczegoly webinaru wyslemy na podany email.',
+    availability,
   }
 }
 
@@ -942,6 +1233,10 @@ export async function sendWebinarReminders() {
 
   for (const row of reminderRows) {
     const record = fromSheetRow(row.values)
+    if (record.status === 'waitlist') {
+      continue
+    }
+
     await sendReminderEmail(record)
     const updatedRecord: WebinarLeadRecord = {
       ...record,

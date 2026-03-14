@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server'
 
-import { registerWebinarLead, type WebinarSlotKey } from '@/lib/webinarSignup'
+import { getWebinarAvailability, registerWebinarLead, WebinarSignupError, type WebinarSlotKey } from '@/lib/webinarSignup'
 
 export const runtime = 'nodejs'
+
+export async function GET() {
+  try {
+    const availability = await getWebinarAvailability()
+    return NextResponse.json({ ok: true, availability })
+  } catch (error) {
+    console.error('[webinar-availability]', error)
+    return NextResponse.json({ ok: false, error: 'Nie udało się pobrać dostępności terminów.' }, { status: 500 })
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -33,10 +43,6 @@ export async function POST(req: Request) {
       )
     }
 
-    if (!body.selectedSlot) {
-      return NextResponse.json({ ok: false, error: 'Wybierz termin webinaru.' }, { status: 400 })
-    }
-
     const result = await registerWebinarLead({
       name,
       email,
@@ -51,6 +57,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true, ...result })
   } catch (error) {
+    if (error instanceof WebinarSignupError) {
+      return NextResponse.json(
+        { ok: false, error: error.message, code: error.code, availability: error.availability },
+        { status: error.statusCode },
+      )
+    }
+
     console.error('[webinar-lead]', error)
     return NextResponse.json({ ok: false, error: 'Nieprawidłowe dane.' }, { status: 400 })
   }

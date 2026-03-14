@@ -256,7 +256,11 @@ function fromCustomerTypeLabel(value: string): PartnerSignupPayload['customerTyp
 async function loadGoogleCredentials() {
   const rawJson = env('GOOGLE_SERVICE_ACCOUNT_JSON')
   if (rawJson) {
-    return JSON.parse(rawJson)
+    try {
+      return JSON.parse(rawJson)
+    } catch {
+      return JSON.parse(rawJson.replace(/\r?\n/g, '\\n'))
+    }
   }
 
   const filePath = env('GOOGLE_SERVICE_ACCOUNT_FILE')

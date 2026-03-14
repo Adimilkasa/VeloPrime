@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Nodemailer is Node-only and should not be bundled by Webpack.
+  // Externalizing prevents resolution/bundling issues on some setups (esp. Windows).
+  serverExternalPackages: ['nodemailer'],
   // Prevent dev-server chunk corruption on Windows by separating dev output
   // from production build output.
   // - `next dev`  -> .next-dev
