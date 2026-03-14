@@ -182,6 +182,10 @@ function WebinarSignupForm({
     tone === 'dark'
       ? 'rounded-[18px] border border-emerald-300/30 bg-emerald-500/10 px-4 py-3 text-sm leading-relaxed text-white'
       : 'rounded-[18px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-950'
+  const successPanelClassName =
+    tone === 'dark'
+      ? 'rounded-[24px] border border-emerald-300/30 bg-emerald-500/10 px-6 py-8 text-center text-white shadow-[0_18px_40px_rgba(16,185,129,0.16)]'
+      : 'rounded-[24px] border border-emerald-200 bg-emerald-50 px-6 py-8 text-center text-emerald-950 shadow-[0_18px_40px_rgba(16,185,129,0.08)]'
 
   const checkboxClassName =
     tone === 'dark'
@@ -320,6 +324,24 @@ function WebinarSignupForm({
       setStatus('error')
       setErrorMessage('Nie udało się wysłać zgłoszenia. Spróbuj ponownie.')
     }
+  }
+
+  if (status === 'success') {
+    return (
+      <div className={successPanelClassName}>
+        <div className="mx-auto max-w-[520px]">
+          <div className={tone === 'dark' ? 'text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200/90' : 'text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700'}>
+            Potwierdzenie zapisu
+          </div>
+          <div className={tone === 'dark' ? 'mt-3 text-2xl font-semibold text-white' : 'mt-3 text-2xl font-semibold text-emerald-950'}>
+            {allSlotsUnavailable ? 'Jesteś na liście oczekujących' : 'Miejsce na webinarze zostało zarezerwowane'}
+          </div>
+          <div className={tone === 'dark' ? 'mt-4 text-sm leading-relaxed text-white/85' : 'mt-4 text-sm leading-relaxed text-emerald-900/90'}>
+            {successMessage}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -508,7 +530,7 @@ function WebinarSignupForm({
           <div className="mt-1 grid gap-3">
             <button
               type="submit"
-              disabled={status === 'loading' || status === 'success'}
+              disabled={status === 'loading'}
               className="inline-flex w-full items-center justify-center font-semibold text-white disabled:opacity-70"
               style={{
                 background: 'linear-gradient(135deg,#ebc971,#b6841c)',
@@ -519,9 +541,7 @@ function WebinarSignupForm({
             >
               {status === 'loading'
                 ? 'Wysyłanie…'
-                : status === 'success'
-                  ? 'Zapisano'
-                  : allSlotsUnavailable
+                : allSlotsUnavailable
                     ? 'Dołącz do listy oczekujących'
                     : 'Zarezerwuj miejsce na webinarze'}
             </button>
@@ -553,11 +573,6 @@ function WebinarSignupForm({
               </div>
             ) : null}
 
-            {status === 'success' ? (
-              <div className={statusCardClassName}>
-                {successMessage}
-              </div>
-            ) : null}
           </div>
         </>
       )}
