@@ -178,6 +178,10 @@ function WebinarSignupForm({
     tone === 'dark' ? 'text-xs font-semibold text-white/90' : 'text-xs font-semibold text-neutral-800'
 
   const helperClassName = tone === 'dark' ? 'mt-1 text-[11px] text-white/55' : 'mt-1 text-[11px] text-neutral-500'
+  const statusCardClassName =
+    tone === 'dark'
+      ? 'rounded-[18px] border border-emerald-300/30 bg-emerald-500/10 px-4 py-3 text-sm leading-relaxed text-white'
+      : 'rounded-[18px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-950'
 
   const checkboxClassName =
     tone === 'dark'
@@ -237,6 +241,30 @@ function WebinarSignupForm({
     }
   }, [availability, selectedSlot])
 
+  const getSlotStatusLabel = (slot: WebinarAvailabilitySlot) => {
+    if (slot.isExpired) {
+      return 'Termin zamkniety'
+    }
+
+    if (!slot.isAvailable) {
+      return 'Brak miejsc'
+    }
+
+    return 'Dostepny termin'
+  }
+
+  const getSlotDescription = (slot: WebinarAvailabilitySlot) => {
+    if (slot.isExpired) {
+      return 'Ten termin nie jest juz dostepny.'
+    }
+
+    if (!slot.isAvailable) {
+      return 'Ten termin jest aktualnie niedostepny. Wybierz inny termin.'
+    }
+
+    return slot.webinarDateLabel
+  }
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
@@ -286,7 +314,7 @@ function WebinarSignupForm({
         json?.message ||
           (json?.status === 'waitlist'
             ? 'Wszystkie terminy są obecnie zajęte. Zapisaliśmy Twoje dane i powiadomimy Cię o kolejnym webinarze.'
-            : 'Dzięki! Zgłoszenie zapisane. Szczegóły webinaru wyślemy na podany email.'),
+            : 'Miejsce na webinarze zostało zarezerwowane. Na podany adres e-mail przesłaliśmy wiadomość z potwierdzeniem.'),
       )
     } catch {
       setStatus('error')
@@ -304,7 +332,7 @@ function WebinarSignupForm({
           <div className={helperClassName}>
             {allSlotsUnavailable
               ? 'Możesz zostawić dane, a damy znać, gdy uruchomimy nowy webinar.'
-              : 'Każdy termin ma limit 50 miejsc. Gdy termin się zapełni, trzeba wybrać inny.'}
+              : 'Wybierz dogodny termin. Jeśli dany termin nie będzie dostępny, wskażemy inny.'}
           </div>
           <div className="mt-3 grid gap-2">
             {slotCards.map((option) => {
@@ -345,7 +373,7 @@ function WebinarSignupForm({
                     <div className={tone === 'dark' ? 'text-sm font-semibold text-white' : 'text-sm font-semibold text-neutral-900'}>
                       {option.label}
                     </div>
-                    <div className={helperClassName}>{option.helper}</div>
+                    <div className={helperClassName}>{getSlotDescription(option)}</div>
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-2">
                     <span
@@ -365,11 +393,7 @@ function WebinarSignupForm({
                             ].join(' ')
                       }
                     >
-                      {option.isAvailable
-                        ? `${option.remainingSeats}/${option.capacity} miejsc`
-                        : option.isExpired
-                          ? 'Termin zamknięty'
-                          : 'Brak miejsc'}
+                      {getSlotStatusLabel(option)}
                     </span>
                     <div
                       aria-hidden
@@ -516,9 +540,9 @@ function WebinarSignupForm({
                 'Jeśli wszystkie terminy są zajęte, zachowamy Twoje dane i powiadomimy Cię o najbliższym webinarze.'
               ) : (
                 <>
-                  Liczba miejsc ograniczona do 50 na termin.
+                  Po zapisie otrzymasz potwierdzenie rezerwacji oraz szczegóły webinaru na e-mail.
                   <br />
-                  Po zapisie otrzymasz szczegóły webinaru oraz link do spotkania.
+                  Jeśli termin nie będzie dostępny, wskażemy inny lub zapiszemy Cię na listę oczekujących.
                 </>
               )}
             </div>
@@ -530,7 +554,7 @@ function WebinarSignupForm({
             ) : null}
 
             {status === 'success' ? (
-              <div className={tone === 'dark' ? 'text-xs font-medium text-white/90' : 'text-xs font-medium text-neutral-800'}>
+              <div className={statusCardClassName}>
                 {successMessage}
               </div>
             ) : null}

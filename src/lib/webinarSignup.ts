@@ -944,6 +944,7 @@ function buildEmailShell(options: {
   summaryRows: Array<{ label: string; value: string }>
   buttonLabel?: string
   buttonHref?: string
+  buttonNote?: string
   note: string
   footer: string
 }) {
@@ -975,7 +976,16 @@ function buildEmailShell(options: {
     '</table>',
     '</div>',
     options.buttonHref
-      ? '<div style="margin:0 0 24px;"><a href="' + escapeHtml(options.buttonHref) + '" style="display:inline-block;padding:13px 20px;border-radius:14px;background:linear-gradient(135deg,#ebc971,#b6841c);color:#ffffff;text-decoration:none;font-weight:700;box-shadow:0 16px 34px rgba(182,132,28,0.28);">' + escapeHtml(options.buttonLabel || 'Otworz webinar') + '</a></div>'
+      ? '<div style="margin:0 0 24px;"><a href="' + escapeHtml(options.buttonHref) + '" style="display:inline-block;padding:13px 20px;border-radius:14px;background:#b6841c;border:1px solid #8d6310;color:#ffffff !important;text-decoration:none;font-weight:700;line-height:1.2;mso-line-height-rule:exactly;">' + escapeHtml(options.buttonLabel || 'Otworz webinar') + '</a>' +
+        (options.buttonNote
+          ? '<div style="margin-top:12px;font-size:13px;color:#6b7280;">' + escapeHtml(options.buttonNote) + '</div>'
+          : '') +
+        '<div style="margin-top:12px;padding:12px 14px;border-radius:14px;background:#f8f4ec;border:1px solid #eadfc8;font-size:14px;line-height:1.5;color:#111827;word-break:break-word;">' +
+        'Link do webinaru: <a href="' +
+        escapeHtml(options.buttonHref) +
+        '" style="color:#8d6310;text-decoration:underline;">' +
+        escapeHtml(options.buttonHref) +
+        '</a></div></div>'
       : '',
     '<div style="margin:0 0 24px;padding:18px 20px;border-left:3px solid #c9a13b;background:#faf7f2;border-radius:0 14px 14px 0;font-size:15px;color:#374151;">' + escapeHtml(options.note) + '</div>',
     '<p style="margin:0;font-size:15px;">' + escapeHtml(options.footer) + '</p>',
@@ -1017,6 +1027,7 @@ async function sendConfirmationEmail(record: WebinarLeadRecord) {
         ],
         buttonLabel: record.webinarLink ? 'Przejdz do webinaru' : undefined,
         buttonHref: record.webinarLink || undefined,
+        buttonNote: record.webinarLink ? 'Jesli przycisk nie wyswietla sie poprawnie, skorzystaj z jawnego linku ponizej.' : undefined,
         note: record.webinarLink
           ? 'W dniu webinaru wyslemy dodatkowe przypomnienie z tym samym linkiem.'
           : 'Link do webinaru uzupelnimy po otrzymaniu wlasciwego adresu spotkania.',
@@ -1058,6 +1069,7 @@ async function sendReminderEmail(record: WebinarLeadRecord) {
         ],
         buttonLabel: record.webinarLink ? 'Otworz pokoj webinarowy' : undefined,
         buttonHref: record.webinarLink || undefined,
+        buttonNote: record.webinarLink ? 'Jesli przycisk nie wyswietla sie poprawnie, skorzystaj z jawnego linku ponizej.' : undefined,
         note: record.webinarLink
           ? 'Zachowaj te wiadomosc pod reka. Link pozostaje aktywny dla wybranego terminu.'
           : 'Link do webinaru zostanie przekazany osobno.',
