@@ -87,3 +87,15 @@ Wymagane env:
 - `CRON_SECRET` lub `WEBINAR_CRON_SECRET` dla endpointu przypomnień
 
 Automatyczne przypomnienia są skonfigurowane w `vercel.json` i uruchamiają endpoint `/api/webinar-lead/reminders` w dni webinarowe.
+
+## Cooperation Landing Automation
+
+Formularz na stronie współpracy zapisuje kontakt do Google Sheets i wysyła powiadomienie na Discord.
+
+Wymagane env:
+
+- `GOOGLE_COOPERATION_SHEET_ID` lub `GOOGLE_WEBINAR_SHEET_ID` lub `GOOGLE_PARTNER_SIGNUPS_SHEET_ID`
+- `GOOGLE_COOPERATION_SHEET_TAB` opcjonalnie, domyślnie `Wspolpraca`
+- `DISCORD_COOPERATION_WEBHOOK_URL` opcjonalnie, jeśli chcesz osobny kanał
+
+Jeśli `DISCORD_COOPERATION_WEBHOOK_URL` nie jest ustawiony, formularz współpracy użyje `DISCORD_PARTNER_SIGNUPS_WEBHOOK_URL` jako fallback.

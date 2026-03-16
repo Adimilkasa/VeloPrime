@@ -38,6 +38,12 @@ export function Header() {
           >
             Modele
           </Link>
+          <Link
+            href="/wspolpraca"
+            className="whitespace-nowrap text-sm text-text-secondary hover:text-text-primary transition"
+          >
+            Współpraca
+          </Link>
           <a
             href="/#finansowanie"
             className="whitespace-nowrap text-sm text-text-secondary hover:text-text-primary transition"
@@ -142,6 +148,13 @@ export function Header() {
                 className="rounded-md px-2 py-2 text-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary transition"
               >
                 Modele
+              </Link>
+              <Link
+                href="/wspolpraca"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md px-2 py-2 text-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary transition"
+              >
+                Współpraca
               </Link>
               <a
                 href="/#finansowanie"
