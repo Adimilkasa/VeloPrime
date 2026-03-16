@@ -4,9 +4,12 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { PricingModeProvider } from '@/components/providers/PricingModeProvider'
 import { FloatingOfferWidget } from '@/components/sections/FloatingOfferWidget'
+import { getSiteUrl } from '@/lib/siteUrl'
+
+const siteUrl = getSiteUrl()
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Velo Prime',
     template: '%s — Velo Prime',
