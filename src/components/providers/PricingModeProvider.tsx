@@ -15,7 +15,7 @@ const STORAGE_KEY = 'veloprime.pricingMode'
 const LEGACY_STORAGE_KEY = ['ve', 'lora', '.pricingMode'].join('')
 
 export function PricingModeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setModeState] = React.useState<PricingMode>('private')
+  const [mode, setModeState] = React.useState<PricingMode>('business')
 
   React.useEffect(() => {
     try {

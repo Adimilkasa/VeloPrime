@@ -99,3 +99,15 @@ Wymagane env:
 - `DISCORD_COOPERATION_WEBHOOK_URL` opcjonalnie, jeśli chcesz osobny kanał
 
 Jeśli `DISCORD_COOPERATION_WEBHOOK_URL` nie jest ustawiony, formularz współpracy użyje `DISCORD_PARTNER_SIGNUPS_WEBHOOK_URL` jako fallback.
+
+## Offer Leads Automation
+
+Pływający formularz oferty na homepage oraz formularz kontaktu zapisują leady ofertowe do Google Sheets i wysyłają powiadomienie na Discord.
+
+Wymagane env:
+
+- `GOOGLE_OFFER_SHEET_ID` lub `GOOGLE_COOPERATION_SHEET_ID` lub `GOOGLE_WEBINAR_SHEET_ID` lub `GOOGLE_PARTNER_SIGNUPS_SHEET_ID`
+- `GOOGLE_OFFER_SHEET_TAB` opcjonalnie, domyślnie `Oferta`
+- `DISCORD_OFFER_WEBHOOK_URL` opcjonalnie, jeśli chcesz osobny kanał
+
+Jeśli `DISCORD_OFFER_WEBHOOK_URL` nie jest ustawiony, leady ofertowe użyją `DISCORD_PARTNER_SIGNUPS_WEBHOOK_URL` jako fallback.

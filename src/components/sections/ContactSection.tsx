@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card'
 import { Heading } from '@/components/ui/Heading'
 import { Text } from '@/components/ui/Text'
 import { Button } from '@/components/ui/Button'
+import { usePricingMode } from '@/components/providers/PricingModeProvider'
 
 type FormState = {
   name: string
@@ -39,6 +40,7 @@ function validate(values: FormState): Errors {
 }
 
 export function ContactSection() {
+  const { mode } = usePricingMode()
   const [values, setValues] = React.useState<FormState>({
     name: '',
     phone: '',
@@ -48,6 +50,8 @@ export function ContactSection() {
   })
   const [touched, setTouched] = React.useState<Partial<Record<keyof FormState, boolean>>>({})
   const [copied, setCopied] = React.useState(false)
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [statusMessage, setStatusMessage] = React.useState('')
 
   const errors = React.useMemo(() => validate(values), [values])
 
@@ -64,7 +68,7 @@ export function ContactSection() {
     setTouched((t) => ({ ...t, [key]: true }))
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     setTouched({ name: true, phone: true, email: true, message: true, consent: true })
@@ -72,17 +76,44 @@ export function ContactSection() {
     const nextErrors = validate(values)
     if (Object.keys(nextErrors).length > 0) return
 
-    console.log('[TODO /api/lead-contact]', {
-      name: values.name.trim(),
-      phone: values.phone.trim(),
-      email: values.email.trim() || undefined,
-      message: values.message.trim() || undefined,
-      consent: values.consent,
-      source: 'contact-section',
-    })
+    setStatus('loading')
+    setStatusMessage('')
 
-    setValues({ name: '', phone: '', email: '', message: '', consent: false })
-    setTouched({})
+    try {
+      const response = await fetch('/api/offer-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          phone: values.phone.trim(),
+          email: values.email.trim(),
+          message: values.message.trim(),
+          selectedModel: '',
+          pricingMode: mode,
+          source: 'contact-section',
+          consents: {
+            acceptPrivacy: values.consent,
+            acceptContact: values.consent,
+          },
+        }),
+      })
+
+      const json = (await response.json().catch(() => null)) as null | { ok?: boolean; error?: string; message?: string }
+
+      if (!response.ok || !json?.ok) {
+        setStatus('error')
+        setStatusMessage(json?.error || 'Nie udało się wysłać formularza. Spróbuj ponownie.')
+        return
+      }
+
+      setStatus('success')
+      setStatusMessage(json.message || 'Dziękujemy. Wrócimy z odpowiedzią tak szybko, jak to możliwe.')
+      setValues({ name: '', phone: '', email: '', message: '', consent: false })
+      setTouched({})
+    } catch {
+      setStatus('error')
+      setStatusMessage('Nie udało się wysłać formularza. Spróbuj ponownie.')
+    }
   }
 
   async function onCopyNumber() {
@@ -257,11 +288,14 @@ export function ContactSection() {
 
               <div className="pt-2">
                 <Button type="submit" variant="primary" size="lg" className="w-full md:w-auto">
-                  Umów konsultację
+                  {status === 'loading' ? 'Wysyłanie…' : 'Otrzymaj kontakt'}
                 </Button>
                 <Text variant="muted" className="mt-3 text-sm">
-                  Oddzwonimy w godzinach pracy.
+                  {status === 'success' ? statusMessage : 'Oddzwonimy w godzinach pracy.'}
                 </Text>
+                {status === 'error' ? (
+                  <Text className="mt-2 text-sm text-brand-goldDark">{statusMessage}</Text>
+                ) : null}
               </div>
             </form>
           </Card>

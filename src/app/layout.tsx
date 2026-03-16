@@ -3,6 +3,7 @@ import './globals.css'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { PricingModeProvider } from '@/components/providers/PricingModeProvider'
+import { FloatingOfferWidget } from '@/components/sections/FloatingOfferWidget'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
@@ -36,6 +37,7 @@ export default function RootLayout({
         <PricingModeProvider>
           <Header />
           {children}
+          <FloatingOfferWidget />
           <Footer />
         </PricingModeProvider>
       </body>

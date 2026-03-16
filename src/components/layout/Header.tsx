@@ -33,16 +33,16 @@ export function Header() {
 
         <nav className="relative z-10 hidden items-center gap-12 lg:flex">
           <Link
+            href="/"
+            className="whitespace-nowrap text-sm text-text-secondary hover:text-text-primary transition"
+          >
+            Strona główna
+          </Link>
+          <Link
             href="/modele"
             className="whitespace-nowrap text-sm text-text-secondary hover:text-text-primary transition"
           >
             Modele
-          </Link>
-          <Link
-            href="/wspolpraca"
-            className="whitespace-nowrap text-sm text-text-secondary hover:text-text-primary transition"
-          >
-            Współpraca
           </Link>
           <a
             href="/#finansowanie"
@@ -59,6 +59,12 @@ export function Header() {
           >
             Kontakt
           </a>
+          <Link
+            href="/wspolpraca"
+            className="whitespace-nowrap text-sm text-text-secondary hover:text-text-primary transition"
+          >
+            Współpraca
+          </Link>
         </nav>
 
         <div className="relative z-10 ml-auto flex items-center gap-3">
@@ -143,18 +149,18 @@ export function Header() {
 
             <nav className="flex flex-col gap-2">
               <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md px-2 py-2 text-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary transition"
+              >
+                Strona główna
+              </Link>
+              <Link
                 href="/modele"
                 onClick={() => setMobileOpen(false)}
                 className="rounded-md px-2 py-2 text-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary transition"
               >
                 Modele
-              </Link>
-              <Link
-                href="/wspolpraca"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-md px-2 py-2 text-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary transition"
-              >
-                Współpraca
               </Link>
               <a
                 href="/#finansowanie"
@@ -177,6 +183,13 @@ export function Header() {
               >
                 Kontakt
               </a>
+              <Link
+                href="/wspolpraca"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md px-2 py-2 text-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary transition"
+              >
+                Współpraca
+              </Link>
             </nav>
 
             <div className="mt-4">

@@ -26,7 +26,7 @@ export function ModelsCatalogue() {
               <div className="rounded-2xl bg-white/40 backdrop-blur-lg ring-1 ring-black/10 shadow-card px-5 py-6 sm:px-6 sm:py-7">
                 <Heading level={1}>Modele</Heading>
                 <Text className="mt-4 max-w-[60ch]">
-                  Wyłącznie nowe auta, transparentne ceny i szybki podgląd szczegółów.
+                  Wyłącznie nowe auta, estymowane raty i szybki podgląd szczegółów.
                 </Text>
               </div>
             </div>
@@ -37,7 +37,7 @@ export function ModelsCatalogue() {
       <Section variant="white" className="relative" aria-label="Modele – katalog">
         <div>
           <Heading level={2} className="text-lg">Elektryczne</Heading>
-          <Text className="mt-2">Modele BEV — cicha jazda, natychmiastowa reakcja.</Text>
+          <Text className="mt-2">Modele BEV z estymowaną ratą i szybkim przejściem do szczegółów.</Text>
 
           <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
             {electric.map((group) => (
@@ -50,7 +50,7 @@ export function ModelsCatalogue() {
 
         <div className="mt-16">
           <Heading level={2} className="text-lg">Hybrydowe</Heading>
-          <Text className="mt-2">Modele PHEV — elastyczność w mieście i w trasie.</Text>
+          <Text className="mt-2">Modele PHEV z elastycznym wejściem w finansowanie i pełną kartą modelu.</Text>
 
           <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
             {hybrid.map((group) => (

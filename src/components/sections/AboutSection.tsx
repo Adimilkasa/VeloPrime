@@ -10,16 +10,16 @@ type ValueTile = {
 
 const values: ValueTile[] = [
   {
-    title: 'Transparentnie',
-    desc: 'Pokazujemy ceny i estymacje jasno — bez ukrytych kosztów i niepotrzebnych obietnic.',
+    title: 'Jasne warunki',
+    desc: 'Pokazujemy ofertę i estymacje finansowania w przejrzysty sposób — bez zbędnych komplikacji i niedopowiedzeń.',
   },
   {
-    title: 'Premium w przystępnej cenie',
-    desc: 'Selekcja konfiguracji i rabaty, które mają realną wartość dla klienta.',
+    title: 'Staranna selekcja modeli',
+    desc: 'Koncentrujemy się na samochodach i konfiguracjach, które realnie odpowiadają na potrzeby klientów premium.',
   },
   {
-    title: 'Bez presji',
-    desc: 'Pomagamy podjąć dobrą decyzję w spokojnym tempie — Ty masz kontrolę nad procesem.',
+    title: 'Proces bez presji',
+    desc: 'Pomagamy przejść przez wybór auta i finansowania w uporządkowany sposób, z pełną kontrolą po stronie klienta.',
   },
 ]
 
@@ -36,7 +36,7 @@ export function AboutSection() {
             O nas
           </Heading>
           <Text className="mt-4 text-white/85">
-            Velo Prime to selekcja nowych aut i uporządkowany proces — od wyboru modelu po finansowanie i odbiór.
+            Velo Prime to nowoczesne podejście do sprzedaży nowych samochodów. Łączymy starannie wybrane modele, przejrzyste warunki i sprawny proces obsługi — od pierwszego wyboru aż po finansowanie i odbiór auta.
           </Text>
         </div>
 

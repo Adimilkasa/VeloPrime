@@ -61,36 +61,53 @@ export function ModelsTeaser() {
   }
 
   return (
-    <Section variant="white" className="relative" aria-label="Modele – teaser">
-      <div className="flex items-end justify-between gap-6">
-        <div className="max-w-[70ch]">
-          <Heading level={2}>Modele</Heading>
-          <Text className="mt-3">Wybrane auta dostępne od ręki — zobacz kilka propozycji.</Text>
+    <Section variant="white" className="relative overflow-hidden" aria-label="Modele – teaser">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(201,161,59,0.12),transparent_62%)]" />
+        <div className="absolute right-[-10%] top-16 h-64 w-64 rounded-full bg-brand-gold/10 blur-3xl" />
+      </div>
+
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-[72ch]">
+          <div className="inline-flex rounded-full border border-brand-gold/20 bg-brand-gold/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6a21]">
+            Wybrane modele
+          </div>
+          <Heading level={2} className="mt-4 max-w-[16ch] text-balance">Wybrane modele dostępne od ręki</Heading>
+          <Text className="mt-3 max-w-[64ch]">
+            Poznaj samochody, które łączą nowoczesny design, komfort codziennej jazdy i atrakcyjne warunki finansowania. Sprawdź estymowaną ratę i przejdź do szczegółów wybranego modelu.
+          </Text>
         </div>
 
-        <div className="hidden md:flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-10 w-10 p-0 rounded-full border border-stroke"
-            onClick={() => scrollByCards('left')}
-            aria-label="Poprzednie"
-          >
-            <ArrowIcon direction="left" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-10 w-10 p-0 rounded-full border border-stroke"
-            onClick={() => scrollByCards('right')}
-            aria-label="Następne"
-          >
-            <ArrowIcon direction="right" />
-          </Button>
+        <div className="flex items-center justify-between gap-4 lg:justify-end">
+          <div className="rounded-2xl border border-brand-gold/20 bg-[linear-gradient(180deg,#fffefb,#f8f1e5)] px-4 py-3 shadow-[0_10px_24px_rgba(20,20,20,0.04)]">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b6a21]">Dostępne modele</div>
+            <div className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">{availableCount}</div>
+          </div>
+
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-10 w-10 rounded-full border border-brand-gold/25 bg-white/70 p-0"
+              onClick={() => scrollByCards('left')}
+              aria-label="Poprzednie"
+            >
+              <ArrowIcon direction="left" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-10 w-10 rounded-full border border-brand-gold/25 bg-white/70 p-0"
+              onClick={() => scrollByCards('right')}
+              aria-label="Następne"
+            >
+              <ArrowIcon direction="right" />
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="mt-10 relative">
+      <div className="relative mt-10">
         <div
           ref={scrollerRef}
           className={cn(
