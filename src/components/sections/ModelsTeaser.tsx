@@ -44,12 +44,6 @@ export function ModelsTeaser() {
     return groups.slice(0, 10)
   }, [])
 
-  const availableCount = React.useMemo(() => {
-    const all = inventory as InventoryItem[]
-    const available = getAvailableItems(all)
-    return groupInventoryByModel(available).length
-  }, [])
-
   const scrollerRef = React.useRef<HTMLDivElement | null>(null)
 
   function scrollByCards(dir: 'left' | 'right') {
@@ -79,11 +73,6 @@ export function ModelsTeaser() {
         </div>
 
         <div className="flex items-center justify-between gap-4 lg:justify-end">
-          <div className="rounded-2xl border border-brand-gold/20 bg-[linear-gradient(180deg,#fffefb,#f8f1e5)] px-4 py-3 shadow-[0_10px_24px_rgba(20,20,20,0.04)]">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b6a21]">Dostępne modele</div>
-            <div className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">{availableCount}</div>
-          </div>
-
           <div className="hidden md:flex items-center gap-2">
             <Button
               variant="ghost"
