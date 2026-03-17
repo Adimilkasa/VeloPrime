@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { AnalyticsScripts } from '@/components/analytics/AnalyticsScripts'
+import { CookieConsentBanner } from '@/components/analytics/CookieConsentBanner'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { PricingModeProvider } from '@/components/providers/PricingModeProvider'
@@ -37,10 +39,12 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body className="noise-overlay">
+        <AnalyticsScripts />
         <PricingModeProvider>
           <Header />
           {children}
           <FloatingOfferWidget />
+          <CookieConsentBanner />
           <Footer />
         </PricingModeProvider>
       </body>

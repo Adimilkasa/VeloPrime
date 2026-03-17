@@ -126,15 +126,15 @@ const policySections = [
       'prowadzenie działań marketingowych',
     ],
     bodyAfterHighlight: [
-      'Użytkownik może w każdej chwili zmienić ustawienia cookies w swojej przeglądarce internetowej.',
+      'Narzędzia analityczne uruchamiane są po wyrażeniu zgody w banerze cookies. Użytkownik może również w każdej chwili zmienić ustawienia cookies w swojej przeglądarce internetowej.',
     ],
   },
   {
     title: '9. Narzędzia analityczne i marketingowe',
     paragraphs: ['Strona może korzystać z narzędzi takich jak:'],
-    bullets: ['Google Analytics', 'Google Ads', 'Meta (Facebook) Pixel'],
+    bullets: ['Google Analytics 4', 'Microsoft Clarity', 'Google Ads', 'Meta (Facebook) Pixel'],
     bodyAfterHighlight: [
-      'Narzędzia te mogą zbierać anonimowe informacje dotyczące korzystania ze strony w celu analizy ruchu oraz prowadzenia działań marketingowych.',
+      'Narzędzia te mogą zbierać informacje dotyczące korzystania ze strony w celu analizy ruchu, badania zachowań użytkowników oraz prowadzenia działań marketingowych, zgodnie z zakresem udzielonej zgody.',
     ],
   },
   {
