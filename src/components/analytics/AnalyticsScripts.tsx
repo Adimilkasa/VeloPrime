@@ -10,6 +10,8 @@ import {
   readAnalyticsConsent,
 } from '@/lib/analyticsConsent'
 
+const GA_MEASUREMENT_ID = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-775EPFJ423').trim()
+
 declare global {
   interface Window {
     dataLayer: unknown[]
@@ -22,7 +24,7 @@ export function AnalyticsScripts() {
   const pathname = usePathname()
   const [consent, setConsent] = React.useState<string | null>(null)
 
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
+  const gaId = GA_MEASUREMENT_ID
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim()
 
   React.useEffect(() => {
