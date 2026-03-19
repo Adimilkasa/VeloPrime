@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { AnalyticsScripts } from '@/components/analytics/AnalyticsScripts'
-import { CookieConsentBanner } from '@/components/analytics/CookieConsentBanner'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
+import { SiteChrome } from '@/components/layout/SiteChrome'
 import { PricingModeProvider } from '@/components/providers/PricingModeProvider'
-import { FloatingOfferWidget } from '@/components/sections/FloatingOfferWidget'
 import { getSiteUrl } from '@/lib/siteUrl'
 
 const siteUrl = getSiteUrl()
@@ -41,11 +38,8 @@ export default function RootLayout({
       <body className="noise-overlay">
         <AnalyticsScripts />
         <PricingModeProvider>
-          <Header />
           {children}
-          <FloatingOfferWidget />
-          <CookieConsentBanner />
-          <Footer />
+          <SiteChrome />
         </PricingModeProvider>
       </body>
     </html>
