@@ -87,7 +87,7 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
     <Link
       href={href}
       aria-label={`Sprawdź szczegóły: ${group.brand} ${group.model}`}
-      className="group relative block overflow-hidden rounded-[26px] border border-stroke/90 bg-[linear-gradient(180deg,#fffdf9_0%,#f8f3ea_100%)] shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/45 hover:shadow-cardHover focus:outline-none focus-visible:ring-2 focus-visible:ring-stroke focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section touch-pan-y"
+      className="group relative block min-w-0 w-full overflow-hidden rounded-[26px] border border-stroke/90 bg-[linear-gradient(180deg,#fffdf9_0%,#f8f3ea_100%)] shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/45 hover:shadow-cardHover focus:outline-none focus-visible:ring-2 focus-visible:ring-stroke focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section touch-pan-y"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-gold/12 blur-3xl opacity-80" />
@@ -96,8 +96,8 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
       </div>
 
       <div className="relative p-3 sm:p-4 md:p-5 lg:p-6">
-        <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(320px,400px)_minmax(0,1fr)_250px] lg:gap-5">
-          <div className="sm:hidden rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,#fffaf1,#f5e8d4)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+        <div className="flex min-w-0 flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(320px,400px)_minmax(0,1fr)_250px] lg:gap-5">
+          <div className="min-w-0 sm:hidden rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,#fffaf1,#f5e8d4)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full border border-[rgba(201,161,59,0.26)] bg-[rgba(201,161,59,0.12)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-goldDark">
                 {group.powertrain === 'BEV' ? 'Electric Drive' : group.powertrain === 'PHEV' ? 'Plug-in Hybrid' : 'Nowy model'}
@@ -248,7 +248,7 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between rounded-[24px] border border-[#ead9b4] bg-[linear-gradient(180deg,#fffdf8_0%,#f4ead7_100%)] p-4 text-text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:p-5 lg:min-h-full">
+          <div className="flex min-w-0 flex-col justify-between rounded-[24px] border border-[#ead9b4] bg-[linear-gradient(180deg,#fffdf8_0%,#f4ead7_100%)] p-4 text-text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:p-5 lg:min-h-full">
             <div>
               <div className="rounded-[20px] border border-white/70 bg-white/58 p-4 shadow-[0_10px_24px_rgba(88,66,18,0.05)]">
                 <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6a21]">Finansowanie</div>

@@ -116,6 +116,7 @@ export function ModelHeroGallery({
         className={cn(
           'no-scrollbar h-full w-full overflow-x-auto overflow-y-hidden',
           'scroll-smooth snap-x snap-mandatory',
+          'touch-pan-y',
         )}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
@@ -236,7 +237,7 @@ function HeroSlide({
         className={cn(
           'absolute inset-0 cursor-zoom-in',
           'focus:outline-none focus:ring-2 focus:ring-stroke',
-          'touch-pan-x',
+          'touch-manipulation',
         )}
       />
 

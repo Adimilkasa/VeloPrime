@@ -57,8 +57,7 @@ export function EnlargeableImage({
           className={cn(
             'absolute inset-0 cursor-zoom-in',
             'focus:outline-none focus:ring-2 focus:ring-stroke',
-            // allow horizontal scrolling gestures where relevant
-            'touch-pan-x',
+            'touch-manipulation',
             buttonClassName,
           )}
         />
