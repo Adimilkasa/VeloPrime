@@ -229,12 +229,8 @@ export function CooperationLanding() {
             </Badge>
 
             <Heading level={1} className="mt-5 max-w-[18ch] text-[clamp(2rem,8vw,2.75rem)] leading-tight text-white sm:text-4xl lg:text-[44px]">
-              Szukamy partnerów do rozwoju sprzedaży.
+              Buduj własny obszar sprzedaży w modelu partnerskim Velo Prime.
             </Heading>
-
-            <Text className="mt-4 max-w-[58ch] text-sm font-medium leading-6 text-white/92 sm:text-base sm:leading-relaxed">
-              To propozycja dla partnerów biznesowych, nie dla pracowników etatowych. Jeśli masz doświadczenie w sprzedaży, zarządzaniu albo budowie zespołu, możesz wejść w model, który da się rozwijać i skalować.
-            </Text>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {heroBenefits.map((benefit) => (
@@ -268,9 +264,6 @@ export function CooperationLanding() {
             <div>
               <Badge variant="gold">Dla kogo</Badge>
               <Heading level={2} className="mt-4 max-w-[14ch]">Ta współpraca jest dla Ciebie, jeśli:</Heading>
-              <Text className="mt-4 max-w-[56ch]">
-                Szukamy partnerów, liderów sprzedaży, managerów i właścicieli małych firm, którzy chcą rozwijać własny obszar działania, a nie tylko realizować pojedyncze transakcje.
-              </Text>
             </div>
 
             <div className="grid gap-3">
