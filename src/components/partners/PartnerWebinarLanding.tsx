@@ -619,7 +619,7 @@ export function PartnerWebinarLanding() {
         id="hero"
         variant="white"
         aria-label="Webinar — zapis"
-        className="scroll-mt-32 relative overflow-hidden min-h-[62svh] flex items-center"
+        className="scroll-mt-32 relative flex items-center overflow-hidden min-h-[62svh] py-4 sm:py-0"
       >
         <div aria-hidden className="absolute inset-0">
           <div
@@ -633,11 +633,11 @@ export function PartnerWebinarLanding() {
         <div className="relative w-full py-6 md:py-10">
           <Container>
             <div className="mx-auto max-w-[1180px]">
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)] lg:items-end">
+              <div className="grid gap-5 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)] lg:items-end lg:gap-6">
                 <motion.div
                   {...enter}
                   viewport={{ once: true, amount: 0.6 }}
-                  className="relative overflow-hidden rounded-[30px] border border-brand-gold/45 bg-black/30 px-6 py-6 backdrop-blur-md sm:px-8 lg:px-10"
+                  className="relative overflow-hidden rounded-[30px] border border-brand-gold/45 bg-black/34 px-4 py-5 backdrop-blur-md sm:px-8 sm:py-6 lg:px-10"
                   style={{ boxShadow: '0 28px 80px rgba(0,0,0,0.22)' }}
                 >
                   <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -657,7 +657,7 @@ export function PartnerWebinarLanding() {
                     Wejdź do sprzedaży premium z modelem partnerstwa Velo Prime
                   </Heading>
 
-                  <div className="mt-5 max-w-[72ch] border-l-2 border-brand-gold/60 pl-4">
+                  <div className="mt-5 max-w-[72ch] border-t-2 border-brand-gold/60 pt-4 sm:border-l-2 sm:border-t-0 sm:pl-4 sm:pt-0">
                     <Text className="text-[15px] sm:text-base font-medium leading-relaxed text-white/95">
                       Bezpłatny webinar dla osób z doświadczeniem sprzedażowym, które chcą wejść w nowy segment rynku z gotowym produktem, procesem współpracy i wsparciem marketingowym.
                     </Text>
@@ -687,7 +687,7 @@ export function PartnerWebinarLanding() {
                 <motion.div
                   {...enter}
                   viewport={{ once: true, amount: 0.45 }}
-                  className="relative overflow-hidden rounded-[30px] border border-brand-gold/45 bg-[linear-gradient(180deg,rgba(10,10,10,0.86),rgba(20,16,10,0.88))] p-5 backdrop-blur md:p-6"
+                  className="relative overflow-hidden rounded-[30px] border border-brand-gold/45 bg-[linear-gradient(180deg,rgba(10,10,10,0.86),rgba(20,16,10,0.88))] p-4 backdrop-blur sm:p-5 md:p-6"
                   style={{ boxShadow: '0 28px 90px rgba(0,0,0,0.26)' }}
                 >
                   <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -777,7 +777,7 @@ export function PartnerWebinarLanding() {
             <Heading level={2} className="mt-3 text-balance">
               Dlaczego powstał ten webinar
             </Heading>
-            <div className="mt-5 border-l-2 border-brand-gold/50 pl-4">
+            <div className="mt-5 border-t-2 border-brand-gold/50 pt-4 sm:border-l-2 sm:border-t-0 sm:pl-4 sm:pt-0">
               <Text className="text-neutral-700 leading-relaxed">
                 Rynek nowych marek samochodowych rozwija się w Polsce bardzo dynamicznie.
                 <br />
@@ -862,7 +862,7 @@ export function PartnerWebinarLanding() {
             <div className="mt-6">
               <a
                 href="#zapis"
-                className="inline-flex items-center justify-center font-semibold text-white shadow-[0_16px_36px_rgba(199,156,60,0.22)] hover:shadow-[0_20px_48px_rgba(199,156,60,0.28)] transition"
+                className="inline-flex w-full items-center justify-center font-semibold text-white transition hover:shadow-[0_20px_48px_rgba(199,156,60,0.28)] shadow-[0_16px_36px_rgba(199,156,60,0.22)] sm:w-auto"
                 style={{
                   background: 'linear-gradient(135deg,#e0b95b,#c79c3c)',
                   borderRadius: 10,
@@ -953,7 +953,7 @@ export function PartnerWebinarLanding() {
               <Heading level={2} className="text-white">
                 Zarezerwuj miejsce na webinarze Velo Prime
               </Heading>
-              <div className="mt-8 max-w-[520px]">
+              <div className="mt-8 w-full max-w-[520px]">
                 <WebinarSignupForm variant="final" />
               </div>
             </div>

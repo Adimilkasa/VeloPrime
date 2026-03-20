@@ -255,12 +255,12 @@ function PartnerSectionNav({ items }: { items: NavItem[] }) {
   return (
     <div className="sticky top-16 z-40 border-b border-stroke bg-bg-section/85 backdrop-blur">
       <Container>
-        <nav aria-label="Sekcje" className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
+        <nav aria-label="Sekcje" className="flex gap-2 overflow-x-auto py-2.5 no-scrollbar sm:py-3">
           {items.map((it) => (
             <a
               key={it.id}
               href={`#${it.id}`}
-              className="shrink-0 rounded-full border border-stroke bg-bg-section px-4 py-2 text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-bg-primary transition"
+              className="shrink-0 rounded-full border border-stroke bg-bg-section px-3 py-2 text-[11px] font-medium text-text-secondary transition hover:text-text-primary hover:bg-bg-primary sm:px-4 sm:text-xs"
             >
               {it.label}
             </a>
@@ -650,12 +650,12 @@ function SummaryFeature({ label }: { label: string }) {
 
 function PaymentModeToggle({ value, onChange }: { value: 'one' | 'installments'; onChange: (v: 'one' | 'installments') => void }) {
   return (
-    <div className="inline-flex min-w-[320px] items-center rounded-full border border-white/40 bg-white/85 backdrop-blur p-[3px] text-sm shadow-[0_14px_34px_rgba(0,0,0,0.07)]">
+    <div className="flex w-full min-w-0 flex-col gap-2 rounded-[20px] border border-white/40 bg-white/85 p-[3px] text-sm shadow-[0_14px_34px_rgba(0,0,0,0.07)] backdrop-blur sm:inline-flex sm:min-w-[320px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-full">
       <button
         type="button"
         onClick={() => onChange('one')}
         className={
-          'flex-1 rounded-full border border-transparent px-6 py-1.5 transition ' +
+          'flex-1 rounded-full border border-transparent px-4 py-2 transition sm:px-6 sm:py-1.5 ' +
           (value === 'one'
             ? 'border-brand-gold bg-brand-gold text-white font-semibold shadow-[0_10px_22px_rgba(201,161,59,0.18)]'
             : 'text-text-secondary hover:text-text-primary hover:bg-white/70')
@@ -668,7 +668,7 @@ function PaymentModeToggle({ value, onChange }: { value: 'one' | 'installments';
         type="button"
         onClick={() => onChange('installments')}
         className={
-          'flex-1 rounded-full border border-transparent px-6 py-1.5 transition ' +
+          'flex-1 rounded-full border border-transparent px-4 py-2 transition sm:px-6 sm:py-1.5 ' +
           (value === 'installments'
             ? 'border-brand-gold bg-brand-gold text-white font-semibold shadow-[0_10px_22px_rgba(201,161,59,0.18)]'
             : 'text-text-secondary hover:text-text-primary hover:bg-white/70')
@@ -824,7 +824,7 @@ export function PartnerProgramLanding() {
         id="hero"
         variant="white"
         aria-label="Partnerstwo — hero"
-        className="scroll-mt-32 relative overflow-hidden py-12 md:py-20 lg:py-28"
+        className="scroll-mt-32 relative overflow-hidden py-10 md:py-20 lg:py-28"
       >
         <div aria-hidden className="absolute inset-0">
           <div
@@ -839,14 +839,14 @@ export function PartnerProgramLanding() {
               <Badge variant="gold">Program partnerski</Badge>
             </div>
 
-            <Card className="mt-5 rounded-2xl border-brand-gold/55 bg-black/35 backdrop-blur px-6 py-10 sm:px-8">
+            <Card className="mt-5 rounded-2xl border-brand-gold/55 bg-black/40 backdrop-blur px-4 py-6 sm:px-8 sm:py-10">
               <Heading
                 level={1}
-                className="max-w-[28ch] text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-balance"
+                className="max-w-[28ch] text-balance text-[clamp(2rem,8vw,4.5rem)] leading-tight text-white"
               >
                 Dołącz do sieci partnerów Velo Prime
               </Heading>
-              <Text className="mt-6 max-w-[78ch] text-white/90">
+              <Text className="mt-4 max-w-[78ch] text-sm leading-6 text-white/92 sm:mt-6 sm:text-base sm:leading-7">
                 Sprzedaż bezpośrednia samochodów premium.
                 <br />
                 Dostajesz produkt, proces, szkolenie i start marketingowy w regionie.
@@ -854,13 +854,13 @@ export function PartnerProgramLanding() {
 
               <BulletList items={heroHighlights} variant="dark" />
 
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <Button href="#pakiety" variant="primary" size="lg">
+              <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+                <Button href="#pakiety" variant="primary" size="lg" className="w-full sm:w-auto">
                   Rozpocznij partnerstwo
                 </Button>
                 <a
                   href="#start-partnera"
-                  className="text-sm font-medium text-white/80 hover:text-white transition"
+                  className="text-center text-sm font-medium text-white/80 transition hover:text-white sm:text-left"
                 >
                   Zobacz jak wygląda start
                 </a>
@@ -1234,7 +1234,7 @@ export function PartnerProgramLanding() {
           </Text>
         </div>
 
-        <div className="mt-8 flex flex-col gap-2.5 rounded-2xl border border-stroke bg-bg-section/80 px-5 py-3 shadow-card sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 rounded-2xl border border-stroke bg-bg-section/80 px-4 py-3 shadow-card sm:px-5 sm:flex-row sm:items-center sm:justify-between">
           <Text variant="secondary" className="text-text-primary">
             Forma płatności
           </Text>
@@ -1257,8 +1257,8 @@ export function PartnerProgramLanding() {
           </a>
         </div>
 
-        <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:items-start">
-          <div className="grid gap-6 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3 lg:items-stretch">
+        <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
+          <div className="grid gap-5 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3 lg:items-stretch lg:gap-6">
             {plans.map((p) => (
               <PlanCard
                 key={p.name}

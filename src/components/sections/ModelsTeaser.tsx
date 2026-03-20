@@ -124,7 +124,7 @@ export function ModelsTeaser() {
           href="/modele"
           variant="secondary"
           size="md"
-          className="border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white hover:shadow-cta"
+          className="w-full border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white hover:shadow-cta sm:w-auto"
         >
           Zobacz wszystkie dostępne modele
         </Button>

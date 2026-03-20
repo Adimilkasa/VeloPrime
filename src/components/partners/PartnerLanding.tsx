@@ -11,26 +11,26 @@ export function PartnerLanding({ paymentUrl }: { paymentUrl: string }) {
   return (
     <>
       <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen">
-        <div className="relative flex items-center overflow-hidden h-[38vh] min-h-[320px] max-h-[560px] bg-[url('/assets/HERO.png')] bg-cover bg-no-repeat bg-[position:72%_56%] md:bg-[position:78%_50%]">
+        <div className="relative flex items-end overflow-hidden min-h-[68svh] py-6 sm:min-h-[38vh] sm:max-h-[560px] sm:items-center sm:py-0 bg-[url('/assets/HERO.png')] bg-cover bg-no-repeat bg-[position:62%_54%] md:bg-[position:78%_50%]">
           <Container>
             <div className="max-w-[720px]">
               <div className="inline-flex">
                 <Badge variant="gold">Partnerstwo</Badge>
               </div>
-              <div className="mt-4 rounded-2xl bg-white/40 backdrop-blur-lg ring-1 ring-black/10 shadow-card px-5 py-6 sm:px-6 sm:py-7">
+              <div className="mt-4 rounded-2xl bg-white/58 px-4 py-5 backdrop-blur-lg ring-1 ring-black/10 shadow-card sm:bg-white/40 sm:px-6 sm:py-7">
                 <Heading level={1} className="max-w-[28ch]">
                   Landing dla przedstawicieli handlowych
                 </Heading>
-                <Text className="mt-4 max-w-[62ch]">
+                <Text className="mt-4 max-w-[62ch] text-sm leading-6 sm:text-base sm:leading-7">
                   Jeśli sprzedajesz bezpośrednio i chcesz pracować na przejrzystych zasadach — dołącz do partnerstwa.
                   Dajemy Ci ofertę modeli, wsparcie i proces, który domyka sprzedaż.
                 </Text>
 
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <Button asChild variant="primary" size="lg">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                  <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
                     <a href="#dolacz">Dołącz do partnerstwa</a>
                   </Button>
-                  <Button asChild variant="secondary" size="lg">
+                  <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
                     <a href="#jak-to-dziala">Jak to działa</a>
                   </Button>
                 </div>

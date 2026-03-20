@@ -215,7 +215,7 @@ function CooperationForm() {
 export function CooperationLanding() {
   return (
     <>
-      <Section id="hero" variant="white" aria-label="Współpraca — hero" className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      <Section id="hero" variant="white" aria-label="Współpraca — hero" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
         <div aria-hidden className="absolute inset-0">
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/grafiki/seal-6-dmi/premium%20przod%202.jpg')" }} />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,7,7,0.82),rgba(7,7,7,0.58)_48%,rgba(7,7,7,0.32))]" />
@@ -223,16 +223,16 @@ export function CooperationLanding() {
         </div>
 
         <Container className="relative">
-          <div className="max-w-[760px] rounded-[32px] border border-white/12 bg-black/26 px-6 py-7 backdrop-blur-md sm:px-8 sm:py-9 lg:px-10 lg:py-10">
+          <div className="max-w-[760px] rounded-[32px] border border-white/12 bg-black/32 px-4 py-5 backdrop-blur-md sm:px-8 sm:py-9 lg:px-10 lg:py-10">
             <Badge variant="gold" className="px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em]">
               Partnerstwo regionalne
             </Badge>
 
-            <Heading level={1} className="mt-5 max-w-[18ch] text-3xl leading-tight text-white sm:text-4xl lg:text-[44px]">
+            <Heading level={1} className="mt-5 max-w-[18ch] text-[clamp(2rem,8vw,2.75rem)] leading-tight text-white sm:text-4xl lg:text-[44px]">
               Szukamy partnerów do rozwoju sprzedaży.
             </Heading>
 
-            <Text className="mt-4 max-w-[58ch] text-base font-medium leading-relaxed text-white/90">
+            <Text className="mt-4 max-w-[58ch] text-sm font-medium leading-6 text-white/92 sm:text-base sm:leading-relaxed">
               To propozycja dla partnerów biznesowych, nie dla pracowników etatowych. Jeśli masz doświadczenie w sprzedaży, zarządzaniu albo budowie zespołu, możesz wejść w model, który da się rozwijać i skalować.
             </Text>
 
@@ -248,10 +248,10 @@ export function CooperationLanding() {
               To współpraca dla osób z doświadczeniem w sprzedaży. Jeśli go nie masz, ta oferta nie jest dla Ciebie.
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
                 href="#kontakt"
-                className="inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(182,132,28,0.28)] transition hover:shadow-[0_22px_40px_rgba(182,132,28,0.34)]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(182,132,28,0.28)] transition hover:shadow-[0_22px_40px_rgba(182,132,28,0.34)] sm:w-auto"
                 style={{ background: 'linear-gradient(135deg,#ebc971,#b6841c)' }}
               >
                 Zostaw kontakt
@@ -334,7 +334,7 @@ export function CooperationLanding() {
 
       <Section id="kontakt" variant="white" aria-label="Współpraca — kontakt" className="py-16 sm:py-20" style={{ background: 'linear-gradient(180deg,#080808,#14110d)' }}>
         <Container>
-          <div className="mx-auto max-w-[1120px] overflow-hidden rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] p-6 backdrop-blur-md sm:p-8 lg:p-10">
+          <div className="mx-auto max-w-[1120px] overflow-hidden rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] p-4 backdrop-blur-md sm:p-8 lg:p-10">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
               <div>
                 <Badge variant="gold" className="border-brand-gold/20 bg-brand-gold/10 text-brand-goldSoft">Zostaw kontakt</Badge>

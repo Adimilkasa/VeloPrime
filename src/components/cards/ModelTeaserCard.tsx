@@ -60,7 +60,7 @@ export function ModelTeaserCard({ group }: { group: ModelGroup }) {
       <Card
         variant="hoverable"
         goldTopLineOnHover
-        className="relative overflow-hidden h-full w-[268px] sm:w-[292px] lg:w-[312px] rounded-[24px] border-brand-gold/15 bg-[linear-gradient(180deg,#fffefb,#f6eee0)] transition-all duration-300 hover:border-brand-gold/45"
+        className="relative overflow-hidden h-full w-[82vw] max-w-[268px] sm:w-[292px] sm:max-w-none lg:w-[312px] rounded-[24px] border-brand-gold/15 bg-[linear-gradient(180deg,#fffefb,#f6eee0)] transition-all duration-300 hover:border-brand-gold/45"
       >
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-gold/14 blur-3xl opacity-70" />
