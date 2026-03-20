@@ -132,17 +132,18 @@ export function FloatingOfferWidget() {
           >
             <button type="button" aria-label="Zamknij" className="absolute inset-0 bg-black/45" onClick={close} />
 
-            <div className="absolute inset-0 flex items-end justify-center p-4 md:items-center">
+            <div className="absolute inset-0 overflow-y-auto overscroll-contain p-4">
+              <div className="flex min-h-full items-end justify-center md:items-center">
               <motion.div
                 initial={{ opacity: 0, y: 18, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 18, scale: 0.98 }}
                 transition={{ duration: 0.24, ease: 'easeOut' }}
-                className="w-full max-w-[760px]"
+                className="w-full max-w-[760px] max-h-[calc(100dvh-2rem)]"
                 role="dialog"
                 aria-modal="true"
               >
-                <Card className="relative overflow-hidden rounded-[28px] border-brand-gold/35 bg-[linear-gradient(180deg,#111111,#18130f)] p-6 text-white shadow-[0_30px_80px_rgba(0,0,0,0.28)] md:p-8">
+                <Card className="relative flex max-h-[calc(100dvh-2rem)] flex-col overflow-hidden rounded-[28px] border-brand-gold/35 bg-[linear-gradient(180deg,#111111,#18130f)] p-6 text-white shadow-[0_30px_80px_rgba(0,0,0,0.28)] md:p-8">
                   <div aria-hidden className="pointer-events-none absolute inset-0">
                     <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-brand-gold/16 blur-3xl" />
                     <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand-gold/70 to-transparent" />
@@ -162,7 +163,7 @@ export function FloatingOfferWidget() {
                     </Button>
                   </div>
 
-                  <div className="relative mt-6 rounded-[24px] border border-white/10 bg-white/6 p-4 backdrop-blur-sm md:p-5">
+                  <div className="relative mt-6 overflow-y-auto rounded-[24px] border border-white/10 bg-white/6 p-4 backdrop-blur-sm md:p-5">
                     {status === 'success' ? (
                       <div className="rounded-[20px] border border-emerald-300/30 bg-emerald-500/10 px-6 py-8 text-center">
                         <div className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200/90">Formularz wysłany</div>
@@ -271,6 +272,7 @@ export function FloatingOfferWidget() {
                   </div>
                 </Card>
               </motion.div>
+              </div>
             </div>
           </motion.div>
         ) : null}

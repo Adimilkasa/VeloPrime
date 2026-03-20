@@ -55,7 +55,7 @@ export function ModelTeaserCard({ group }: { group: ModelGroup }) {
     <Link
       href={href}
       aria-label={`Sprawdź szczegóły: ${label}`}
-      className="group block touch-pan-y focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section"
+      className="group block touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section"
     >
       <Card
         variant="hoverable"
