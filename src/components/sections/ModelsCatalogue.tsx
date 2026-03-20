@@ -25,9 +25,10 @@ export function ModelsCatalogue() {
         >
           <div
             aria-hidden
-            className="absolute inset-0 bg-[url('/grafiki/Seal%207/premium%203.jpg')] bg-contain bg-center bg-no-repeat"
+            className="absolute inset-0 bg-[url('/grafiki/Seal%207/premium%203.jpg')] bg-cover bg-[position:center_44%] bg-no-repeat md:bg-[position:center_36%]"
           />
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0)_42%,rgba(244,239,229,0.34)_78%,rgba(236,227,211,0.72)_100%)]" />
+          <div aria-hidden className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,239,229,0.86)_0%,rgba(244,239,229,0.34)_34%,rgba(244,239,229,0.08)_58%,rgba(236,227,211,0.5)_100%)]" />
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0)_36%,rgba(244,239,229,0.2)_76%,rgba(236,227,211,0.58)_100%)]" />
 
           <Container>
             <div className="relative max-w-[640px]">
