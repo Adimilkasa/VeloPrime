@@ -56,7 +56,7 @@ export function ModelsCatalogue() {
         </div>
       </Section>
 
-      <Section variant="white" className="relative overflow-x-hidden" aria-label="Modele – katalog">
+      <Section variant="white" className="relative" aria-label="Modele – katalog">
         <div id="elektryczne" className="scroll-mt-24">
           <Heading level={2} className="text-lg">Elektryczne</Heading>
           <Text className="mt-2">Modele BEV z estymowaną ratą i szybkim przejściem do szczegółów.</Text>
