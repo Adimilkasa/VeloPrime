@@ -87,7 +87,7 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
     <Link
       href={href}
       aria-label={`Sprawdź szczegóły: ${group.brand} ${group.model}`}
-      className="group relative block overflow-hidden rounded-[26px] border border-stroke/90 bg-[linear-gradient(180deg,#fffdf9_0%,#f8f3ea_100%)] shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/45 hover:shadow-cardHover focus:outline-none focus-visible:ring-2 focus-visible:ring-stroke focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section"
+      className="group relative block overflow-hidden rounded-[26px] border border-stroke/90 bg-[linear-gradient(180deg,#fffdf9_0%,#f8f3ea_100%)] shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/45 hover:shadow-cardHover focus:outline-none focus-visible:ring-2 focus-visible:ring-stroke focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section touch-pan-y"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-gold/12 blur-3xl opacity-80" />
@@ -97,8 +97,48 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
 
       <div className="relative p-3 sm:p-4 md:p-5 lg:p-6">
         <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(320px,400px)_minmax(0,1fr)_250px] lg:gap-5">
+          <div className="sm:hidden rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,#fffaf1,#f5e8d4)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full border border-[rgba(201,161,59,0.26)] bg-[rgba(201,161,59,0.12)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-goldDark">
+                {group.powertrain === 'BEV' ? 'Electric Drive' : group.powertrain === 'PHEV' ? 'Plug-in Hybrid' : 'Nowy model'}
+              </span>
+              {yearLabel ? (
+                <span className="rounded-full border border-stroke/80 bg-white/76 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-text-secondary shadow-[0_8px_18px_rgba(19,26,43,0.05)]">
+                  Rocznik {yearLabel}
+                </span>
+              ) : null}
+              <span className="rounded-full border border-[#c9a13b]/45 bg-[linear-gradient(135deg,rgba(235,201,113,0.92),rgba(182,132,28,0.88))] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_rgba(165,125,31,0.2)]">
+                Dostępny od ręki
+              </span>
+            </div>
+
+            <div
+              className="relative mt-3 overflow-hidden rounded-[22px] border border-white/70 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: "url('/cars/t%C5%82o%202.png')" }}
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.45),rgba(255,255,255,0)_54%)]" />
+              <div className="relative aspect-[16/10] min-h-[230px]">
+                <Image
+                  src={imgSrc}
+                  alt={`${group.brand} ${group.model}`}
+                  fill
+                  sizes="100vw"
+                  className="pointer-events-none select-none object-contain px-4 py-4"
+                  style={{ objectPosition: 'center 72%' }}
+                  priority={false}
+                  draggable={false}
+                />
+              </div>
+            </div>
+
+            <div className="mt-3 rounded-[20px] border border-[rgba(182,132,28,0.18)] bg-white/82 px-4 py-3 shadow-[0_12px_28px_rgba(88,66,18,0.08)] backdrop-blur-sm">
+              <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#8b6a21]">{group.brand}</p>
+              <p className="mt-1 text-lg font-semibold leading-none tracking-tight text-text-primary">{group.model}</p>
+            </div>
+          </div>
+
           <div
-            className="relative overflow-hidden rounded-[24px] border border-white/70 bg-cover bg-center bg-no-repeat shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]"
+            className="relative hidden overflow-hidden rounded-[24px] border border-white/70 bg-cover bg-center bg-no-repeat shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] sm:block"
             style={{ backgroundImage: "url('/cars/t%C5%82o%202.png')" }}
           >
             <div className="absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-[#8f793d]/18 via-[#8f793d]/6 to-transparent p-2.5 sm:p-4">
@@ -144,9 +184,10 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
                 alt={`${group.brand} ${group.model}`}
                 fill
                 sizes="(max-width: 768px) 100vw, 420px"
-                className="object-contain px-4 pb-3 pt-10 transition-transform duration-500 group-hover:scale-[1.035] sm:px-5 sm:pb-4 sm:pt-12"
+                className="pointer-events-none select-none object-contain px-4 pb-3 pt-10 transition-transform duration-500 group-hover:scale-[1.035] sm:px-5 sm:pb-4 sm:pt-12"
                 style={{ objectPosition: 'center 75%' }}
                 priority={false}
+                draggable={false}
               />
             </div>
 

@@ -102,7 +102,7 @@ export function ModelsTeaser() {
           className={cn(
             'no-scrollbar flex gap-6 overflow-x-auto pb-4 pt-1',
             'scroll-smooth snap-x snap-mandatory',
-            'cursor-grab active:cursor-grabbing',
+            'cursor-grab active:cursor-grabbing touch-pan-y',
           )}
           style={{ WebkitOverflowScrolling: 'touch' }}
         >

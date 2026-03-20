@@ -55,7 +55,7 @@ export function ModelTeaserCard({ group }: { group: ModelGroup }) {
     <Link
       href={href}
       aria-label={`Sprawdź szczegóły: ${label}`}
-      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section"
+      className="group block touch-pan-y focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-section"
     >
       <Card
         variant="hoverable"
@@ -93,9 +93,10 @@ export function ModelTeaserCard({ group }: { group: ModelGroup }) {
                 src={imgSrc}
                 alt={label}
                 fill
-                className="object-contain p-4 drop-shadow-[0_14px_26px_rgba(0,0,0,0.08)] transition-transform duration-300 group-hover:scale-[1.02]"
+                className="pointer-events-none select-none object-contain p-4 drop-shadow-[0_14px_26px_rgba(0,0,0,0.08)] transition-transform duration-300 group-hover:scale-[1.02]"
                 sizes="(max-width: 768px) 70vw, 312px"
                 onError={() => setImgSrc('/cars/placeholder.svg')}
+                draggable={false}
               />
             </div>
           </div>

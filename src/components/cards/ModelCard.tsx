@@ -67,9 +67,10 @@ export function ModelCard({ item }: { item: InventoryItem }) {
                 src={imgSrc}
                 alt={vehicleLabel}
                 fill
-                className="object-contain p-4 drop-shadow-[0_14px_26px_rgba(0,0,0,0.08)]"
+                className="pointer-events-none select-none object-contain p-4 drop-shadow-[0_14px_26px_rgba(0,0,0,0.08)]"
                 sizes="(max-width: 768px) 90vw, 380px"
                 onError={() => setImgSrc('/cars/placeholder.svg')}
+                draggable={false}
               />
             </div>
           </div>
