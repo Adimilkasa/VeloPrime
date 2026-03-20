@@ -50,7 +50,9 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
         ? String(group.years[0])
         : null
   const generatedContent = generatedBySlug[group.slug]
-  const mobileImageWidthClass = group.powertrain === 'PHEV' ? 'max-w-[88%]' : 'max-w-[94%]'
+  const mobileHeroImage = generatedContent?.media?.hero?.[0]
+  const mobileHeroSrc = mobileHeroImage?.src ?? imgSrc
+  const mobileHeroAlt = mobileHeroImage?.alt ?? `${group.brand} ${group.model}`
   const versionNames = React.useMemo(() => {
     const generatedVersions = generatedContent?.sections?.versions?.cards?.items
       ?.map((item) => item.trim?.trim())
@@ -113,23 +115,19 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
               </span>
             </div>
 
-            <div
-              className="relative mt-3 overflow-hidden rounded-[22px] border border-white/70 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: "url('/cars/t%C5%82o%202.png')" }}
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.45),rgba(255,255,255,0)_54%)]" />
-              <div className="relative flex aspect-[16/10] min-h-[230px] items-center justify-center px-2 py-3">
-                <Image
-                  src={imgSrc}
-                  alt={`${group.brand} ${group.model}`}
-                  width={640}
-                  height={400}
-                  sizes="(max-width: 640px) calc(100vw - 3.5rem), 640px"
-                  className={`pointer-events-none h-auto max-h-full w-auto ${mobileImageWidthClass} select-none object-contain object-center`}
-                  priority={false}
-                  draggable={false}
-                />
-              </div>
+            <div className="relative mt-3 overflow-hidden rounded-[22px] border border-white/70 bg-[#f3e7d3]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.2),rgba(255,255,255,0)_54%)]" />
+              <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#f8efe0] via-[#f8efe0]/70 to-transparent" />
+              <Image
+                src={mobileHeroSrc}
+                alt={mobileHeroAlt}
+                width={1600}
+                height={1000}
+                sizes="(max-width: 640px) calc(100vw - 2.5rem), 640px"
+                className="pointer-events-none relative block h-auto min-h-[220px] w-full select-none object-cover object-center"
+                priority={false}
+                draggable={false}
+              />
             </div>
 
             <div className="mt-3 rounded-[20px] border border-[rgba(182,132,28,0.18)] bg-white/82 px-4 py-3 shadow-[0_12px_28px_rgba(88,66,18,0.08)] backdrop-blur-sm">
