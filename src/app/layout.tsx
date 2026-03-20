@@ -38,8 +38,7 @@ export default function RootLayout({
       <body className="noise-overlay">
         <AnalyticsScripts />
         <PricingModeProvider>
-          {children}
-          <SiteChrome />
+          <SiteChrome>{children}</SiteChrome>
         </PricingModeProvider>
       </body>
     </html>
