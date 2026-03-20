@@ -20,13 +20,21 @@ export function ModelsCatalogue() {
   return (
     <>
       <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen">
-        <div className="relative flex items-center overflow-hidden h-[38vh] min-h-[280px] max-h-[520px] bg-[url('/assets/HERO.png')] bg-cover bg-no-repeat bg-[position:72%_56%] md:bg-[position:78%_50%]">
+        <div
+          className="relative flex h-[50vh] min-h-[380px] max-h-[720px] items-center overflow-hidden bg-[linear-gradient(180deg,#f4efe5_0%,#ece3d3_100%)] md:h-[58vh] md:min-h-[500px]"
+        >
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-[url('/grafiki/Seal%207/premium%203.jpg')] bg-contain bg-center bg-no-repeat"
+          />
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0)_42%,rgba(244,239,229,0.34)_78%,rgba(236,227,211,0.72)_100%)]" />
+
           <Container>
-            <div className="max-w-[640px]">
+            <div className="relative max-w-[640px]">
               <div className="rounded-2xl bg-white/40 backdrop-blur-lg ring-1 ring-black/10 shadow-card px-5 py-6 sm:px-6 sm:py-7">
                 <Heading level={1}>Modele</Heading>
                 <Text className="mt-4 max-w-[60ch]">
-                  Wyłącznie nowe auta, estymowane raty i szybki podgląd szczegółów.
+                  Wyłącznie nowe auta i szybki podgląd najważniejszych szczegółów modeli.
                 </Text>
               </div>
             </div>
@@ -39,7 +47,7 @@ export function ModelsCatalogue() {
           <Heading level={2} className="text-lg">Elektryczne</Heading>
           <Text className="mt-2">Modele BEV z estymowaną ratą i szybkim przejściem do szczegółów.</Text>
 
-          <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+          <div className="mt-8 grid gap-6 items-stretch">
             {electric.map((group) => (
               <div key={group.key} className="h-full">
                 <ModelGroupCard group={group} />
@@ -52,7 +60,7 @@ export function ModelsCatalogue() {
           <Heading level={2} className="text-lg">Hybrydowe</Heading>
           <Text className="mt-2">Modele PHEV z elastycznym wejściem w finansowanie i pełną kartą modelu.</Text>
 
-          <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+          <div className="mt-8 grid gap-6 items-stretch">
             {hybrid.map((group) => (
               <div key={group.key} className="h-full">
                 <ModelGroupCard group={group} />

@@ -51,7 +51,7 @@ export function ModelHeroGallery({
   const scrollerRef = React.useRef<HTMLDivElement | null>(null)
   const slideRefs = React.useRef<Array<HTMLDivElement | null>>([])
   const [activeIndex, setActiveIndex] = React.useState(0)
-  const [lightbox, setLightbox] = React.useState<MediaItem | null>(null)
+  const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null)
 
   function scrollBy(dir: 'left' | 'right') {
     const el = scrollerRef.current
@@ -124,7 +124,7 @@ export function ModelHeroGallery({
             <HeroSlide
               key={item.src}
               item={item}
-              onPreview={() => setLightbox(item)}
+              onPreview={() => setLightboxIndex(idx)}
               refNode={(node) => {
                 slideRefs.current[idx] = node
               }}
@@ -134,12 +134,15 @@ export function ModelHeroGallery({
       </div>
 
       <ImageLightbox
-        open={Boolean(lightbox)}
+        open={lightboxIndex !== null}
         onOpenChange={(open) => {
-          if (!open) setLightbox(null)
+          if (!open) setLightboxIndex(null)
         }}
-        src={lightbox?.src ? normalizePublicSrc(lightbox.src) : ''}
-        alt={lightbox?.alt || ''}
+        src={lightboxIndex !== null ? normalizePublicSrc(items[lightboxIndex]?.src ?? '') : ''}
+        alt={lightboxIndex !== null ? items[lightboxIndex]?.alt ?? '' : ''}
+        images={items.map((item) => ({ src: normalizePublicSrc(item.src), alt: item.alt }))}
+        currentIndex={lightboxIndex ?? 0}
+        onIndexChange={setLightboxIndex}
       />
 
       {/* Caption (changes with visible slide) */}

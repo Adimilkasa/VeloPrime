@@ -4,7 +4,7 @@ import * as React from 'react'
 import Image from 'next/image'
 
 import { cn } from '@/lib/cn'
-import { ImageLightbox } from '@/components/modals/ImageLightbox'
+import { ImageLightbox, type LightboxImageItem } from '@/components/modals/ImageLightbox'
 
 export type EnlargeableImageProps = {
   src: string
@@ -14,6 +14,8 @@ export type EnlargeableImageProps = {
   imageClassName?: string
   priority?: boolean
   buttonClassName?: string
+  galleryImages?: LightboxImageItem[]
+  imageIndex?: number
 }
 
 export function EnlargeableImage({
@@ -24,8 +26,15 @@ export function EnlargeableImage({
   imageClassName,
   priority = false,
   buttonClassName,
+  galleryImages,
+  imageIndex = 0,
 }: EnlargeableImageProps) {
   const [open, setOpen] = React.useState(false)
+  const [activeIndex, setActiveIndex] = React.useState(imageIndex)
+
+  React.useEffect(() => {
+    setActiveIndex(imageIndex)
+  }, [imageIndex])
 
   return (
     <>
@@ -40,7 +49,10 @@ export function EnlargeableImage({
         />
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setActiveIndex(imageIndex)
+            setOpen(true)
+          }}
           aria-label={alt ? `Powiększ: ${alt}` : 'Powiększ zdjęcie'}
           className={cn(
             'absolute inset-0 cursor-zoom-in',
@@ -52,7 +64,15 @@ export function EnlargeableImage({
         />
       </div>
 
-      <ImageLightbox open={open} onOpenChange={setOpen} src={src} alt={alt} />
+      <ImageLightbox
+        open={open}
+        onOpenChange={setOpen}
+        src={src}
+        alt={alt}
+        images={galleryImages}
+        currentIndex={activeIndex}
+        onIndexChange={setActiveIndex}
+      />
     </>
   )
 }

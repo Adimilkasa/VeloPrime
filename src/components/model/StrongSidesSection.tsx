@@ -122,8 +122,39 @@ function ImageCard({ src, alt }: { src: string; alt: string }) {
   )
 }
 
+function BoardImageCard({
+  src,
+  alt,
+  galleryImages,
+  imageIndex,
+}: {
+  src: string
+  alt: string
+  galleryImages: Array<{ src: string; alt: string }>
+  imageIndex: number
+}) {
+  return (
+    <Card className="relative overflow-hidden rounded-2xl bg-bg-soft p-0">
+      <div className="relative aspect-[16/11]">
+        <EnlargeableImage
+          src={src}
+          alt={alt}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 640px"
+          className="absolute inset-0"
+          galleryImages={galleryImages}
+          imageIndex={imageIndex}
+        />
+      </div>
+    </Card>
+  )
+}
+
 export function StrongSidesSection({ board }: { board?: StrongSidesBoard }) {
   const data = board ?? defaultBoard
+  const boardImages = [data.images.exterior, data.images.interior, data.images.tech].map((item) => ({
+    src: item.src,
+    alt: item.alt,
+  }))
   return (
     <Section id="mocne-strony" variant="soft" className="scroll-mt-32" aria-label="Mocne strony">
       <div className="max-w-2xl">
@@ -141,9 +172,11 @@ export function StrongSidesSection({ board }: { board?: StrongSidesBoard }) {
 
         {/* Exterior image + row 2 tiles */}
         <div className="md:col-span-2 lg:col-span-6">
-          <ImageCard
+          <BoardImageCard
             src={data.images.exterior.src}
             alt={data.images.exterior.alt}
+            galleryImages={boardImages}
+            imageIndex={0}
           />
         </div>
 
@@ -157,15 +190,19 @@ export function StrongSidesSection({ board }: { board?: StrongSidesBoard }) {
 
         {/* Two premium images */}
         <div className="lg:col-span-6">
-          <ImageCard
+          <BoardImageCard
             src={data.images.interior.src}
             alt={data.images.interior.alt}
+            galleryImages={boardImages}
+            imageIndex={1}
           />
         </div>
         <div className="lg:col-span-6">
-          <ImageCard
+          <BoardImageCard
             src={data.images.tech.src}
             alt={data.images.tech.alt}
+            galleryImages={boardImages}
+            imageIndex={2}
           />
         </div>
 
