@@ -117,14 +117,14 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
               style={{ backgroundImage: "url('/cars/t%C5%82o%202.png')" }}
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.45),rgba(255,255,255,0)_54%)]" />
-              <div className="relative aspect-[16/10] min-h-[230px]">
+              <div className="relative flex aspect-[16/10] min-h-[230px] items-center justify-center px-2 py-3">
                 <Image
                   src={imgSrc}
                   alt={`${group.brand} ${group.model}`}
-                  fill
-                  sizes="100vw"
-                  className="pointer-events-none select-none object-contain px-4 py-4"
-                  style={{ objectPosition: 'center 72%' }}
+                  width={640}
+                  height={400}
+                  sizes="(max-width: 640px) calc(100vw - 3.5rem), 640px"
+                  className="pointer-events-none h-full w-full select-none object-contain object-center"
                   priority={false}
                   draggable={false}
                 />
