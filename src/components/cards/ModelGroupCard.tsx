@@ -99,15 +99,15 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
         <div className="flex min-w-0 flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(320px,400px)_minmax(0,1fr)_250px] lg:gap-5">
           <div className="min-w-0 sm:hidden rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,#fffaf1,#f5e8d4)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-[rgba(201,161,59,0.26)] bg-[rgba(201,161,59,0.12)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-goldDark">
+              <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-[rgba(201,161,59,0.26)] bg-[rgba(201,161,59,0.12)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-goldDark">
                 {group.powertrain === 'BEV' ? 'Electric Drive' : group.powertrain === 'PHEV' ? 'Plug-in Hybrid' : 'Nowy model'}
               </span>
               {yearLabel ? (
-                <span className="rounded-full border border-stroke/80 bg-white/76 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-text-secondary shadow-[0_8px_18px_rgba(19,26,43,0.05)]">
+                <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-stroke/80 bg-white/76 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-text-secondary shadow-[0_8px_18px_rgba(19,26,43,0.05)]">
                   Rocznik {yearLabel}
                 </span>
               ) : null}
-              <span className="rounded-full border border-[#c9a13b]/45 bg-[linear-gradient(135deg,rgba(235,201,113,0.92),rgba(182,132,28,0.88))] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_rgba(165,125,31,0.2)]">
+              <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-[#c9a13b]/45 bg-[linear-gradient(135deg,rgba(235,201,113,0.92),rgba(182,132,28,0.88))] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_rgba(165,125,31,0.2)]">
                 Dostępny od ręki
               </span>
             </div>
@@ -145,17 +145,17 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
               <div className="rounded-[22px] border border-[rgba(201,161,59,0.26)] bg-[linear-gradient(180deg,rgba(255,252,246,0.94),rgba(244,234,214,0.9))] p-2.5 text-text-primary shadow-[0_18px_44px_rgba(88,66,18,0.16)] backdrop-blur-md sm:p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex min-w-0 flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-[rgba(201,161,59,0.26)] bg-[rgba(201,161,59,0.12)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-goldDark sm:px-3 sm:text-[10px] sm:tracking-[0.18em]">
+                    <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-[rgba(201,161,59,0.26)] bg-[rgba(201,161,59,0.12)] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-goldDark sm:px-3 sm:text-[10px] sm:tracking-[0.18em]">
                       {group.powertrain === 'BEV' ? 'Electric Drive' : group.powertrain === 'PHEV' ? 'Plug-in Hybrid' : 'Nowy model'}
                     </span>
                     {yearLabel ? (
-                      <span className="rounded-full border border-stroke/80 bg-white/76 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-text-secondary shadow-[0_8px_18px_rgba(19,26,43,0.05)] sm:px-3 sm:text-[10px] sm:tracking-[0.16em]">
+                      <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-stroke/80 bg-white/76 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-text-secondary shadow-[0_8px_18px_rgba(19,26,43,0.05)] sm:px-3 sm:text-[10px] sm:tracking-[0.16em]">
                         Rocznik {yearLabel}
                       </span>
                     ) : null}
                   </div>
 
-                  <span className="rounded-full border border-[#c9a13b]/45 bg-[linear-gradient(135deg,rgba(235,201,113,0.92),rgba(182,132,28,0.88))] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_rgba(165,125,31,0.2)] sm:px-3 sm:text-[10px] sm:tracking-[0.16em]">
+                  <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-[#c9a13b]/45 bg-[linear-gradient(135deg,rgba(235,201,113,0.92),rgba(182,132,28,0.88))] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_rgba(165,125,31,0.2)] sm:px-3 sm:text-[10px] sm:tracking-[0.16em]">
                     Dostępny od ręki
                   </span>
                 </div>
@@ -164,12 +164,12 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
                   <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#8b6a21]">Wersje</div>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {versionNames.map((trim) => (
-                      <span key={trim} className="rounded-full border border-brand-gold/20 bg-white/90 px-2 py-1 text-[10px] font-semibold text-text-primary sm:px-2.5">
+                      <span key={trim} className="max-w-full whitespace-normal break-words text-center rounded-full border border-brand-gold/20 bg-white/90 px-2 py-1 text-[10px] font-semibold text-text-primary sm:px-2.5">
                         {trim}
                       </span>
                     ))}
                     {extraVersionNames > 0 ? (
-                      <span className="rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-2 py-1 text-[10px] font-semibold text-[#7b5a15] sm:px-2.5">
+                      <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-2 py-1 text-[10px] font-semibold text-[#7b5a15] sm:px-2.5">
                         +{extraVersionNames}
                       </span>
                     ) : null}
@@ -253,13 +253,13 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
               <div className="rounded-[20px] border border-white/70 bg-white/58 p-4 shadow-[0_10px_24px_rgba(88,66,18,0.05)]">
                 <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8b6a21]">Finansowanie</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7b5a15]">
+                  <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7b5a15]">
                     Leasing
                   </span>
-                  <span className="rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7b5a15]">
+                  <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7b5a15]">
                     Kredyt
                   </span>
-                  <span className="rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7b5a15]">
+                  <span className="max-w-full whitespace-normal break-words text-center rounded-full border border-brand-gold/20 bg-[#fbf4e6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7b5a15]">
                     Zakup firmowy i prywatny
                   </span>
                 </div>
