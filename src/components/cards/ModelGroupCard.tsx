@@ -50,6 +50,7 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
         ? String(group.years[0])
         : null
   const generatedContent = generatedBySlug[group.slug]
+  const mobileImageWidthClass = group.powertrain === 'PHEV' ? 'max-w-[88%]' : 'max-w-[94%]'
   const versionNames = React.useMemo(() => {
     const generatedVersions = generatedContent?.sections?.versions?.cards?.items
       ?.map((item) => item.trim?.trim())
@@ -124,7 +125,7 @@ export function ModelGroupCard({ group }: { group: ModelGroup }) {
                   width={640}
                   height={400}
                   sizes="(max-width: 640px) calc(100vw - 3.5rem), 640px"
-                  className="pointer-events-none h-full w-full select-none object-contain object-center"
+                  className={`pointer-events-none h-auto max-h-full w-auto ${mobileImageWidthClass} select-none object-contain object-center`}
                   priority={false}
                   draggable={false}
                 />
