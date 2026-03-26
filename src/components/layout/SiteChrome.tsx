@@ -9,7 +9,7 @@ import { FloatingOfferWidget } from '@/components/sections/FloatingOfferWidget'
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const isLandingPage = pathname === '/wspolpraca'
+  const isLandingPage = pathname === '/wspolpraca' || pathname.startsWith('/prezentacja')
 
   if (isLandingPage) {
     return <>{children}</>
