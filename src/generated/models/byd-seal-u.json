@@ -190,6 +190,16 @@
         "recommendedTrim": "DM-i Comfort",
         "items": [
           {
+            "trim": "DM-i Design",
+            "bullets": [
+              "Najważniejsze elementy wyposażenia",
+              "Pakiet bezpieczeństwa i wsparcia",
+              "Komfort i multimedia",
+              "Dopasowanie pod codzienne potrzeby"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
             "trim": "DM-i Boost",
             "bullets": [
               "Najważniejsze elementy wyposażenia",

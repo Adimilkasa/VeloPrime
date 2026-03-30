@@ -100,19 +100,19 @@
   },
   "sections": {
     "design": {
-      "intro": "BYD Seal 6 to elektryczny sedan z akumulatorem BYD Blade (LFP) i ładowaniem przez CCS2. W praktyce dostajesz auto na co dzień: komfort w kabinie, wsparcie w trasie i funkcje, które ułatwiają użytkowanie.",
+      "intro": "BYD Seal 6 to sedan z napędem DM-i plug-in hybrid, który łączy jazdę elektryczną na co dzień z elastycznością klasycznej hybrydy w dłuższej trasie. W praktyce dostajesz komfortową kabinę, nowoczesne technologie i układ napędowy, który dobrze odpowiada na realne potrzeby użytkowania.",
       "bullets": [
-        "Pompa ciepła + ładowarka pokładowa 11 kW: sprawniej ładujesz i jeździsz cały rok",
-        "V2L (Vehicle​-to-Load​): zasilisz sprzęt z auta, gdy nie ma gniazdka",
-        "Wnętrze: 15,6\" ekran + DAB+ i audio Dynaudio® — wygodna obsługa i lepszy dźwięk"
+        "Napęd DM-i: połączenie silnika spalinowego i elektrycznego dla niższego zużycia paliwa i większej elastyczności",
+        "Akumulator i jazda w trybie elektrycznym: wygodne dojazdy na co dzień bez rezygnacji z swobody w trasie",
+        "Wnętrze: 15,6\" ekran, dopracowana ergonomia i bogate wyposażenie poprawiają komfort codziennej jazdy"
       ]
     },
     "strengths": {
-      "intro": "BYD Seal 6 stawia na wygodę na co dzień i wsparcie kierowcy, bez rezygnacji z nowoczesnych funkcji auta elektrycznego.",
+      "intro": "BYD Seal 6 stawia na wygodę na co dzień i wsparcie kierowcy, wykorzystując zalety układu plug-in hybrid bez rezygnacji z nowoczesnych technologii pokładowych.",
       "items": [
         {
-          "title": "Szybkie ładowanie",
-          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+          "title": "Napęd DM-i",
+          "desc": "Układ plug-in hybrid łączy sprawną jazdę miejską z elastycznością potrzebną na dłuższych trasach."
         },
         {
           "title": "Bezpieczeństwo",
@@ -219,7 +219,7 @@
     },
     "specPdf": {
       "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
-      "href": "/spec/byd-seal-6.pdf",
+      "href": "/spec/seal-6-dmi.pdf",
       "label": "Pobierz specyfikację (PDF)",
       "premium": {
         "backgroundImageSrc": "/grafiki/seal-6-dmi/premium%203.jpg",

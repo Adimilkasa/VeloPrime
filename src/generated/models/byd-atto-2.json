@@ -183,10 +183,10 @@
     "versions": {
       "intro": "Wybierz wariant dopasowany do stylu jazdy.",
       "cards": {
-        "recommendedTrim": "DM-i Boost",
+        "recommendedTrim": "Boost",
         "items": [
           {
-            "trim": "Comfort",
+            "trim": "Active",
             "bullets": [
               "Najważniejsze elementy wyposażenia",
               "Pakiet bezpieczeństwa i wsparcia",
@@ -196,7 +196,7 @@
             "ctaLabel": "Zapytaj o ofertę"
           },
           {
-            "trim": "DM-i Boost",
+            "trim": "Boost",
             "bullets": [
               "Najważniejsze elementy wyposażenia",
               "Pakiet bezpieczeństwa i wsparcia",
