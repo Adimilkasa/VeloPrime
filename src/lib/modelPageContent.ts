@@ -28,7 +28,7 @@ export type ModelPageSectionContent = {
   }
   specPdf: {
     intro: string
-    href: string
+    href?: string | null
     label: string
     premium?: {
       backgroundImageSrc: string

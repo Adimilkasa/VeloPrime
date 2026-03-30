@@ -27,6 +27,18 @@ export function modelGroupSlug(brand: string, model: string) {
   return [b, m].filter(Boolean).join('-')
 }
 
+function modelGroupVariantSlug(brand: string, model: string, powertrain: Powertrain, trim?: string) {
+  const base = modelGroupSlug(brand, model)
+  if (powertrain === 'BEV') return base
+  if (powertrain === 'PHEV') return /dm-i/i.test(String(trim || '')) ? `${base}-dm-i` : `${base}-phev`
+  return `${base}-${normalizeSlugPart(powertrain)}`
+}
+
+function modelGroupVariantName(model: string, powertrain: Powertrain, trim?: string) {
+  if (powertrain === 'PHEV') return /dm-i/i.test(String(trim || '')) ? `${model} DM-i` : `${model} PHEV`
+  return model
+}
+
 export function parsePowertrain(value: unknown): Powertrain {
   const raw = String(value ?? '').trim().toLowerCase()
   if (!raw) return 'OTHER'
@@ -43,18 +55,33 @@ export function parsePowertrain(value: unknown): Powertrain {
 }
 
 export function groupInventoryByModel(items: InventoryItem[]): ModelGroup[] {
-  const map = new Map<string, ModelGroup>()
+  const powertrainsByModel = new Map<string, Set<Powertrain>>()
 
   for (const item of items) {
     const key = `${item.brand}|||${item.model}`
+    const set = powertrainsByModel.get(key) ?? new Set<Powertrain>()
+    set.add(item.powertrain ?? 'OTHER')
+    powertrainsByModel.set(key, set)
+  }
+
+  const map = new Map<string, ModelGroup>()
+
+  for (const item of items) {
+    const modelKey = `${item.brand}|||${item.model}`
     const powertrain = item.powertrain ?? 'OTHER'
+    const hasMultiplePowertrains = (powertrainsByModel.get(modelKey)?.size ?? 0) > 1
+    const key = hasMultiplePowertrains ? `${modelKey}|||${powertrain}` : modelKey
     const existing = map.get(key)
     if (!existing) {
       map.set(key, {
         key,
-        slug: modelGroupSlug(item.brand, item.model),
+        slug: hasMultiplePowertrains
+          ? modelGroupVariantSlug(item.brand, item.model, powertrain, item.trim)
+          : modelGroupSlug(item.brand, item.model),
         brand: item.brand,
-        model: item.model,
+        model: hasMultiplePowertrains
+          ? modelGroupVariantName(item.model, powertrain, item.trim)
+          : item.model,
         imageKey: item.imageKey || item.model,
         powertrain,
         years: [item.year].filter((y) => Number.isFinite(y)),

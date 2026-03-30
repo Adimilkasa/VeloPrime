@@ -1,0 +1,158 @@
+{
+  "slug": "byd-atto-2-dm-i",
+  "brand": "BYD",
+  "model": "Atto 2 DM-i",
+  "media": {
+    "hero": [
+      {
+        "src": "/grafiki/byd-atto-2/premium%201.jpg",
+        "alt": "premium 1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/premium1.jpg",
+        "alt": "premium1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/premium2.jpg",
+        "alt": "premium2"
+      }
+    ],
+    "exteriorGrid": [
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz%203.jpg",
+        "alt": "zewnatrz 3"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz.jpg",
+        "alt": "zewnatrz"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/zewnatrz1.jpg",
+        "alt": "zewnatrz1"
+      }
+    ],
+    "interior": {
+      "opener": {
+        "src": "/grafiki/byd-atto-2/wewnatrz2.jpg",
+        "alt": "wewnatrz2"
+      },
+      "grid": [
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz2.jpg",
+          "alt": "wewnatrz2"
+        },
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz3.jpg",
+          "alt": "wewnatrz3"
+        },
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz8.jpg",
+          "alt": "wewnatrz8"
+        },
+        {
+          "src": "/grafiki/byd-atto-2/wewnatrz9.jpg",
+          "alt": "wewnatrz9"
+        }
+      ]
+    },
+    "details": [
+      {
+        "src": "/grafiki/byd-atto-2/detal1.jpg",
+        "alt": "detal1"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/detal2.jpg",
+        "alt": "detal2"
+      },
+      {
+        "src": "/grafiki/byd-atto-2/detal4.jpg",
+        "alt": "detal4"
+      }
+    ]
+  },
+  "sections": {
+    "design": {
+      "intro": "BYD Atto 2 DM-i łączy napęd plug-in hybrid z kompaktowym nadwoziem i pakietem funkcji, które dobrze sprawdzają się na co dzień. To propozycja dla osób, które chcą korzystać z jazdy elektrycznej w mieście, ale zachować swobodę dalszych tras.",
+      "bullets": [
+        "Napęd DM-i: połączenie silnika spalinowego i elektrycznego dla większej elastyczności użytkowania",
+        "Ładowanie AC i codzienna jazda w trybie elektrycznym bez rezygnacji z zasięgu całkowitego",
+        "Kompaktowy format, nowoczesne multimedia i systemy wsparcia kierowcy"
+      ]
+    },
+    "strengths": {
+      "intro": "Najważniejsze przewagi wersji DM-i w skrócie: elastyczność, codzienna wygoda i nowoczesne wyposażenie.",
+      "items": [
+        {
+          "title": "Napęd plug-in hybrid",
+          "desc": "Możesz korzystać z jazdy elektrycznej na co dzień i zachować komfort dłuższych tras dzięki układowi DM-i."
+        },
+        {
+          "title": "Ładowanie i efektywność",
+          "desc": "Ładowanie AC i zarządzanie energią są dopasowane do codziennego użytkowania auta w mieście."
+        },
+        {
+          "title": "Komfort oraz bezpieczeństwo",
+          "desc": "Multimedia, wsparcie kierowcy i praktyczne wyposażenie poprawiają wygodę codziennej jazdy."
+        }
+      ]
+    },
+    "versions": {
+      "intro": "Wybierz wariant hybrydowy dopasowany do stylu jazdy.",
+      "cards": {
+        "recommendedTrim": "DM-i Boost",
+        "items": [
+          {
+            "trim": "DM-i Active",
+            "bullets": [
+              "Napęd plug-in hybrid DM-i",
+              "Pakiet bezpieczeństwa i wsparcia kierowcy",
+              "Komfort i multimedia do codziennej jazdy",
+              "Wersja dostępna w aktualnym inventory"
+            ],
+            "ctaLabel": "Zapytaj o ofertę"
+          },
+          {
+            "trim": "DM-i Boost",
+            "bullets": [
+              "Napęd plug-in hybrid DM-i",
+              "Pakiet bezpieczeństwa i wsparcia kierowcy",
+              "Komfort i multimedia do codziennej jazdy",
+              "Wersja dostępna w aktualnym inventory"
+            ],
+            "ctaLabel": "Zapytaj o ofertę",
+            "badge": "Dostępna"
+          }
+        ]
+      }
+    },
+    "specPdf": {
+      "intro": "Pełna specyfikacja i wyposażenie wersji hybrydowej w pliku PDF.",
+      "href": "/spec/byd-atto-2-dm-i.pdf",
+      "label": "Pobierz specyfikację (PDF)",
+      "premium": {
+        "backgroundImageSrc": "/grafiki/byd-atto-2/premium%201.jpg",
+        "description": "Pełna specyfikacja i wyposażenie wersji hybrydowej w pliku PDF.",
+        "checklist": [
+          "Wyposażenie i funkcje",
+          "Dane techniczne napędu DM-i",
+          "Zakres wersji dostępnych w specyfikacji"
+        ],
+        "ctaLabel": "Pobierz specyfikację (PDF)",
+        "helperText": "Plik otworzy się w nowej karcie."
+      }
+    },
+    "discount": {
+      "headline": "Skorzystaj z indywidualnego rabatu",
+      "body": "Sprawdź aktualną ofertę dla wersji hybrydowej i porównaj możliwe formy finansowania po krótkiej konsultacji.",
+      "premium": {
+        "promoImageSrc": "/grafiki/byd-atto-2/premium1.jpg",
+        "benefits": [
+          "Rabat dopasowany do dostępności",
+          "Szybka wycena i kontakt",
+          "Wsparcie w finansowaniu"
+        ],
+        "ctaLabel": "Zapytaj o rabat"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-[
+[ 
   {
     "brand": "BYD",
     "model": "Dolphin Surf",
@@ -52,6 +52,34 @@
     "ourPriceGross": 124500,
     "ourPriceNet": 101220,
     "powertrain": "BEV",
+    "availability": "IN_STOCK",
+    "imageKey": "Atto 2"
+  },
+  {
+    "brand": "BYD",
+    "model": "Atto 2",
+    "trim": "DM-i Boost",
+    "bodyType": "—",
+    "year": 2025,
+    "listPriceNet": 127561,
+    "listPriceGross": 156900,
+    "ourPriceGross": 145572,
+    "ourPriceNet": 118351,
+    "powertrain": "PHEV",
+    "availability": "IN_STOCK",
+    "imageKey": "Atto 2"
+  },
+  {
+    "brand": "BYD",
+    "model": "Atto 2",
+    "trim": "DM-i Active",
+    "bodyType": "—",
+    "year": 2026,
+    "listPriceNet": 103984,
+    "listPriceGross": 127900,
+    "ourPriceGross": 124500,
+    "ourPriceNet": 101220,
+    "powertrain": "PHEV",
     "availability": "IN_STOCK",
     "imageKey": "Atto 2"
   },

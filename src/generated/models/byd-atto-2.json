@@ -92,27 +92,27 @@
   },
   "sections": {
     "design": {
-      "intro": "BYD Atto 2 stawia na proste, codzienne użycie: nowy napęd i pakiet funkcji, które realnie ułatwiają jazdę. W standardzie dostajesz m.in. nowy typ baterii oraz zestaw systemów wsparcia kierowcy, więc mniej rzeczy musisz…",
+      "intro": "BYD Atto 2 to elektryczny crossover do codziennej jazdy w mieście i poza nim. Łączy kompaktowy format, nowoczesne multimedia i funkcje, które poprawiają wygodę użytkowania bez rezygnacji z pełnoprawnego napędu BEV.",
       "bullets": [
-        "Bateria BYD Blade (LFP) – trwała chemia i spokój na lata.",
-        "V2L (Vehicle​-to-Load​) – zasilisz sprzęt z auta, gdy nie ma gniazdka.",
-        "AEB + TSR – auto hamuje awaryjnie i czyta znaki, mniej stresu w mieście."
+        "Akumulator trakcyjny i ładowanie AC/DC: wygodne korzystanie z auta elektrycznego na co dzień.",
+        "Nowoczesne multimedia, funkcje online i praktyczne wyposażenie poprawiają komfort użytkowania.",
+        "AEB + TSR: auto wspiera kierowcę w mieście i pomaga ograniczyć stres w codziennym ruchu."
       ]
     },
     "strengths": {
-      "intro": "BYD Atto 2 stawia na wygodę na co dzień: proste ładowanie, mocne wsparcie kierowcy i bogate multimedia.",
+      "intro": "BYD Atto 2 stawia na wygodę na co dzień: napęd elektryczny, wsparcie kierowcy i bogate multimedia w kompaktowym nadwoziu.",
       "items": [
         {
-          "title": "Proste ładowanie AC",
-          "desc": "W zależności od wersji auto obsługuje ładowanie AC do 3,3 kW lub do 6,6 kW. Łatwiej dopasujesz ładowanie w domu i w mieście do swoich warunków."
+          "title": "Napęd elektryczny",
+          "desc": "Auto zostało zaprojektowane jako pełny BEV, więc najlepiej odpowiada na potrzeby codziennej jazdy miejskiej i podmiejskiej."
         },
         {
           "title": "Dużo systemów wsparcia",
           "desc": "Na liście są m.in. ACC/ICC, asystenci pasa oraz monitoring kierowcy i martwego pola. To mniej stresu w trasie i w korkach."
         },
         {
-          "title": "Szybkie ładowanie",
-          "desc": "Wygodne uzupełnianie energii w trasie i na co dzień — bez zbędnego czekania."
+          "title": "Ładowanie i codzienna wygoda",
+          "desc": "Ładowanie AC i DC pozwala wygodnie korzystać z auta zarówno w mieście, jak i podczas dłuższych wyjazdów."
         }
       ],
       "board": {
@@ -188,20 +188,20 @@
           {
             "trim": "Active",
             "bullets": [
-              "Najważniejsze elementy wyposażenia",
+              "Elektryczny crossover do codziennej jazdy",
               "Pakiet bezpieczeństwa i wsparcia",
               "Komfort i multimedia",
-              "Dopasowanie pod codzienne potrzeby"
+              "Najbardziej przystępny wariant w aktualnym inventory"
             ],
             "ctaLabel": "Zapytaj o ofertę"
           },
           {
             "trim": "Boost",
             "bullets": [
-              "Najważniejsze elementy wyposażenia",
+              "Elektryczny crossover do codziennej jazdy",
               "Pakiet bezpieczeństwa i wsparcia",
               "Komfort i multimedia",
-              "Dopasowanie pod codzienne potrzeby"
+              "Wersja dostępna w aktualnym inventory"
             ],
             "ctaLabel": "Zapytaj o ofertę",
             "badge": "Polecana"
@@ -211,7 +211,7 @@
     },
     "specPdf": {
       "intro": "Pełna specyfikacja i wyposażenie w pliku PDF.",
-      "href": "/spec/byd-atto-2.pdf",
+      "href": "/spec/byd-atto-2-ev.pdf",
       "label": "Pobierz specyfikację (PDF)",
       "premium": {
         "backgroundImageSrc": "/grafiki/byd-atto-2/premium%201.jpg",

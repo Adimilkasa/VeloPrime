@@ -80,8 +80,13 @@ export async function resolveCarImageSrcForItem(item: {
   trim: string
 }) {
   // Prefer generated model hero images (grafiki/<slug>/premium...) when available.
-  const slug = modelGroupSlug(item.brand, item.model)
-  const generated = generatedBySlug?.[slug]
+  const baseSlug = modelGroupSlug(item.brand, item.model)
+  const candidateSlugs = /dm-i/i.test(item.trim)
+    ? [`${baseSlug}-dm-i`, baseSlug]
+    : [baseSlug]
+  const generated = candidateSlugs
+    .map((slug) => generatedBySlug?.[slug])
+    .find(Boolean)
   const hero = generated?.media?.hero
   if (Array.isArray(hero) && hero.length) {
     const seed = stableHash(`${item.brand}|${item.model}|${item.trim}`)

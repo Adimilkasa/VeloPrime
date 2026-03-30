@@ -344,14 +344,22 @@ export default async function ModelDetailsPage({
               </ul>
 
               <div className="mt-7 flex flex-col items-start gap-2 sm:flex-row sm:items-center">
-                <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
-                  <a href={content.sections.specPdf.href} target="_blank" rel="noreferrer">
-                    {content.sections.specPdf.premium.ctaLabel}
-                  </a>
-                </Button>
-                <Text variant="muted" className="sm:ml-2">
-                  {content.sections.specPdf.premium.helperText}
-                </Text>
+                {content.sections.specPdf.href ? (
+                  <>
+                    <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
+                      <a href={content.sections.specPdf.href} target="_blank" rel="noreferrer">
+                        {content.sections.specPdf.premium.ctaLabel}
+                      </a>
+                    </Button>
+                    <Text variant="muted" className="sm:ml-2">
+                      {content.sections.specPdf.premium.helperText}
+                    </Text>
+                  </>
+                ) : (
+                  <Text variant="muted">
+                    Specyfikacja PDF dla tej wersji będzie dostępna po dodaniu dedykowanego pliku do repo.
+                  </Text>
+                )}
               </div>
             </div>
           </Card>
@@ -368,14 +376,22 @@ export default async function ModelDetailsPage({
               </div>
 
               <div className="w-full sm:w-auto">
-                <Button asChild variant="primary" size="md" className="w-full sm:w-auto">
-                  <a href={content.sections.specPdf.href} target="_blank" rel="noreferrer">
-                    {content.sections.specPdf.label}
-                  </a>
-                </Button>
-                <Text variant="muted" className="mt-2 text-center sm:text-left">
-                  Otwiera się w nowej karcie.
-                </Text>
+                {content.sections.specPdf.href ? (
+                  <>
+                    <Button asChild variant="primary" size="md" className="w-full sm:w-auto">
+                      <a href={content.sections.specPdf.href} target="_blank" rel="noreferrer">
+                        {content.sections.specPdf.label}
+                      </a>
+                    </Button>
+                    <Text variant="muted" className="mt-2 text-center sm:text-left">
+                      Otwiera się w nowej karcie.
+                    </Text>
+                  </>
+                ) : (
+                  <Text variant="muted" className="text-center sm:text-left">
+                    Specyfikacja PDF dla tej wersji będzie dostępna po dodaniu dedykowanego pliku.
+                  </Text>
+                )}
               </div>
             </div>
           </Card>
